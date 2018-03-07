@@ -1,12 +1,12 @@
 ---
-title: "Contributions Lose Github"
+title: "Trouble shooting: Github Contributions Lose "
 date: "2018-03-07"
 layout: post
 draft: false
 path: "/posts/Contributions-Lose-Github"
-category: ""
+category: "Trouble Shooting"
 tags:
-  -
+  - "GitHub"
 description: ""
 ---
 当本地 **Git** 邮箱与 **GitHub** 不一致时, 所推送的 Contributions 不会被 GitHub记录并显示  
