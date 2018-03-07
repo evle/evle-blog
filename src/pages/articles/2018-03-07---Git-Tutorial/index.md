@@ -6,8 +6,8 @@ draft: false
 path: "/posts/git-tutorial"
 category: "Git"
 tags:
-  - Github
-  - Git
+  - "Github"
+  - "Git"
 description: ""
 ---
 Git是目前主流的分布式版本控制系统, 下载及安装Git后需要进行以下设置

@@ -6,8 +6,8 @@ draft: false
 path: "/posts/publish-to-npm"
 category: ""
 tags:
-  - npm
-  - yarn
+  - "npm"
+  - "yarn"
 description: ""
 ---
 目前[npm](https://www.npmjs.com/)和[yarn](https://yarnpkg.com)是最流行的JavaScript包管理工具, 它们都是使用同一个**npm clients**. 本文将介绍如何将自己的包发布到npm和yarn.
