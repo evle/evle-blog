@@ -13,7 +13,7 @@ class PageTemplate extends React.Component {
       <div>
         <Helmet>
           <title>{`${pageTitle} - ${title}`}</title>
-          <meta name="description" content={description} />
+          <meta name="description" content={page.excerpt} />
         </Helmet>
         <PageTemplateDetails {...this.props} />
       </div>
@@ -49,6 +49,7 @@ export const pageQuery = graphql`
         date
         description
       }
+      excerpt
     }
   }
 `;

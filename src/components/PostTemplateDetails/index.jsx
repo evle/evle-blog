@@ -2,6 +2,7 @@ import React from 'react';
 import Link from 'gatsby-link';
 import moment from 'moment';
 import Disqus from '../Disqus/Disqus';
+import TOC from '../TOC/index';
 import './style.scss';
 
 class PostTemplateDetails extends React.Component {
@@ -36,15 +37,23 @@ class PostTemplateDetails extends React.Component {
       </div>
     );
 
+    const tocBlock = (
+      <div>
+        <TOC {...this.props}/>
+      </div>
+    );
+
     return (
       <div>
         {homeBlock}
+        {tocBlock}
         <div className="post-single">
           <div className="post-single__inner">
             <h1 className="post-single__title">{post.frontmatter.title}</h1>
+            Published {moment(post.frontmatter.date).format('D MMM YYYY')}
             <div className="post-single__body" dangerouslySetInnerHTML={{ __html: post.html }} />
             <div className="post-single__date">
-              <em>Published {moment(post.frontmatter.date).format('D MMM YYYY')}</em>
+
             </div>
           </div>
           <div className="post-single__footer">
