@@ -9,6 +9,7 @@ tags:
   - "Node.js"
 description: "Node.js"
 ---
+[TOC]
 ## Prepare for happy hacking
 - Node.js Installation: `brew install node`
 - REPL mode: `node`  

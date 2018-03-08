@@ -13,7 +13,7 @@ class PostTemplate extends React.Component {
       <div>
         <Helmet>
           <title>{`${postTitle} - ${title}`}</title>
-          <meta name="description" content={description} />
+          <meta name="description" content={post.excerpt} />
         </Helmet>
         <PostTemplateDetails {...this.props} />
       </div>
@@ -50,6 +50,7 @@ export const pageQuery = graphql`
         date
         description
       }
+       excerpt
     }
   }
 `;
