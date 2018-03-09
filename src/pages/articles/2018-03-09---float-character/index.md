@@ -25,14 +25,14 @@ float有2个特性: `wrap` 和 `collapse`, 如果不理解它们, 在使用floa
 
 ### 包裹性
 举一个例子来说明以下包裹性.
-<img>是一个block元素, 宽度默认是100%
+`<img>`是一个block元素, 宽度默认是100%
 ```html
 <div style="border:solid 0.5em hotpink">
   <img src="img-1.jpg" alt="" />
 </div>
 ```
 [![9RSmHU.md.png](https://s1.ax1x.com/2018/03/09/9RSmHU.md.png)](https://imgchr.com/i/9RSmHU)
-但当<img>外层的div设置为浮动的话,<img>标签则会被包裹起来,宽度会根据内容自适应,这就是所谓的包裹性
+但当`<img>`外层的`<div>`设置为浮动的话,`<img>`元素则会被包裹起来,宽度会根据内容自适应,这就是所谓的包裹性
 ```html
 <div style="border:solid 0.5em hotpink;float:left">
   <img src="img-1.jpg" alt="" />
@@ -41,7 +41,7 @@ float有2个特性: `wrap` 和 `collapse`, 如果不理解它们, 在使用floa
 ![9RSKN4.png](https://s1.ax1x.com/2018/03/09/9RSKN4.png)
 
 ### 高度坍塌
-当给<img>标签设置float属性时, 外层的div元素的高度会坍塌.  
+当给`<img>`元素设置float属性时, 外层的`<div>`元素的高度会坍塌.  
 ```html
 <div style="border:solid 0.5em hotpink">
   <img src="img-1.jpg" alt="" style="float:left" />
