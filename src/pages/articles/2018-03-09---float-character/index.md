@@ -69,7 +69,7 @@ float有2个特性: `wrap` 和 `collapse`, 如果不理解它们, 在使用floa
 <aside style="border:solid 0.5em yellow; float:left;width:25%">Sidebar</aside>
 <article style="border:solid 0.5em red; float:right;width:70%">Main Content</article>
 ```
-清除浮动有很多种方法, 但通过给指定元素添加`clearfix`class来清除浮动是一个相对最佳的解决方案.
+清除浮动有很多种方法, 但通过`clearfix`class来清除浮动带来的影响是一个相对最佳的解决方案.
 `定义clearfix`:
 ```CSS
 .clearfix:after {
@@ -80,6 +80,16 @@ float有2个特性: `wrap` 和 `collapse`, 如果不理解它们, 在使用floa
   clear: both;
 }
 ```
+修改之前的代码为:
+```html
+<header style="border:solid 0.5em hotpink">Header</header>
+<div class="clearfix">
+    <aside style="border:solid 0.5em yellow; float:left">Sidebar</aside>
+    <article style="border:solid 0.5em red; float:right">Main Content</article>
+</div>
+<footer style="border:solid 0.5em green">Footer</footer>
+```
+![9RpIFe.png](https://s1.ax1x.com/2018/03/09/9RpIFe.png)
 
 ## Summary
 float存在着很多问题, 在能避免使用float的情况下尽量不用float. 比如在实现下图的布局时, 最好使用`display:inline-block`来代替`float:left`.
