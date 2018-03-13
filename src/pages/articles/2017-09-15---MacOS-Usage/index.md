@@ -51,9 +51,19 @@ description: "列出一些实用的Mac技巧"
 | shift + command + 4 | 使用空格键 截取当前窗口到桌面 |
 |                     | + ctrl 截图复制到剪贴板       |
 
+
+
+
 ## 翻译与发音
 | Command            | Note           |
 | ------------------ | -------------- |
 | say                | 发音            |
 | option + esc       | 发音选中的文本    |
 | ctrl + command + d | 查询选中文本      |
+
+
+## 压缩与解压缩
+```bash
+zip archive.zip file.txt
+unzip archive.zip
+```
