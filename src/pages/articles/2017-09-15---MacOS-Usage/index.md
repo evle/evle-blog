@@ -67,3 +67,13 @@ description: "列出一些实用的Mac技巧"
 zip archive.zip file.txt
 unzip archive.zip
 ```
+## 启动/关闭 常用服务
+```bash
+# MongoDB
+brew services start mongodb
+brew services stop mongodb
+
+# Redis
+brew services start redis
+brew services stop redis
+```
