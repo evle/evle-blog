@@ -6,8 +6,7 @@ draft: false
 path: "/posts/ubuntu-usage"
 category: "Ubuntu"
 tags:
-  - Mongodb
-  - curl
+  - "Ubuntu"
 description: ""
 ---
 

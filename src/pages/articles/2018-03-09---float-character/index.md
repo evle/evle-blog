@@ -6,8 +6,8 @@ draft: false
 path: "/posts/float-character"
 category: "CSS"
 tags:
-  - css
-  - float
+  - "css"
+  - "float"
 description: ""
 ---
 现在再来讨论float属性似乎已经是outdated. 因为现在人们现在为了兼容性和开发效率更多的使用Grid system或者Flexbox布局代替float. 到现在为止对于float人们还有很多争议, 比如到底该如何使用float, 甚至该不该使用float.

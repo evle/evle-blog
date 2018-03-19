@@ -6,8 +6,8 @@ draft: false
 path: "/posts/GraphQL-Express-Server"
 category: "GraphQL"
 tags:
-  - GraphQL
-  - Express
+  - "GraphQL"
+  - "Express"
 description: ""
 ---
 > GraphQL is the future     
