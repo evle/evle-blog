@@ -6,9 +6,9 @@ draft: false
 path: "/posts/Gulp-for-Beginners"
 category: "Gulp"
 tags:
-  - Sass
-  - Gulp
-  - BrowserSync
+  - "Sass"
+  - "Gulp"
+  - "BrowserSync"
 description: ""
 ---
 

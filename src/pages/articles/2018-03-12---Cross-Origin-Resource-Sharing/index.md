@@ -6,8 +6,7 @@ draft: false
 path: "/posts/Cross-Origin-Resource-Sharing"
 category: "HTTP"
 tags:
-  - CORS
-  - jQuery
+  - "CORS"
 description: ""
 ---
 Today many pages on the web load resources like CSS, images and scripts from
