@@ -27,4 +27,4 @@ description: "MongoDB Cheat Sheets"
 
 **模仿**: 模仿是最快的学习方法, 没有之一. 推荐材料：经济学人
 
-"Write. Rewrite. When not writing or rewriting, read. I know of no shorcuts. -Larry L. King(1929-2012), writer"
+"Write. Rewrite. When not writing or rewriting, read. I know of no shortcuts. -Larry L. King(1929-2012), writer"

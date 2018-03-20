@@ -1,6 +1,10 @@
 @import "../../assets/scss/variables";
 @import "../../assets/scss/mixins";
 
+.date-center {
+  text-align: center;
+}
+
 .post-single {
     &__inner {
         max-width: $layout-post-single-max-width;
