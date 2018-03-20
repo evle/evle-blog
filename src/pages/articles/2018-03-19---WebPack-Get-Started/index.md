@@ -9,7 +9,6 @@ tags:
   - "Webpack"
 description: ""
 ---
-![9ofbvT.png](https://s1.ax1x.com/2018/03/19/9ofbvT.png)
 Webpack是比Gulp更火的前端自动化构建工具, Webpack4相比之前的版本有不少性能的提升，并且配置也简化了不少. 对于一个简单的项目Webpack 4 不需要 `webpack.config.js`配置文件, 它的默认entry是`./src`, 让我们试试.
 ```bash
 $ npm i webpack --save-dev
