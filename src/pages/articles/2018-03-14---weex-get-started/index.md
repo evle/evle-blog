@@ -9,7 +9,7 @@ tags:
   - "Weex"
 description: ""
 ---
-
+未完成 待更新
 npm install weex-toolkit -g
 weex create awesome-app
 cd awesome-app

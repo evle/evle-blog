@@ -63,6 +63,24 @@ $ sudo service mongod restart
 $ mongo -u admin -p admin123 --authenticationDatabase admin
 ```
 
+## Vim
+```bash
+# 全部删除
+dG
+# 全部复制
+ggyG
+# 首行
+gg
+# 尾行
+G
+# 删除当前行
+dd
+# 拷贝当前行
+yy
+
+
+```
+
 ## 命令行工具
 ### curl
 普通下载文件:

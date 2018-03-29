@@ -9,7 +9,7 @@ tags:
   - "GitHub"
 description: ""
 ---
-当本地 **Git** 邮箱与 **GitHub** 不一致时, 所推送的 Contributions 不会被 GitHub记录并显示  
+当本地 **Git** 邮箱与 **GitHub**留的邮箱 不一致时, 所推送的 Contributions 不会被 GitHub记录并显示  
 
 **Solution:** (**For Mac**)
 >To change the name and/or email address recorded in existing commits, you must rewrite the entire history of your Git repository.
@@ -18,8 +18,8 @@ description: ""
 
 2. Create a fresh, bare clone of your repository:
     ```  
-    git clone --bare https://github.com/user/repo.git
-    cd repo.git
+    git clone --bare https://github.com/your-username/your-repo.git
+    cd your-repo.git
     ```
 3. Copy and paste the script, replacing the following variables based on the information you gathered:
     ```
@@ -43,6 +43,6 @@ description: ""
 4. Press `Enter` to run the script.
 5. Review the new Git history for errors: `git log`  
 
-6. Push the new Git history to GitHub: `git push --force --tags origin 'refs/heads/*'`  
+6. Push the new Git history to GitHub: `git push --force --tags origin HEAD:master`  
 
-7. Clean up the temporary clone: `cd .. & rm -rf repo.git`    
+7. Clean up the temporary clone: `cd .. & rm -rf your-repo.git`    
