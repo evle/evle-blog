@@ -63,6 +63,7 @@ $ sudo service mongod restart
 $ mongo -u admin -p admin123 --authenticationDatabase admin
 ```
 
+<<<<<<< HEAD
 ## Vim
 ```bash
 # 全部删除
@@ -81,6 +82,8 @@ yy
 
 ```
 
+=======
+>>>>>>> 20cb9b60c1690dee5a7d460bfda45c5537af435c
 ## 命令行工具
 ### curl
 普通下载文件:

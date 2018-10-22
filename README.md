@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 [![GitHub release](https://img.shields.io/github/release/alxshelepenok/gatsby-starter-lumen.svg)](https://github.com/alxshelepenok/gatsby-starter-lumen) [![Code Climate](https://img.shields.io/codeclimate/maintainability/alxshelepenok/gatsby-starter-lumen.svg)](https://codeclimate.com/github/alxshelepenok/gatsby-starter-lumen) [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/alxshelepenok/gatsby-starter-lumen/master/LICENSE) [![Twitter](https://img.shields.io/twitter/url/https/github.com/alxshelepenok/gatsby-starter-lumen.svg?style=social)](https://twitter.com/intent/tweet?text=Wow:&url=https://github.com/alxshelepenok/gatsby-starter-lumen)
 
 # Lumen
@@ -116,3 +117,17 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+=======
+My Blog  - Build with React & Gatsby
+===================================
+
+The blog post generator for gatsby-starter-lumen
+`$ npm install gatsby-blog-post`
+
+Usage
+1. Get to the root directory of Gatsby Blog
+`cd gatsby_blog`
+
+2. Generate a Post
+`gatsby-blog-post My-First-Blog-Post`
+>>>>>>> 20cb9b60c1690dee5a7d460bfda45c5537af435c
