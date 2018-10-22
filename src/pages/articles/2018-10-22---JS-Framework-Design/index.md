@@ -10,28 +10,70 @@ tags:
 description: ""
 ---
 
+# JavaScript Framework Design
+
+待续
+
 ## 写在前面的
 
+待续
 
 ## Done something simple
+
 `$`经常被用来在各种语言中使用, 在Web开发中也不例外, 人人都知道的Jquery使用了`$` 提高了我们的效率
-make our life better, take a look at a example below: 
+make our life better, take a look at a example below:  
+
+首先我们来实现如下第一个功能 **Query Elements**.
+
 ```javascript
 var div = document.querySelector('div');
 
 var div = $('div')
 ```
-我们接下来实现这个功能
+
+我们要实现的是通过`$`选择元素, 当匹配到一个元素时, 返回匹配到的元素, 当匹配到多个元素时, 返回`NodeList`.
+
 ```javascript
 $ = function(s){
-	var el = document.querySelectorAll(s),
-		len = el.length;
-	return len === 1 ? el[0] : el;
+  var el = document.querySelectorAll(s),
+  len = el.length;
+  return len === 1 ? el[0] : el;
 }
 ```
 
+现在我们就可以通过`$`来选择元素了，比如
 
-## Query elements
+```javascript
+var links = $(p:first-child)
+```
+
+当选择到多个元素时，它会返回`NodeList`, 那么如果我们想像下面这样通过`forEach`来遍历节点该怎么办呢？
+
+```javascript
+
+```
+
+下面我们来实现 Events 中的事件绑定(Bind events)和自定义事件(Custom events). 通常我们在 Web 开发中使用`addEventListener`绑定事件，比如给所有的`p`元素绑定点击事件:
+
+```javascript
+document.querySelectorAll('p').forEach(function(el){
+  el.addEventListener('click', function(event){
+    event.preventDefault();
+    // do something else
+  })
+})
+```
+
+从上面的代码片段我们可以看出 `addEventListener` 太长了, 如何实现像 jQuery那样通过`on`来绑定事件呢？
+
+
+
+
+
+
+
+
+```javascript
 var links = $('')
 
 $ = (function (document, window, $) {
@@ -84,16 +126,6 @@ $ = (function (document, window, $) {
       return this;
     };
   
-    $ = function (s) {
-      // querySelectorAll requires a string with a length
-      // otherwise it throws an exception
-      var r = document.querySelectorAll(s || 'â˜º'),
-          length = r.length;
-      // if we have a single element, just return that.
-      // if there's no matched elements, return a nodeList to chain from
-      // else return the NodeList collection from qSA
-      return length == 1 ? r[0] : r;
-    };
   
     // $.on and $.trigger allow for pub/sub type global
     // custom events.
@@ -102,3 +134,4 @@ $ = (function (document, window, $) {
   
     return $;
   })(document, this);
+  ```
