@@ -12,10 +12,11 @@ description: ""
 
 ## 写在前面的
 
-> “Programming is the art of telling another human what one wants the computer to do”.— Donald Knuth
+> “Programming is the art of telling another human what one wants the computer to do”. — Donald Knuth
+
 本篇是 JavaScript Developer的自我修养系列第一课: Clean Code. 每个人都会编程, 程序只是特定的语法与逻辑思考的一种结合, 是我们绝大部分人与生俱来的能力. 但写出优雅的代码却是一项需要刻意练习的事情. 工作内容的关系, 我的大部分时间都在写 **无法直视** 的混淆代码, 并且一直没有机会使用ES6的新特性, 也没使用linter规范自己的代码. 现在打算辞职去做自己喜欢的事情, 第一步就是先提升自己代码的可阅读性, 于是有了本篇文章. 当然本篇不仅仅是一份代码规范说明, 而是与大家一起探讨如何写健壮, 可拓展, 复用性强的代码.
 
-本文提到的代码风格来自 Airbnb JavaScript Style Guide 与Ryan Mcdermott的 Clean Code for JavaScript
+本文提到的代码风格来自 Airbnb JavaScript Style Guide 与Ryan Mcdermott的 Clean Code for JavaScript.
 
 
 访问`Primitives`类型的变量时是直接操作她的值, 访问`Complex`变量操作的是她的引用, 举个例子
