@@ -2,7 +2,7 @@ module.exports = {
   siteMetadata: {
     url: 'https://evle.netlify.com',
     title: 'EVLE',
-    subtitle: 'Learning by Sharing',
+    subtitle: 'Knowledge is not consumed, it is shared',
     copyright: '© All rights reserved.',
     disqusShortname: '',
     menu: [
