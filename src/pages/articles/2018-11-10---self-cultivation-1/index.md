@@ -1,5 +1,5 @@
 ---
-title: "JavaScript Developer的自我修养之 Clean Code(1)"
+title: "JavaScript Developer的自我修养之 Clean Code(1)"
 date: "2018-11-10"
 layout: post
 draft: false
@@ -12,11 +12,14 @@ description: ""
 
 ## 写在前面的
 
-> “Programming is the art of telling another human what one wants the computer to do”. — Donald Knuth
+> “Programming is the art of telling another human what one wants the computer to do”.  
+>                                                                               — Donald Knuth
 
-本篇是 JavaScript Developer的自我修养系列第一课: Clean Code. 每个人都会编程, 程序只是特定的语法与逻辑思考的一种结合, 是我们绝大部分人与生俱来的能力. 但写出优雅的代码却是一项需要刻意练习的事情. 工作内容的关系, 我的大部分时间都在写 **无法直视** 的混淆代码, 并且一直没有机会使用ES6的新特性, 也没使用linter规范自己的代码. 现在打算辞职去做自己喜欢的事情, 第一步就是先提升自己代码的可阅读性, 于是有了本篇文章. 当然本篇不仅仅是一份代码规范说明, 而是与大家一起探讨如何写健壮, 可拓展, 复用性强的代码.
+本篇是 JavaScript Developer的自我修养系列第一课: Clean Code. 每个人都会编程, 程序只是特定的语法与逻辑思考的一种结合, 是我们绝大部分人与生俱来的能力. 但写出优雅的代码却是一项需要刻意练习的事情. 由于工作内容的关系, 我的大部分时间都在写为了让人看不懂的混淆代码(sounds wired right?), 一直没有机会使用ES6的新特性, 也没使用过linter. 现在打算辞职去做自己喜欢的事情, 第一步就是先提升自己代码的可阅读性, 于是有了本篇文章. 本文不仅仅是一份代码规范说明, 也希望大家在编写优雅代码的同时能思考如何编写健壮, 可拓展, 复用性强的代码.
 
-本文提到的代码风格来自 Airbnb JavaScript Style Guide 与Ryan Mcdermott的 Clean Code for JavaScript.
+> Practice, Practice, Practice, No shortcut.
+
+本文的代码风格来自 Airbnb JavaScript Style Guide 与Ryan Mcdermott的 Clean Code for JavaScript.
 
 ## 变量
 
@@ -275,11 +278,9 @@ const $ = new DOMTraverser({
 
 ### 保持接口的可扩展性
  
-
-
-
-
-
+保证接口的可扩展性可以make life easy, 比如我们要定义一个 `HttpRequester` 的类去发送http请求, 我们可以按照下面这样, 不让`HttpRequester` 和具体的发送方法耦合, 这样利于以后的扩展。只需要实现新的请求方式即可。
+ 
+```javascript
 class AjaxAdapter extends Adapter {
   constructor() {
     super();
@@ -313,6 +314,8 @@ class HttpRequester {
     });
   }
 }
+```
+
 ## 数组
 
 ### 判断数组是否为空
@@ -323,23 +326,165 @@ if (collection.length > 0) {
 }
 ```
 
-## 模块
-import { es6 } from './AirbnbStyleGuide';
-export default es6;
+### deep clone an array
 
-In modules with a single export
+不使用`for`循环, 使用array spreads
+
+```javascript
+
+const items = [1, 2, 3];         // (3) [1, 2, 3]
+const itemsCopy = [...items];    // (3) [1, 2, 3]
+console.log(items === itemsCopy) // false
+```
+
+### 可遍历对象转数组
+转数组
+如果是可遍历对象
+iterable object to an array, ... instead of Array.from
+
+如果是arry-like对象 
+Array.from()
+别用旧方法
+[].slice.call(arguments)
+
+Never use arguments, opt to use rest syntax ... instead.
 // bad
-export function foo() {}
+function concatenateAll() {
+  const args = Array.prototype.slice.call(arguments);
+  return args.join('');
+}
 
-// good
-export default function foo() {}
+### array destructuring
+
+```javascript
+const arr = [1, 2, 3, 4];
+
+`❌`
+const first = arr[0];
+const second = arr[1];
+
+`🌹`
+const [first, second] = arr;
+```
 
 ## 函数
+
+### 函数应该至多有2个参数
+
+当函数的参数超过2个的时候, 我们可以考虑使用对象作为函数的参数。
+
+```javascript
+function createMenu({ title, body, buttonText, cancellable }) {
+  // ...
+}
+
+createMenu({
+  title: 'Foo',
+  body: 'Bar',
+  buttonText: 'Baz',
+  cancellable: true
+});
+```
+
+### 一个函数只做一件事情
+
+一个函数只做一件事可以帮助我们提高代码的可读性以及降低耦合度。比如我们要为所有活跃的用户发送邮件, 那我们需要先从数据库中找出哪些是活跃用户, 因此我们可以将这个功能分为2个函数:发送邮件和判断用户是否师活跃用户.
+
+```javascript
+function emailActiveClients(clients) {
+  clients
+    .filter(isActiveClient)
+    .forEach(email);
+}
+
+function isActiveClient(client) {
+  const clientRecord = database.lookup(client);
+  return clientRecord.isActive();
+}
+```
+ 
+
+### 不保存`this`
+
+以前为了保存`this`， 我们经常会使用`self = this`这样的语句, 但现在我们可以使用 **arrow function** 和 `bind` 方法来代替它们
+
+```javascript
+function foo() {
+  const self = this;
+  return function () {
+    console.log(self);
+  };
+}
+
+function foo(){
+    name = 'evle'
+    return function(){
+    console.log(this.name)
+    }.bind(this)
+}
+
+function foo() {
+    name = 'evle'
+  return () => {
+    console.log(this.name);
+  };
+}
+```
+
+### 避免副作用
+
+在函数传递Complex类型的数据作为参数时, 要小心副作用。来看一个例子
+
+```javascript
+let name = ['apple', 'alex', 'arlen'];
+
+function addToNameList(value){
+    name.push(value);
+    return name;
+}
+
+let newName = addToNameList('ajax'); 
+console.log(newName);  // (4) ["apple", "alex", "arlen", "ajax"]
+console.log(name);  // (4) ["apple", "alex", "arlen", "ajax"]
+```
+
+原本的意图是想给name添加新的元素后返回一个新的数组,但是不经意却把原数组的值也改变了. 为了避免这种副作用在操作数组时我们应该使用`slice`这种数组操作函数返回一个新的数组而不改变原数组的值。
+
+```javascript
+let name = ['apple', 'alex', 'arlen'];  // (3) ["apple", "alex", "arlen"]
+let newName = name.concat('abc');       // (4) ["apple", "alex", "arlen", "abc"]
+
+```
+
+为了方便使用我们通常会在 Array 或 String 的 `prototype` 上添加一些方法. 比如我们为Array的prototype添加一个diff函数, 该函数实现一个这样的功能: 
+
+```javascript
+var a = [1, 2, 3];
+var b = [3, 4, 5];
+
+Array.prototype.diff = function diff(comparisonArray) {
+  const hash = new Set(comparisonArray);
+  return this.filter(elem => !hash.has(elem));
+};
+
+a.diff(b) // (2) [1, 2]
+```
+
+但在Google JavaScript Style Guide 中是反对这种做法的, 并且在 Nicholas Zakas的Maintainable JavaScript中也有说过 *Don’t modify objects you don’t own*. [为什么不建议直接在Array的prototype上进行扩展？](https://stackoverflow.com/questions/8859828/javascript-what-dangers-are-in-extending-array-prototype) 现在我们可以使用 `class` 来解决这个问题
+
+```javascript
+class SuperArray extends Array {
+  diff(comparisonArray) {
+    const hash = new Set(comparisonArray);
+    return this.filter(elem => !hash.has(elem));
+  }
+}
+```
 
 ### 函数式
 
 函数式的好处不是本篇讨论的重点, 假设我们有以下的对象数组, 我们想统计每个对象中的`linesOfCode`之和.
-我们不需要使用`for`循环去累加, 我们应该使用更加优雅,稳定的方法:
+我们不需要使用`for`循环去累加, 我们应该使用更加优雅, 稳定的方法:
 
 ```javascript
 const programmerOutput = [
@@ -393,70 +538,6 @@ function makeBankAccount() {
 const account = makeBankAccount();
 account.setBalance(100);
 ```
-
-copy array 别用for循环 用 array spreads
-// good
-const itemsCopy = [...items];
-
-转数组
-如果是可遍历对象
-iterable object to an array, ... instead of Array.from
-
-如果是arry-like对象 
-Array.from()
-别用旧方法
-[].slice.call(arguments)
-
-Never use arguments, opt to use rest syntax ... instead.
-// bad
-function concatenateAll() {
-  const args = Array.prototype.slice.call(arguments);
-  return args.join('');
-}
-
-// good
-function concatenateAll(...args) {
-  return args.join('');
-}
-
-function handleThings(opts = {}) {
-  // ...
-}
-opts = opts || {};
-
-
-function f1(obj) {
-  obj.key = 1;
-}
-
-// good
-function f2(obj) {
-  const key = Object.prototype.hasOwnProperty.call(obj, 'key') ? obj.key : 1;
-}
-// bad
-const baz = [...foo].map(bar);
-
-// good
-const baz = Array.from(foo, bar);
-
-Destructuring
-
-
-array destructuring
-const arr = [1, 2, 3, 4];
-
-// bad
-const first = arr[0];
-const second = arr[1];
-
-// good
-const [first, second] = arr;
-
-
-
-
-
-
 
 ## 其他
 
@@ -531,77 +612,14 @@ const binary = Math.pow(2, 10);
 const binary = 2 ** 10;
 ```
 
-Don’t save references to this. Use arrow functions or Function#bind.
-function foo() {
-  const self = this;
-  return function () {
-    console.log(self);
-  };
-}
-
-function foo() {
-  return () => {
-    console.log(this);
-  };
-}
-
-函数2个以内参数
-
-function createMenu({ title, body, buttonText, cancellable }) {
-  // ...
-}
-
-createMenu({
-  title: 'Foo',
-  body: 'Bar',
-  buttonText: 'Baz',
-  cancellable: true
-});
 
 
-function emailActiveClients(clients) {
-  clients
-    .filter(isActiveClient)
-    .forEach(email);
-}
 
-function isActiveClient(client) {
-  const clientRecord = database.lookup(client);
-  return clientRecord.isActive();
-}
 
-modifying some global variable
-Avoid Side Effects (part 1)
-function splitIntoFirstAndLastName(name) {
-  return name.split(' ');
-}
 
-const name = 'Ryan McDermott';
-const newName = splitIntoFirstAndLastName(name);
 
-console.log(name); // 'Ryan McDermott';
-console.log(newName); // ['Ryan', 'McDermott'];
-用心址
 
-Array.prototype.diff = function diff(comparisonArray) {
-  const hash = new Set(comparisonArray);
-  return this.filter(elem => !hash.has(elem));
-};
-class SuperArray extends Array {
-  diff(comparisonArray) {
-    const hash = new Set(comparisonArray);
-    return this.filter(elem => !hash.has(elem));
-  }
-}
 
-Avoid side effect
-primitives are passed by value and objects/arrays are passed by reference
-const addItemToCart = (cart, item) => {
-  cart.push({ item, date: Date.now() });
-};
 
-const addItemToCart = (cart, item) => {
-  return [...cart, { item, date: Date.now() }];
-};
 
 
