@@ -2,7 +2,7 @@
 title: "Abstract syntax trees on Javascript"
 date: "2018-10-03"
 layout: post
-draft: false
+draft: true
 path: "/posts/js-abstract-syntax-tree"
 category: ""
 tags:

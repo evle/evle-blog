@@ -4,17 +4,21 @@ import moment from 'moment';
 import Disqus from '../Disqus/Disqus';
 import TOC from '../TOC/index';
 import './style.scss';
+const makeToc = require('table-of-contents-generator')
 
 class PostTemplateDetails extends React.Component {
+ 
   render() {
     const { subtitle, author } = this.props.data.site.siteMetadata;
     const post = this.props.data.markdownRemark;
+    var toc = makeToc(post.html)
     const tags = post.fields.tagSlugs;
-
+   
     const homeBlock = (
       <div>
         <Link className="post-single__home-button" to="/">All Articles</Link>
       </div>
+      
     );
 
     const tagsBlock = (
@@ -50,10 +54,8 @@ class PostTemplateDetails extends React.Component {
         <div className="post-single">
           <div className="post-single__inner">
             <h1 className="post-single__title">{post.frontmatter.title}</h1>
-            {/*
-            <span class="date-center">Published {moment(post.frontmatter.date).format('D MMM YYYY')}</span>
-*/}
-            <div className="post-single__body" dangerouslySetInnerHTML={{ __html: post.html }} />
+            <div className="date-center">Published {moment(post.frontmatter.date).format('D MMM YYYY')}</div>
+            <div className="post-single__body" dangerouslySetInnerHTML={{ __html: toc }} />
             <div className="post-single__date">
 
             </div>

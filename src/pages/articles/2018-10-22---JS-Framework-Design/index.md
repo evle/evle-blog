@@ -2,7 +2,7 @@
 title: "JavaScript Framework Design"
 date: "2018-10-22"
 layout: post
-draft: false
+draft: true
 path: "/posts/JS-Framework-Design"
 category: ""
 tags:

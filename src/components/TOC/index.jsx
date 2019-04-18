@@ -1,50 +1,42 @@
 import React from 'react';
 import './style.scss';
-import cheerio from 'cheerio';
+
 import _ from 'lodash';
+// var toc = require('html-toc');
+const makeToc = require('table-of-contents-generator')
+ 
+const content = `
+  <p>Long long long text</p>
+  [TOC]
+  <h2>Some title</h2>
+  <p>Long long long text</p>
+  <h2>Other Title</h2>
+  <p>Long long long text</p>
+  <p>Long long long text</p>
+  <h3>Sub title 1</h3>
+  <p>Long long long text</p>
+  <h3>Sub title 2</h3>
+  <p>Long long long text</p>
+  <h2>Title</h2>
+  <p>Long long long text</p>
+`
+ 
 
 class TOC extends React.Component {
-  render() {
+  
 
-    return(
-      <div>
-
-      </div>
-    )};
-
+  
+  render(){
+    var post = this.props.data.markdownRemark;
+  
+    // var toc = makeToc(post.html)
+    // toc(post.html, {selectors: 'h1,h2,h3,h4'});
+    return (
+      <div ></div>
+    )
 
   }
 
-    // const content = this.props.data.markdownRemark.html;
-    // const $ = cheerio.load(content);
-    // let Toc = (
-      // <ul className="toc.ul">;
-    // $('.page__body h2,h3,h4').map(function(i,el){
-    //     let title = $(this).text();
-    //     let link = $(this).get(0).tagName;
-    //     // let newLine = `<li><a href="${link}" class="inent-${link}">${title}</a></li>`;
-    //     // Toc += newLine;
-    // })
-
-    // Toc += </ul>
-// )
-    // toc = <
-
-    // const list = (
-    //   <ul>
-    //       _forEach( )
-    //     <li>{$('h2').text()}</li>
-    //   </ul>
-    // )
-
-  //   return (
-  //   // <div>
-  //   //   <ul>
-  //   //     <li>Item1</li>
-  //   //       <li>Item2</li>
-  //   //         <li>Item3</li>
-  //   //   </ul>
-  //   // </div>
-  // )
+}
 
 export default TOC;
