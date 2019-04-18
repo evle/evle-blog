@@ -32,9 +32,7 @@ live reloading特性允许我们在对代码修改之后可以实时在页面上
 从上边的原理我们可以轻易的想到以下实现步骤:
 
 1. 向将被serve的目标文件比如 index.html注入 websocket连接服务器的代码和接收服务器消息的代码  
-  
 2. 监听index.html以及其依赖文件的变动, 当有变动时, 服务器(Dev Server)向客户端(index.html)发送消息
-  
 3. 客户端(index.html)收到服务器的消息后 `reload()` 页面
 
 根据上面步骤我们可以编写简单实现如下
