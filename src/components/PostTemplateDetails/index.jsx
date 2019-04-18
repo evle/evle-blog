@@ -75,7 +75,7 @@ class PostTemplateDetails extends React.Component {
   render() {
     const { subtitle, author } = this.props.data.site.siteMetadata;
     const post = this.props.data.markdownRemark;
-    var toc = tableOfContentsGenerator(post.html)
+    // var toc = tableOfContentsGenerator(post.html)
     const tags = post.fields.tagSlugs;
    
     const homeBlock = (
@@ -119,7 +119,7 @@ class PostTemplateDetails extends React.Component {
           <div className="post-single__inner">
             <h1 className="post-single__title">{post.frontmatter.title}</h1>
             <div className="date-center">Published {moment(post.frontmatter.date).format('D MMM YYYY')}</div>
-            <div className="post-single__body" dangerouslySetInnerHTML={{ __html: toc }} />
+            <div className="post-single__body" dangerouslySetInnerHTML={{ __html: post.html }} />
             <div className="post-single__date">
 
             </div>
