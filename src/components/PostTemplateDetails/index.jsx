@@ -4,7 +4,7 @@ import moment from 'moment';
 import Disqus from '../Disqus/Disqus';
 import TOC from '../TOC/index';
 import './style.scss';
-const makeToc = require('table-of-contents-generator')
+var makeToc = require('table-of-contents-generator')
 
 class PostTemplateDetails extends React.Component {
  
