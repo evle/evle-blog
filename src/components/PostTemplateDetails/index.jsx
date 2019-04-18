@@ -4,14 +4,78 @@ import moment from 'moment';
 import Disqus from '../Disqus/Disqus';
 import TOC from '../TOC/index';
 import './style.scss';
-var makeToc = require('table-of-contents-generator')
+
+
+function tableOfContentsGenerator(content, params) {
+  var bbCode='', containerClass = 'toc', titleClass = 'toc-title', title = 'Table of Content';
+  /**
+   * If we specify BBCode but it wasn't find in text – just return content earlier.
+   */
+  if (bbCode && content.indexOf(bbCode) === -1) {
+    return content
+  }
+
+  /**
+   * State
+   */
+  var level = 1 // Must be 1 for correct work and valid HTML 5.
+  var anchorId = 1
+  var toc = ''
+  var output = ''
+
+  // Works only for plain H tags without classes, ids etc.
+  var regexp = /<h([\d])>([^<]+)<\/h([\d])>/gi
+  
+  content = 
+    content.replace(regexp, function(str, openLevel, titleText, closeLevel) {
+      if (openLevel != closeLevel) {
+          return str
+      }
+
+      if (openLevel > level) {
+        toc += (new Array(openLevel - level + 1)).join("<ul>")
+      } else if (openLevel < level) {
+        toc += (new Array(level - openLevel + 1)).join("</ul>")
+      }
+
+      level = parseInt(openLevel)
+
+      var anchor = 'toc' + anchorId++
+
+      toc += "<li><a href=\"#" + anchor + "\">" + titleText + "</a>";
+
+      return "<h" + openLevel + " id=\"" + anchor + "\">" + titleText + "</h" + closeLevel + ">";
+    }
+  )
+
+  if (level > 1) {
+    toc += (new Array(level + 1)).join('</ul>')
+  }
+
+  output += toc;
+  
+  /**
+   * If we find headers - paste TOC to the content.
+   */
+  if (output) {
+    var wrappedToc = "<div class=\"" + containerClass + "\"><div class=\"" + titleClass + "\">" + title + "</div>" + output + "</div>";
+
+    /**
+     * If we specify BBCode, replace it with TOC. If not – add TOC to beginning of content.
+     */
+    content = bbCode ? content.replace(bbCode, wrappedToc) : wrappedToc + content
+  }
+  
+  return content 
+}
 
 class PostTemplateDetails extends React.Component {
- 
+
+  
   render() {
     const { subtitle, author } = this.props.data.site.siteMetadata;
     const post = this.props.data.markdownRemark;
-    var toc = makeToc(post.html)
+    var toc = tableOfContentsGenerator(post.html)
     const tags = post.fields.tagSlugs;
    
     const homeBlock = (
