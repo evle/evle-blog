@@ -49,8 +49,7 @@
     "lodash": "^4.17.4",
     "react": "^15.6.1",
     "react-disqus-comments": "^1.1.1",
-    "react-helmet": "^5.2.0",
-    "table-of-contents-generator": "^1.1.0"
+    "react-helmet": "^5.2.0"
   },
   "devDependencies": {
     "babel-eslint": "^8.2.1",
