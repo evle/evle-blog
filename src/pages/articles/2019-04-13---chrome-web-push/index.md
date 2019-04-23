@@ -167,14 +167,16 @@ self.addEventListener('push', function(event) {
 });
 ```
 
-这里要注意的是必须在Promise中**return** `self.registration.showNotification`。 我们收到该事件后需要调用`self.registration.showNotification`来展示服务器推送的内容。服务器推送的内容应该是下面这样一个对象, 通常我们在开发中需要配置一个素材服务器来管理给客户端推送的内容。
+这里要注意的是必须在Promise中**return** `self.registration.showNotification`。 我们收到该事件后需要调用`self.registration.showNotification`来展示服务器推送的内容。服务器推送的内容包含下面这样一个对象来用展示内容, 通常我们在开发中需要配置一个素材服务器来管理给客户端推送的内容。
 
 ```javascript
 {
-  "body": "Did you make a $1,000,000 purchase at Dr. Evil...",
+  "body": "Clike me ...",
   "icon": "images/ccard.png",
-  "vibrate": [200, 100, 200, 100, 200, 100, 400],
-  "tag": "request",
+  "action"
+  "data": {
+    "url": "https://unknown.com"   // 当点击推送内容时跳转的地址
+  }
   ...
 }
 ```
@@ -195,6 +197,13 @@ self.addEventListener('push', function(event) {
 
 - 被动订阅：直接在页面中添加一个是否允许订阅的开关，如果用户觉得站点内容有价值，自然会点击允许开关，此时调用`requestPermission()`
 
-原则就是不要让用户点拒绝, 这样意味着这个用户将永远的失去。还要注意的是推送的内容一定要“适当“, 这是我之前做的推送,高仿社交App，用户的点击率还是很高的。
+原则就是不要让用户点拒绝, 这样意味着这个用户将永远的失去。还要注意的是推送的内容一定要“适当“, 下面是之前做的高仿热门App的推送内容, 用户的点击率还是很高的。
 
 [![E9HsFU.png](https://s2.ax1x.com/2019/04/19/E9HsFU.png)](https://imgchr.com/i/E9HsFU)
+
+## 总结
+
+Chrome推送服务的商业价值是很高的, 特别是在欧美地区Chrome普及的情况下。 本文的目的是分析开篇介绍中 webpush 架构在实际开发中的应用, 让读者了解实现一个推送服务要经历哪些流程, 而不是详细的介绍SW API的详细用法, 有兴趣的读者可以查阅以下链接了解更多相关的知识：
+
+- https://serviceworke.rs/
+- https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API
