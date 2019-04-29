@@ -1,12 +1,13 @@
 ---
-title: '面向求职编程之理解React第一天'
+title: '面向求职编程之理解React第二天'
 date: '2019-04-25'
 layout: post
 draft: false
 path: '/posts/react-2'
 category: ''
 tags:
-  -
+  - JavaScript
+  - React
 description: ''
 ---
 
