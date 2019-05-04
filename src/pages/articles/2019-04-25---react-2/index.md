@@ -2,7 +2,7 @@
 title: '面向求职编程之理解React第二天'
 date: '2019-04-25'
 layout: post
-draft: false
+draft: true
 path: '/posts/react-2'
 category: ''
 tags:
@@ -10,6 +10,61 @@ tags:
   - React
 description: ''
 ---
+
+## React Virtual DOM Diff
+
+React 核心之一就是 Virtual DOM 如图:
+
+[![EGPi1e.md.png](https://s2.ax1x.com/2019/04/30/EGPi1e.md.png)](https://imgchr.com/i/EGPi1e)
+
+Virtual DOM Diff 指计算 DOM 节点差异部分的一个算法, 为了计算速度它只遍历每一个深度的父节点如图
+
+[![EGPPpD.png](https://s2.ax1x.com/2019/04/30/EGPPpD.png)](https://imgchr.com/i/EGPPpD)
+
+Virtual DOM Diff 的实现有以下三步:
+
+- 用 JS 描述真实 DOM 节点并生成 Virtual DOM(JavaScript Object)
+- 遍历比较修改过的 Virtual DOM 和旧 Virtual DOM 节点找出差异部分(非完全遍历)
+- 渲染有变化的部分
+
+```javascript
+function dfs(oldNode, newNode, index, patches) {
+  let currentPatch = [] //当前层的差异对比
+  // 节点不存在
+  if (!newNode) {
+    // 判断是否是文本
+  } else if (isTxt(oldNode) && isTxt(newNode)) {
+    if (newNode !== oldNode)
+      currentPatch.push({ type: 'text', content: newNode })
+    //如果发现文本不同，currentPatch会记录一个差异
+  } else if (
+    oldNode.tagName === newNode.tagName &&
+    oldNode.key === newNode.key
+  ) {
+    //如果发现两个节点一样 则去判断节点是属性是否一样，并记录下来
+    let attrsPatches = diffAttrs(oldNode, newNode)
+    if (attrsPatches) {
+      //有属性差异则把差异记录下来
+      currentPatch.push({ type: 'attrs', attrs: attrsPatches })
+    }
+    // 递归遍历子节点，并对子节点进行diff比较
+    diffChildren(oldNode.children, newNode.children, index, patches)
+  } else {
+    //最后一种情况是，两个节点完全不一样，这样只需要把旧节点之间替换就行
+    //把当前差异记录下来
+    currentPatch.push({ type: 'replace', node: newNode })
+  }
+
+  //如果有差异则记录到当前层去
+  if (currentPatch.length) {
+    if (patches[index]) {
+      patches[index] = patches[index].concat(currentPatch)
+    } else {
+      patches[index] = currentPatch
+    }
+  }
+}
+```
 
 ## 对 React 的一些理解
 
@@ -29,26 +84,9 @@ React.createElement(
 )
 ```
 
-3. React 组件和 React 元素
+3. React Fiber 的目标是提高其在动画、布局和手势等领域的适用性。它的主要特性是 incremental rendering: 将渲染任务拆分为小的任务块并将任务分配到多个帧上的能力
 
-React 元素返回一个对象(React.createElement), 通过 ReactDOM.render()渲染到 DOM  
-React 组件有不同声明方式
-
-4. SyntheticEvent
-
-对浏览器原生事件的跨浏览器包装。它的 API 与浏览器的原生事件相同，包括 stopPropagation() 和 preventDefault()，除了事件在所有浏览器中的工作方式相同
-
-5.
-
-### React 解决了什么问题
-
-前端开发要考虑的问题: 组件化, 模块化, 性能, 维护性
-
-## 对 React 原理的理解
-
-### Virtual DOM Diff
-
-## 对 React 的一些实践
+4. Reconciliation 指当组件的 props 或者 state 发生变化, 是否需要更新
 
 ### SSR
 
@@ -133,6 +171,89 @@ this.setState({
 })
 ```
 
+#### 如何使用动态属性名设置 state
+
+```javascript
+handleInputChange(event) {
+  this.setState({ [event.target.id]: event.target.value })
+}
+```
+
+#### 在 React 中什么是 Portal ?
+
+```javascript
+// Portal 提供了一种很好的将子节点渲染到父组件以外的 DOM 节点的方式。
+
+ReactDOM.createPortal(child, container)
+```
+
+#### React 中启用生产模式
+
+你应该使用 Webpack 的 DefinePlugin 方法将 NODE_ENV 设置为 production
+
+#### 生命周期方法 getDerivedStateFromProps() 的目的
+
+新的静态 getDerivedStateFromProps() 生命周期方法在实例化组件之后以及重新渲染组件之前调用。它可以返回一个对象用于更新状态，或者返回 null 指示新的属性不需要任何状态更新。
+
+```javascript
+// mounting顺序
+constructor()
+static getDerivedStateFromProps()
+render()
+componentDidMount()
+```
+
+#### getSnapshotBeforeUpdate() 的目的
+
+新的 getSnapshotBeforeUpdate() 生命周期方法在 DOM 更新之前被调用。此方法的返回值将作为第三个参数传递给 componentDidUpdate()。
+
+#### 不调用 setState 方法的情况下，强制组件重新渲染
+
+```javascript
+component.forceUpdate(callback)
+```
+
+#### 如何在调整浏览器大小时重新渲染视图?
+
+你可以在 componentDidMount() 中监听 resize 事件，然后更新尺寸（width 和 height）。你应该在 componentWillUnmount() 方法中移除监听。
+
+#### setState() 和 replaceState() 方法之间有什么区别?
+
+setState 相当于 merge, replaceState 就是 replace
+
+#### React 状态中删除数组元素的推荐方法
+
+```javascript
+removeItem(index) {
+  this.setState({
+    data: this.state.data.filter((item, i) => i !== index)
+  })
+}
+```
+
+#### 不在页面上渲染内容
+
+```javascript
+render(){
+  return false // null []
+}
+```
+
+#### 更新状态中的对象
+
+```javascript
+const user = { ...this.state.user, age: 42 }
+this.setState({ user })
+```
+
+#### 在 React 中如何定义常量
+
+```javascript
+class MyComponent extends React.Component {
+  static DEFAULT_PAGINATION = 10
+}
+```
+
 #### 条件判断
 
 ```javascript
@@ -183,9 +304,40 @@ fetch(url)
 }
 ```
 
-### React Router
+#### 重用事件处理
 
-### React AntD
+```javascript
+class App extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      foo: '',
+      bar: '',
+    }
+  }
+
+  // Reusable for all inputs
+  onChange = e => {
+    const {
+      target: { value, name },
+    } = e
+
+    // name will be the state name
+    this.setState({
+      [name]: value,
+    })
+  }
+
+  render() {
+    return (
+      <div>
+        <input name="foo" onChange={this.onChange} />
+        <input name="bar" onChange={this.onChange} />
+      </div>
+    )
+  }
+}
+```
 
 ### Jest
 
@@ -198,3 +350,33 @@ Enzyme 是一个由 Airbnb 维护的测试工具，可以用来断言、操作�
 ### Lodash
 
 结合 Lodash 和 three shaking 可以快速开发并且不会影响应用性能
+
+### ESlint 的 Auto Fix On Save
+
+```json
+"devDependencies": {
+
+ "eslint-config-airbnb": "^17.1.0",
+
+ "eslint-config-prettier": "^3.1.0",
+
+ "eslint-plugin-import": "^2.14.0",
+
+ "eslint-plugin-jsx-a11y": "^6.1.1",
+
+ "eslint-plugin-prettier": "^3.0.0",
+
+ "eslint-plugin-react": "^7.11.0"
+
+}
+```
+
+### React Hook
+
+React Hook 解决了什么问题: 提高复用 & 简化 React
+
+- 所有组件都是 Function
+- 不需要 this
+- 不需要关心生命周期函数
+
+React 推荐使用`Render Props`和`HOC`来解决复用组件

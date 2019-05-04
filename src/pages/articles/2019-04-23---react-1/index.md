@@ -1,5 +1,5 @@
 ---
-title: '面向求职编程之理解React第一天'
+title: '面向求职编程之重刷React'
 date: '2019-04-23'
 layout: post
 draft: false
@@ -10,8 +10,6 @@ tags:
   - React
 description: ''
 ---
-
-最近准备找工作感觉会被问到 React, 特此刷一遍 React, 因此本篇叫做面向求职编程。
 
 ## 什么是组件？
 
