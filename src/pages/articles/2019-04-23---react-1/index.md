@@ -1,5 +1,5 @@
 ---
-title: '面向求职编程之重刷React'
+title: 'React的基础回顾'
 date: '2019-04-23'
 layout: post
 draft: false
@@ -997,4 +997,12 @@ const Player = (props) => {
 
   return(){<div>唯一标识: {number}</div>}
 }
+```
+
+5. 重定向
+
+比如登录逻辑, 在`/login`后要重定向到`/home`页面
+
+```javascript
+<Redirect to={pathname: '/home'} />
 ```

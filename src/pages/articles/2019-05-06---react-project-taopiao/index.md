@@ -67,11 +67,26 @@ npm i -g serve
 serve -s build
 ```
 
-### 需求梳理
-
-### 项目结构梳理
-
 ## 开发流程
+
+待续
+
+### 需求理解
+### 项目划分
+### 关键实现
+### 测试
+
+## 持续集成 & 部署
+
+持续集成部署方便面使用Jenkins:
+
+[![Ef25jK.md.png](https://s2.ax1x.com/2019/05/11/Ef25jK.md.png)](https://imgchr.com/i/Ef25jK)
+
+- 安装Jenkins环境及插件: Web Hook, SSH
+- 在github配置Web Book
+- 安装nginx环境
+- Jenkins配置构建以及构建后推送至测试服务器(nginx目录下)
+- 测试服务器没问题则以新分支发布到生产服务器
 
 ## 总结
 

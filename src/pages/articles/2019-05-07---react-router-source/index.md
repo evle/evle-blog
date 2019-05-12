@@ -244,6 +244,69 @@ render() {
 
 在点击了`Link`标签后内部只是调用了`history.push`或者`history.replace`来改变URL, 当页面URL改变后, 则通过我们讨论的流程进行匹配并且render组件。
 
+最后让我们看下`withRouter()`， 该函数的作用是: 在不是通过路由切换过来的组件中(也就是this.props.history是undefined)，将react-router 的 history、location、match 三个对象传入props对象上。它的实现也非常简单, 使用context来传递history, location, match对象。 React Router V4使用的Context是最新用法, 和**React的基础回顾**一文中的context用法有很大的差别, 先让我们看下新版本的Context是如何使用来共享状态的。
+
+```javascript
+// 1. 创建状态
+const ThemeContext = React.createContext('light');
+
+// 2. 将Context从根组件向下传递
+class App extends React.Component {
+  render() {
+    // 共享主题颜色 dark
+    return (
+      <ThemeContext.Provider value="dark">
+        <Toolbar />
+      </ThemeContext.Provider>
+    );
+  }
+}
+
+//中间组件，并不关心和他无关的参数 无需逐级传递props
+function Toolbar(props) {
+  return (
+    <div>
+      <ThemedButton />
+    </div>
+  );
+}
+
+//使用参数的组件
+function ThemedButton(props) {
+  // 使用Consumer组件包裹需要获取参数的组件 theme就是dark
+  return (
+    <ThemeContext.Consumer>
+      {theme => <Button {...props} theme={theme} />}
+    </ThemeContext.Consumer>
+  );
+}
+```
+
+有了上面的基础我们再来看withRouter的实现就很简单了:
+
+```javascript
+function withRouter(Component) {
+  // 传进来组件 Component
+  const C = props => {
+    const { wrappedComponentRef, ...remainingProps } = props;
+
+    return (
+      <RouterContext.Consumer>
+        {context => {
+          return (
+           {/* 使用Consumer获取Context并且传递给传进来的组件 */}
+            <Component
+              {...remainingProps}
+              {...context}
+              ref={wrappedComponentRef}
+            />
+          );
+        }}
+      </RouterContext.Consumer>
+    );
+  };
+```
+
 ## 总结
 
 通过本篇的分析我们了解React Router的本质就是做了两件事情: 改变URL和 根据当前的URL渲染组件。让我们来回顾下它如何完成这两件事情的
