@@ -2,13 +2,16 @@
 title: "React Hooks 原理分析"
 date: "2019-05-09"
 layout: post
-draft: false
+draft: true
 path: "/posts/react-hooks-application"
 category: "React"
 tags:
   - React
 description: ""
 ---
+
+React Hooks虽然普及度还不高, 但是很可能是React以后的开发趋势,
+
 
 性能优化:1 Object.is
 setState会合并状态对象
