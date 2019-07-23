@@ -249,3 +249,5 @@ const DataList = () => {
 ## 总结
 
 本文并没有讲一些新的东西, 而是加强来对React核心概念的理解，让我们在设计组件的时候可以有意识的提高组件的重用性与灵活性。
+
+原文地址：[Using renderless components in React to handle data](https://medium.com/trabe/using-renderless-components-in-react-to-handle-data-4c55f1e94dd4)
