@@ -380,3 +380,34 @@ React Hook 解决了什么问题: 提高复用 & 简化 React
 - 不需要关心生命周期函数
 
 React 推荐使用`Render Props`和`HOC`来解决复用组件
+
+
+## React Antd
+
+React Antd 是一个 UI 框架, 提炼自企业级中后台产品的交互语言和视觉风格。
+
+```javascript
+yarn add antd
+```
+
+### 使用
+
+1. 引入 CSS
+
+```javascript
+import 'antd/dist/antd.css'
+```
+
+2. 查阅官方文档使用
+
+```javascript
+import { Button } from 'antd'
+
+ReactDOM.render(
+  <div>
+    <Button type="primary">Submit</Button>
+  </div>,
+  mountNode
+)
+```
+

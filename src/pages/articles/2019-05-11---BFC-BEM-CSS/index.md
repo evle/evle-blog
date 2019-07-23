@@ -12,6 +12,14 @@ description: ""
 
 > 理论和概念是实践的基石
 
+CSS水平居中
+行内元素剧中
+
+<div style="text-align: center">
+  行内元素会剧中
+</div>
+
+
 ## 什么是BFC？
 
 BFC的全称是Block Formatting Contexts, 可以理解为是Block文档流, 普通文档流(normal flow)的特性我们都知道即块级元素占一行, 内联元素水平排列占满一行则换行。 那么Block文档流也有自己的特性:

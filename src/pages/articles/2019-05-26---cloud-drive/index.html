@@ -1,0 +1,48 @@
+<style>
+	html {
+		font-size: 100px;
+	}
+
+	@media (max-width:1000px) {
+		div {
+			background: blue;
+		}
+	}
+
+	@media (min-width:1000px) and (max-width:1150px) {
+		div {
+			background: yellow;
+		}
+	}
+
+	@media only screen and (max-width:1150px) {
+		div {
+			border: solid 1px;
+		}
+	}
+
+	@media not print and (max-width:1150px) {
+		div {
+			border-radius: 50%;
+		}
+	}
+
+	div {
+		width: 500px;
+		height: 500px;
+	}
+
+	p {
+		border: 5px solid pink;
+		padding: .5rem;
+	}
+</style>
+
+<link rel="stylesheet" href='test.css' media='(max-width:500px)'>
+
+对的f
+<div>
+
+	<p>hello world</p>
+
+</div>

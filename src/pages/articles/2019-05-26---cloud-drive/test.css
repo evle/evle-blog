@@ -1,0 +1,5 @@
+div {
+	cursor: pointer;
+	opacity: .5;
+	border: 5px solid red !important;
+}
