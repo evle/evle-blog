@@ -4,7 +4,7 @@ date: '2019-04-25'
 layout: post
 draft: true
 path: '/posts/react-2'
-category: ''
+category: 'React'
 tags:
   - JavaScript
   - React

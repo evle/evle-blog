@@ -1,5 +1,5 @@
 ---
-title: '深入浅出React与Redux'
+title: "深入浅出React与Redux"
 date: '2019-04-23'
 layout: post
 draft: false

@@ -1,5 +1,5 @@
 ---
-title: 'React服务端渲染 从一个例子开始'
+title: 'React服务端渲染从一个例子开始'
 date: '2019-07-06'
 layout: post
 draft: false

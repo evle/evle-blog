@@ -4,7 +4,7 @@ date: '2019-07-06'
 layout: post
 draft: false
 path: '/posts/react-ssr-5'
-category: ''
+category: 'React'
 tags:
   -
 description: ''

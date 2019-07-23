@@ -4,7 +4,7 @@ date: "2019-06-23"
 layout: post
 draft: false
 path: "/posts/ts-react-hooks"
-category: ""
+category: "TypeScript"
 tags:
   - 
 description: ""

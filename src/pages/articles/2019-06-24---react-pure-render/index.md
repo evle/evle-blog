@@ -4,7 +4,7 @@ date: '2019-06-24'
 layout: post
 draft: false
 path: '/posts/react-pure-render'
-category: ''
+category: 'React'
 tags:
   -
 description: ''

@@ -4,7 +4,7 @@ date: "2019-05-29"
 layout: post
 draft: false
 path: "/posts/vue-improvement"
-category: ""
+category: "Vue"
 tags:
   - 
 description: ""
