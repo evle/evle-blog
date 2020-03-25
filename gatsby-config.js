@@ -105,13 +105,13 @@ module.exports = {
             resolve: 'gatsby-remark-responsive-iframe',
             options: { wrapperStyle: 'margin-bottom: 1.0725rem' }
           },
-          {
-            resolve: 'gatsby-remark-toc',
-            options: {
-              header: 'Table of Contents',
-              include: [`${__dirname}/src/pages/articles/**/*.md`]
-            }
-          },
+          // {
+          //   resolve: 'gatsby-remark-toc',
+          //   options: {
+          //     header: 'Table of Contents',
+          //     include: [`${__dirname}/src/pages/articles/**/*.md`]
+          //   }
+          // },
           'gatsby-remark-prismjs',
           'gatsby-remark-copy-linked-files',
           'gatsby-remark-smartypants'
