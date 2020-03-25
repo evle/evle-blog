@@ -1,0 +1,2 @@
+webpackJsonp([0xa2868bfb69fc],{401:function(e,t){e.exports={data:{site:{siteMetadata:{title:"EVLE",subtitle:"Knowledge is not consumed, it is shared",copyright:"© All rights reserved.",menu:[{label:"Articles",path:"/"},{label:"About me",path:"/about/"}],author:{name:"evle",email:"evlefsp@163.com",telegram:"#",twitter:"#",github:"evle",rss:"rss.xml",vk:"#"}}}},pathContext:{}}}});
+//# sourceMappingURL=path---404-html-19a16a2b6307d083ee94.js.map

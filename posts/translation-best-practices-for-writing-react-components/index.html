@@ -1,0 +1,682 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"/><meta http-equiv="x-ua-compatible" content="ie=edge"/><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/><link rel="preload" href="/component---src-layouts-index-jsx-f3fdb70d6c6a5d2c575f.js" as="script"/><link rel="preload" href="/component---src-templates-post-template-jsx-aa7d502d290c49188166.js" as="script"/><link rel="preload" href="/path---posts-translation-best-practices-for-writing-react-components-e691192774b233b970d3.js" as="script"/><link rel="preload" href="/app-c361a845031f88af67a8.js" as="script"/><link rel="preload" href="/commons-fd7089e8b11e8ae2b1b9.js" as="script"/><title data-react-helmet="true">编写React组件的最佳实践(翻译) - EVLE</title><meta data-react-helmet="true" name="description" content="众知React应用是一种基于组件的架构模式, 复杂的UI…"/><style id="gatsby-inlined-css">/*! normalize.css v5.0.0 | MIT License | github.com/necolas/normalize.css */html{font-family:sans-serif;line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%}body{margin:0}article,aside,footer,header,nav,section{display:block}h1{font-size:2em;margin:.67em 0}figcaption,figure,main{display:block}figure{margin:1em 2.5rem}hr{box-sizing:content-box;height:0;overflow:visible}pre{font-family:monospace,monospace;font-size:1em}a{background-color:transparent;-webkit-text-decoration-skip:objects}a:active,a:hover{outline-width:0}abbr[title]{border-bottom:none;text-decoration:underline;text-decoration:underline dotted}b,strong{font-weight:inherit;font-weight:bolder}code,kbd,samp{font-family:monospace,monospace;font-size:1em;background:#f5f2f0!important;color:#dd4a68!important}dfn{font-style:italic}mark{background-color:#ff0;color:#000}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}audio,video{display:inline-block}audio:not([controls]){display:none;height:0}img{border-style:none}svg:not(:root){overflow:hidden}button,input,optgroup,select,textarea{font-family:sans-serif;font-size:100%;line-height:1.15;margin:0}button,input{overflow:visible}button,select{text-transform:none}[type=reset],[type=submit],button,html [type=button]{-webkit-appearance:button}[type=button]::-moz-focus-inner,[type=reset]::-moz-focus-inner,[type=submit]::-moz-focus-inner,button::-moz-focus-inner{border-style:none;padding:0}[type=button]:-moz-focusring,[type=reset]:-moz-focusring,[type=submit]:-moz-focusring,button:-moz-focusring{outline:1px dotted ButtonText}fieldset{border:1px solid silver;margin:0 .125rem;padding:.35em .625em .75em}legend{box-sizing:border-box;color:inherit;display:table;max-width:100%;padding:0;white-space:normal}progress{display:inline-block;vertical-align:baseline}textarea{overflow:auto}[type=checkbox],[type=radio]{box-sizing:border-box;padding:0}[type=number]::-webkit-inner-spin-button,[type=number]::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}[type=search]::-webkit-search-cancel-button,[type=search]::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}details,menu{display:block}summary{display:list-item}canvas{display:inline-block}[hidden],template{display:none}html{font-size:100}.toc-title{font-size:1.26875rem}.toc{position:fixed;max-width:auto;margin:0;top:180px;left:30px}.toc ul li a{color:#000;text-decoration:none}.toc ul li a:hover{color:#568df3}body{color:#222;line-height:2;font-size:.875rem;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;text-rendering:optimizeLegibility;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}body,h1,h2,h3,h4,h5,h6{font-family:Monda,PingFang SC,Microsoft YaHei,sans-serif}h1,h2,h3,h4,h5,h6{font-weight:500}h1{font-size:2.1875rem;line-height:4rem;margin-top:4rem;margin-bottom:2rem}h2{font-size:1.47656rem;line-height:2rem;margin-bottom:0}h3{font-size:1.20313rem}h3,h4{line-height:2rem;margin-bottom:.6rem}h4{font-size:1.05rem}h5,h6{font-size:.875rem;line-height:2rem;margin-bottom:.6rem}img{max-width:100%;margin:inherit auto}hr,img{border:0;display:block}hr{color:#222;height:26px;margin:3.25rem auto;background-size:100% 26px;background-image:linear-gradient(180deg,transparent 1px,transparent 11px,#222 0,#222 15px,transparent 0,transparent 26px);width:6.25rem}a{color:#5d93ff;text-decoration:none}a:active,a:focus,a:hover{color:#f7a046}b,strong{font-weight:500}ul{list-style:square;margin-bottom:2rem}ul li{padding:0 .3125rem;margin-bottom:.625rem}p{line-height:2rem;margin-bottom:2rem}blockquote{margin:1.4em 0;padding-left:1em;color:#646464;border-left:3px solid #d3d3d3}figure{display:block;width:100%;height:auto}figcaption{line-height:1.5rem;margin-top:.5rem;color:#222;font-size:.75rem;font-style:italic;margin-bottom:0;text-align:center}.layout{max-width:66.875rem;margin-left:auto;margin-right:auto}.layout:after,.layout:before{content:"";display:table}.layout:after{clear:both}.content__inner{padding:1.5625rem 1.25rem}@media screen and (min-width:685px){figure.float-left,figure.float-right{max-width:19.375rem;padding:0 2rem}.float-right{float:right}.float-left{float:left}.content{width:calc(99.9% * 7/12 - 0.78125rem)}.content:nth-child(1n){float:left;margin-right:1.875rem;clear:none}.content:last-child{margin-right:0}.content:nth-child(12n){margin-right:0;float:right}.content:nth-child(12n+1){clear:both}.content__inner{padding:1.875rem 1.25rem}}@media screen and (min-width:960px){.content{width:calc(99.9% * 2/3 - 0.625rem)}.content:nth-child(1n){float:left;margin-right:1.875rem;clear:none}.content:last-child{margin-right:0}.content:nth-child(3n){margin-right:0;float:right}.content:nth-child(3n+1){clear:both}.content__inner{padding:2.5rem 2.1875rem}}code[class*=language-],pre[class*=language-]{color:#000;background:none;text-shadow:0 1px #fff;font-family:Consolas,Monaco,Andale Mono,Ubuntu Mono,monospace;text-align:left;white-space:pre;word-spacing:normal;word-break:normal;word-wrap:normal;line-height:1.5;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-hyphens:none;-ms-hyphens:none;hyphens:none}code[class*=language-]::selection,code[class*=language-] ::selection,pre[class*=language-]::selection,pre[class*=language-] ::selection{text-shadow:none;background:#b3d4fc}@media print{code[class*=language-],pre[class*=language-]{text-shadow:none}}pre[class*=language-]{padding:1em;margin:.5em 0;overflow:auto}:not(pre)>code[class*=language-],pre[class*=language-]{background:#f5f2f0}:not(pre)>code[class*=language-]{padding:.1em;border-radius:.3em;white-space:normal}.token.cdata,.token.comment,.token.doctype,.token.prolog{color:#708090}.token.punctuation{color:#999}.namespace{opacity:.7}.token.boolean,.token.constant,.token.deleted,.token.number,.token.property,.token.symbol,.token.tag{color:#905}.token.attr-name,.token.builtin,.token.char,.token.inserted,.token.selector,.token.string{color:#690}.language-css .token.string,.style .token.string,.token.entity,.token.operator,.token.url{color:#a67f59;background:hsla(0,0%,100%,.5)}.token.atrule,.token.attr-value,.token.keyword{color:#07a}.token.function{color:#dd4a68}.token.important,.token.regex,.token.variable{color:#e90}.token.bold,.token.important{font-weight:700}.token.italic{font-style:italic}.token.entity{cursor:help}.tags__list-item-link{color:#222}.tags__list-item-link:focus,.tags__list-item-link:hover{color:#5d93ff;border-bottom:1px solid #5d93ff}.categories__list-item-link{color:#222}.categories__list-item-link:focus,.categories__list-item-link:hover{color:#5d93ff;border-bottom:1px solid #5d93ff}.menu{margin-bottom:2rem}.menu__list{list-style:none;padding:0;margin:0}.menu__list-item{padding:0;margin:.625rem 0}.menu__list-item-link{font-size:.875rem;color:#222;font-weight:400;border:0}.menu__list-item-link:focus,.menu__list-item-link:hover{color:#5d93ff;border-bottom:1px solid #5d93ff}.menu__list-item-link--active{color:#222;border-bottom:1px solid #222}.links{margin-bottom:2rem}.links__list{display:-ms-flexbox;display:flex;list-style:none;padding:0;margin:.625rem -.1875rem}.links__list-item{padding:0;margin:0 .1875rem;height:24px;width:1.5rem;line-height:1.5rem;border-radius:.1875rem;text-align:center;background:#ebebeb}.links__list-item a{border:0}.links__list-item a i{font-size:.875rem;color:#555}.links__list-item a:focus i,.links__list-item a:hover i{color:#222}@font-face{font-family:fontello;src:url(/static/fontello.96eee913.eot);src:url(/static/fontello.96eee913.eot#iefix) format("embedded-opentype"),url(/static/fontello.07ad3c83.woff2) format("woff2"),url(/static/fontello.9aee3ebc.woff) format("woff"),url(/static/fontello.554de365.ttf) format("truetype"),url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBzdGFuZGFsb25lPSJubyI/Pgo8IURPQ1RZUEUgc3ZnIFBVQkxJQyAiLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4iICJodHRwOi8vd3d3LnczLm9yZy9HcmFwaGljcy9TVkcvMS4xL0RURC9zdmcxMS5kdGQiPgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxtZXRhZGF0YT5Db3B5cmlnaHQgKEMpIDIwMTcgYnkgb3JpZ2luYWwgYXV0aG9ycyBAIGZvbnRlbGxvLmNvbTwvbWV0YWRhdGE+CjxkZWZzPgo8Zm9udCBpZD0iZm9udGVsbG8iIGhvcml6LWFkdi14PSIxMDAwIiA+Cjxmb250LWZhY2UgZm9udC1mYW1pbHk9ImZvbnRlbGxvIiBmb250LXdlaWdodD0iNDAwIiBmb250LXN0cmV0Y2g9Im5vcm1hbCIgdW5pdHMtcGVyLWVtPSIxMDAwIiBhc2NlbnQ9Ijg1MCIgZGVzY2VudD0iLTE1MCIgLz4KPG1pc3NpbmctZ2x5cGggaG9yaXotYWR2LXg9IjEwMDAiIC8+CjxnbHlwaCBnbHlwaC1uYW1lPSJtYWlsIiB1bmljb2RlPSImI3hlODAwOyIgZD0iTTkyOSAxMXY0MjhxLTE4LTIwLTM5LTM2LTE0OS0xMTUtMjM4LTE4OS0yOC0yNC00Ni0zN3QtNDgtMjgtNTctMTNoLTJxLTI2IDAtNTcgMTN0LTQ4IDI4LTQ2IDM3cS04OCA3NC0yMzggMTg5LTIxIDE2LTM5IDM2di00MjhxMC03IDYtMTN0MTItNWg4MjJxNyAwIDEyIDV0NiAxM3ogbTAgNTg2djE0dC0xIDctMSA3LTMgNS01IDQtOCAyaC04MjJxLTcgMC0xMi02dC02LTEycTAtOTQgODMtMTU5IDEwNy04NCAyMjMtMTc2IDQtMyAyMC0xN3QyNS0yMSAyNS0xNyAyOC0xNiAyNC01aDJxMTEgMCAyNCA1dDI4IDE2IDI1IDE3IDI1IDIxIDIwIDE3cTExNiA5MiAyMjQgMTc2IDMwIDI0IDU2IDY1dDI2IDczeiBtNzEgMjF2LTYwN3EwLTM3LTI2LTYzdC02My0yN2gtODIycS0zNiAwLTYzIDI3dC0yNiA2M3Y2MDdxMCAzNyAyNiA2M3Q2MyAyNmg4MjJxMzcgMCA2My0yNnQyNi02M3oiIGhvcml6LWFkdi14PSIxMDAwIiAvPgoKPGdseXBoIGdseXBoLW5hbWU9InR3aXR0ZXIiIHVuaWNvZGU9IiYjeGYwOTk7IiBkPSJNOTA0IDYyMnEtMzctNTQtOTAtOTMgMC04IDAtMjMgMC03My0yMS0xNDV0LTY0LTEzOS0xMDMtMTE3LTE0NC04Mi0xODEtMzBxLTE1MSAwLTI3NiA4MSAxOS0yIDQzLTIgMTI2IDAgMjI0IDc3LTU5IDEtMTA1IDM2dC02NCA4OXExOS0zIDM0LTMgMjQgMCA0OCA2LTYzIDEzLTEwNCA2MnQtNDEgMTE1djJxMzgtMjEgODItMjMtMzcgMjUtNTkgNjR0LTIyIDg2cTAgNDkgMjUgOTEgNjgtODMgMTY0LTEzM3QyMDgtNTVxLTUgMjEtNSA0MSAwIDc1IDUzIDEyN3QxMjcgNTNxNzkgMCAxMzItNTcgNjEgMTIgMTE1IDQ0LTIxLTY0LTgwLTEwMCA1MiA2IDEwNCAyOHoiIGhvcml6LWFkdi14PSI5MjguNiIgLz4KCjxnbHlwaCBnbHlwaC1uYW1lPSJmYWNlYm9vayIgdW5pY29kZT0iJiN4ZjA5YTsiIGQ9Ik01MzUgODQzdi0xNDdoLTg3cS00OCAwLTY1LTIwdC0xNy02MHYtMTA2aDE2NGwtMjItMTY1aC0xNDJ2LTQyNGgtMTcxdjQyNGgtMTQydjE2NWgxNDJ2MTIycTAgMTA0IDU4IDE2MXQxNTUgNTdxODIgMCAxMjctN3oiIGhvcml6LWFkdi14PSI1NzEuNCIgLz4KCjxnbHlwaCBnbHlwaC1uYW1lPSJyc3MiIHVuaWNvZGU9IiYjeGYwOWU7IiBkPSJNMjE0IDEwMHEwLTQ1LTMxLTc2dC03Ni0zMS03NiAzMS0zMSA3NiAzMSA3NiA3NiAzMSA3Ni0zMSAzMS03NnogbTI4Ni02OXExLTE1LTktMjYtMTAtMTItMjctMTJoLTc1cS0xNCAwLTI0IDl0LTExIDIzcS0xMiAxMjgtMTAzIDIxOXQtMjE5IDEwM3EtMTQgMS0yMyAxMXQtOSAyNHY3NXEwIDE2IDEyIDI2IDkgMTAgMjQgMTBoM3E4OS03IDE3MC00NXQxNDUtMTAxcTYzLTYzIDEwMS0xNDV0NDUtMTcxeiBtMjg2LTFxMS0xNS0xMC0yNi0xMC0xMS0yNi0xMWgtODBxLTE0IDAtMjUgMTB0LTEwIDIzcS03IDEyMC01NyAyMjh0LTEyOSAxODgtMTg4IDEyOS0yMjcgNTdxLTE0IDEtMjQgMTF0LTEwIDI0djgwcTAgMTYgMTEgMjYgMTAgMTAgMjUgMTBoMXExNDctOCAyODAtNjd0MjM4LTE2NHExMDQtMTA0IDE2NC0yMzh0NjctMjgweiIgaG9yaXotYWR2LXg9Ijc4NS43IiAvPgoKPGdseXBoIGdseXBoLW5hbWU9ImxpbmtlZGluIiB1bmljb2RlPSImI3hmMGUxOyIgZD0iTTE5NSA1MDF2LTU1M2gtMTg0djU1M2gxODR6IG0xMiAxNzFxMC00MS0yOS02OHQtNzUtMjdoLTFxLTQ2IDAtNzQgMjd0LTI4IDY4cTAgNDEgMjkgNjh0NzUgMjcgNzQtMjcgMjktNjh6IG02NTAtNDA3di0zMTdoLTE4M3YyOTZxMCA1OS0yMyA5MnQtNzEgMzNxLTM1IDAtNTgtMTl0LTM2LTQ4cS02LTE3LTYtNDV2LTMwOWgtMTg0cTEgMjIzIDEgMzYxdDAgMTY1bC0xIDI3aDE4NHYtODBoLTFxMTEgMTggMjMgMzF0MzEgMjkgNDkgMjQgNjQgOXE5NSAwIDE1My02M3Q1OC0xODZ6IiBob3Jpei1hZHYteD0iODU3LjEiIC8+Cgo8Z2x5cGggZ2x5cGgtbmFtZT0iZ2l0aHViIiB1bmljb2RlPSImI3hmMTEzOyIgZD0iTTM1NyAxNzFxMC0yMi03LTQ1dC0yNC00My00MC0xOS00MSAxOS0yNCA0My03IDQ1IDcgNDYgMjQgNDMgNDEgMTkgNDAtMTkgMjQtNDMgNy00NnogbTM1NyAwcTAtMjItNy00NXQtMjQtNDMtNDAtMTktNDEgMTktMjQgNDMtNyA0NSA3IDQ2IDI0IDQzIDQxIDE5IDQwLTE5IDI0LTQzIDctNDZ6IG05MCAwcTAgNjctMzkgMTE0dC0xMDQgNDdxLTIzIDAtMTA5LTEyLTQwLTYtODgtNnQtODcgNnEtODUgMTItMTA5IDEyLTY2IDAtMTA0LTQ3dC0zOS0xMTRxMC00OSAxOC04NXQ0NS01OCA2OC0zMyA3OC0xNyA4My00aDk0cTQ2IDAgODMgNHQ3OCAxNyA2OSAzMyA0NSA1OCAxOCA4NXogbTEyNSA5OXEwLTExNi0zNC0xODUtMjItNDMtNTktNzR0LTc5LTQ4LTk1LTI3LTk2LTEyLTkzLTNxLTQzIDAtNzkgMnQtODIgNy04NSAxNy03NyAyOS02NyA0NS00OCA2NHEtMzUgNjktMzUgMTg1IDAgMTMyIDc2IDIyMS0xNSA0NS0xNSA5NSAwIDY0IDI4IDEyMSA2MSAwIDEwNi0yMnQxMDYtNjlxODIgMjAgMTcyIDIwIDgzIDAgMTU3LTE4IDU4IDQ2IDEwNCA2N3QxMDUgMjJxMjktNTcgMjktMTIxIDAtNDktMTUtOTQgNzYtODkgNzYtMjIyeiIgaG9yaXotYWR2LXg9IjkyOC42IiAvPgoKPGdseXBoIGdseXBoLW5hbWU9InN0YWNrb3ZlcmZsb3ciIHVuaWNvZGU9IiYjeGYxNmM7IiBkPSJNNzE5LTYxaC02MjR2MjY4aC04OXYtMzU3aDgwM3YzNTdoLTkwdi0yNjh6IG0tNTI1IDI5M2wxOCA4NyA0MzctOTItMTgtODd6IG01NyAyMDhsMzggODIgNDA0LTE4OS0zNy04MXogbTExMiAxOTlsNTcgNjkgMzQzLTI4Ny01Ny02OHogbTIyMiAyMTFsMjY2LTM1OC03MS01My0yNjcgMzU3eiBtLTQwMS04MjF2ODloNDQ3di04OWgtNDQ3eiIgaG9yaXotYWR2LXg9Ijg1Ny4xIiAvPgoKPGdseXBoIGdseXBoLW5hbWU9Imluc3RhZ3JhbSIgdW5pY29kZT0iJiN4ZjE2ZDsiIGQ9Ik01NzEgMzUwcTAgNTktNDEgMTAxdC0xMDEgNDItMTAxLTQyLTQyLTEwMSA0Mi0xMDEgMTAxLTQyIDEwMSA0MiA0MSAxMDF6IG03NyAwcTAtOTEtNjQtMTU2dC0xNTUtNjQtMTU2IDY0LTY0IDE1NiA2NCAxNTYgMTU2IDY0IDE1NS02NCA2NC0xNTZ6IG02MSAyMjlxMC0yMS0xNS0zNnQtMzctMTUtMzYgMTUtMTUgMzYgMTUgMzYgMzYgMTUgMzctMTUgMTUtMzZ6IG0tMjgwIDEyM3EtNCAwLTQzIDB0LTU5IDAtNTQtMi01Ny01LTQwLTExcS0yOC0xMS00OS0zMnQtMzMtNDlxLTYtMTYtMTAtNDB0LTYtNTgtMS01MyAwLTU5IDAtNDMgMC00MyAwLTU5IDEtNTMgNi01OCAxMC00MHExMi0yOCAzMy00OXQ0OS0zMnExNi02IDQwLTExdDU3LTUgNTQtMiA1OSAwIDQzIDAgNDIgMCA1OSAwIDU0IDIgNTggNSAzOSAxMXEyOCAxMSA1MCAzMnQzMiA0OXE2IDE2IDEwIDQwdDYgNTggMSA1MyAwIDU5IDAgNDMgMCA0MyAwIDU5LTEgNTMtNiA1OC0xMCA0MHEtMTEgMjgtMzIgNDl0LTUwIDMycS0xNiA2LTM5IDExdC01OCA1LTU0IDItNTkgMC00MiAweiBtNDI4LTM1MnEwLTEyOC0zLTE3Ny01LTExNi02OS0xODB0LTE3OS02OXEtNTAtMy0xNzctM3QtMTc3IDNxLTExNiA2LTE4MCA2OXQtNjkgMTgwcS0zIDQ5LTMgMTc3dDMgMTc3cTUgMTE2IDY5IDE4MHQxODAgNjlxNDkgMyAxNzcgM3QxNzctM3ExMTYtNiAxNzktNjl0NjktMTgwcTMtNDkgMy0xNzd6IiBob3Jpei1hZHYteD0iODU3LjEiIC8+Cgo8Z2x5cGggZ2x5cGgtbmFtZT0idHVtYmxyIiB1bmljb2RlPSImI3hmMTczOyIgZD0iTTUyNyAxMDhsNDQtMTMycS0xMi0xOS02MS0zN3QtOTktMThxLTU4LTEtMTA3IDE1dC03OSA0MS01MyA1OS0zMSA2Ny05IDY2djMwNGgtOTR2MTIwcTQwIDE0IDcyIDM5dDUxIDUwIDMyIDU3IDE5IDU1IDggNDlxMSAzIDMgNXQ0IDJoMTM2di0yMzdoMTg2di0xNDBoLTE4NnYtMjg5cTAtMTcgMy0zMXQxMy0zMCAyOC0yMyA0NS04cTQ0IDEgNzUgMTZ6IiBob3Jpei1hZHYteD0iNTcxLjQiIC8+Cgo8Z2x5cGggZ2x5cGgtbmFtZT0iZHJpYmJibGUiIHVuaWNvZGU9IiYjeGYxN2Q7IiBkPSJNNTcxIDEzcS0yMyAxMzQtNzggMjc4aC0xbC0xLTFxLTktMy0yNC05dC01Ni0yNy03Ny00Ni03My02NC01Ny04MmwtOSA2cTEwMy04NCAyMzQtODQgNzMgMCAxNDIgMjl6IG0tMTAzIDMzOXEtMTEgMjctMjkgNjItMTc0LTUyLTM3Ni01MiAwLTQgMC0xMiAwLTY5IDI0LTEzMnQ2OS0xMTJxMjggNDkgNjkgOTN0ODAgNjkgNzMgNDUgNTUgMjdsMjEgN3EyIDEgNyAydDcgM3ogbS01OSAxMThxLTY3IDExOS0xMzcgMjExLTc3LTM2LTEzMC0xMDR0LTcyLTE1MnExNjkgMCAzMzkgNDV6IG0zODEtMTc4cS0xMTcgMzMtMjI4IDE2IDQ5LTEzMyA3MS0yNjIgNjIgNDIgMTA0IDEwNnQ1MyAxNDB6IG0tNDQ5IDQxNHEtMSAwLTEtMSAwIDEgMSAxeiBtMzI5LTgxcS0xMDMgOTEtMjQxIDkxLTQzIDAtODctMTAgNzMtOTUgMTM3LTIxNCAzOSAxNSA3MyAzNHQ1NCAzNCAzNiAzMiAyMSAyM3ogbTEyNS0yNzFxLTIgMTI5LTgzIDIyOWwtMS0xcS01LTctMTEtMTN0LTI0LTI1LTQwLTM0LTU1LTM2LTc0LTM2cTE0LTMwIDI1LTUzIDEtMyAzLTEwdDUtOXEyMCAyIDQxIDR0NDEgMSAzOS0xIDM1LTIgMzItMyAyNy00IDIwLTMgMTQtM3ogbTYyLTRxMC0xMTctNTctMjE1dC0xNTYtMTU2LTIxNS01OC0yMTYgNTgtMTU1IDE1Ni01OCAyMTUgNTggMjE1IDE1NSAxNTYgMjE2IDU4IDIxNS01OCAxNTYtMTU2IDU3LTIxNXoiIGhvcml6LWFkdi14PSI4NTcuMSIgLz4KCjxnbHlwaCBnbHlwaC1uYW1lPSJza3lwZSIgdW5pY29kZT0iJiN4ZjE3ZTsiIGQ9Ik02NTUgMjU3cTAgMjgtMTEgNTF0LTI3IDM4LTQxIDI3LTQ2IDE5LTQ5IDEzbC01OCAxNHEtMTcgNC0yNSA2dC0xOSA2LTE3IDktOSAxMi00IDE2cTAgNDMgODAgNDMgMjQgMCA0My02dDMwLTE2IDIxLTE5IDIzLTE2IDI3LTdxMjYgMCA0MiAxOHQxNiA0M3EwIDMxLTMyIDU1dC03OSAzOC0xMDEgMTNxLTM4IDAtNzQtOXQtNjctMjYtNDktNDgtMTktNzJxMC0zNCAxMC02MHQzMi00MiA0NC0yNyA1OC0xOGw4MS0yMHE1MS0xMiA2My0yMCAxOC0xMSAxOC0zNCAwLTIxLTIzLTM2dC01OC0xNHEtMjkgMC01MSA5dC0zNyAyMi0yNSAyNS0yNiAyMS0zMCA5cS0yOCAwLTQyLTE3dC0xNC00MXEwLTUyIDY4LTg4dDE2Mi0zN3E0MSAwIDc4IDEwdDY5IDMwIDQ5IDUyIDE5IDc0eiBtMjAyLTEyMXEwLTg5LTYzLTE1MnQtMTUxLTYzcS03MyAwLTEzMSA0NS00My05LTgzLTktODAgMC0xNTMgMzF0LTEyNiA4NC04MyAxMjUtMzEgMTUzcTAgNDEgOSA4NC00NSA1OC00NSAxMzAgMCA4OSA2MyAxNTJ0MTUxIDYzcTczIDAgMTMxLTQ1IDQzIDkgODQgOSA3OSAwIDE1Mi0zMXQxMjYtODQgODQtMTI1IDMwLTE1M3EwLTQxLTgtODQgNDQtNTggNDQtMTMweiIgaG9yaXotYWR2LXg9Ijg1Ny4xIiAvPgoKPGdseXBoIGdseXBoLW5hbWU9InZrb250YWt0ZSIgdW5pY29kZT0iJiN4ZjE4OTsiIGQ9Ik0xMDcwIDU2MHExMy0zNi04NC0xNjQtMTMtMTgtMzYtNDgtMjItMjgtMzEtNDB0LTE3LTI3LTctMjQgOC0xOSAxOC0yNCAzMi0zMHEyLTEgMi0yIDc5LTczIDEwNy0xMjMgMi0zIDQtN3Q0LTE1LTEtMTktMTQtMTUtMzMtN2wtMTQyLTNxLTE0LTItMzIgM3QtMjkgMTNsLTExIDZxLTE3IDEyLTM5IDM2dC0zOCA0My0zNCAzMy0zMiA4cS0xIDAtNC0ydC0xMC04LTEyLTE2LTktMjktNC00NHEwLTgtMi0xNXQtNC0xMGwtMi0zcS0xMC0xMS0zMC0xMmgtNjRxLTQwLTMtODEgOXQtNzQgMjktNTcgMzctNDAgMzJsLTE0IDE0cS01IDUtMTUgMTd0LTQwIDUwLTU5IDg1LTY4IDExNy03MyAxNTJxLTQgOS00IDE1dDIgOWwyIDNxOSAxMSAzMiAxMWwxNTMgMXE3LTEgMTMtM3Q5LTVsMy0ycTktNiAxMy0xOCAxMS0yOCAyNi01N3QyMy00Nmw5LTE2cTE2LTM0IDMxLTU4dDI3LTM4IDIzLTIyIDE5LTggMTUgM3ExIDEgMyAzdDcgMTIgNyAyNiA1IDQ2IDAgNjlxLTEgMjMtNSA0MXQtNyAyNmwtNCA2cS0xNCAxOS00NyAyNC04IDIgMyAxNCA4IDEwIDIxIDE3IDI5IDE0IDEzMyAxMyA0Ni0xIDc1LTcgMTItMyAxOS04dDEyLTEzIDUtMTggMi0yNSAwLTMxLTItNDAgMC00NnEwLTYtMS0yM3QwLTI3IDItMjIgNi0yMiAxMy0xNHE0LTEgOS0ydDE1IDYgMjEgMTkgMjkgMzggMzggNjBxMzMgNTggNjAgMTI1IDIgNiA1IDEwdDYgNmwzIDIgMiAxdDggMiAxMSAwbDE2MCAxcTIyIDMgMzYtMXQxNy0xMHoiIGhvcml6LWFkdi14PSIxMDcxLjQiIC8+Cgo8Z2x5cGggZ2x5cGgtbmFtZT0ic2xhY2siIHVuaWNvZGU9IiYjeGYxOTg7IiBkPSJNODQ4IDQxN3EzNCAwIDU3LTIzdDI0LTU2cTAtNTQtNTItNzNsLTk2LTMzIDMxLTkzcTQtMTIgNC0yNiAwLTMzLTI0LTU3dC01Ni0yNHEtMjYgMC00OCAxNXQtMjkgNDBsLTMxIDkyLTE3My01OSAzMS05MXE0LTE0IDQtMjcgMC0zMy0yMy01N3QtNTctMjRxLTI3IDAtNDggMTV0LTI5IDQxbC0zMSA5MS04NS0zMHEtMTctNS0yOC01LTM0IDAtNTcgMjJ0LTIzIDU3cTAgMjYgMTYgNDd0NDAgMzBsODcgMjktNTkgMTc1LTg3LTMwcS0xNC01LTI3LTUtMzMgMC01NiAyM3QtMjMgNTZxMCAyNiAxNSA0OHQ0MCAyOWw4OCAzMC0zMCA4OHEtNCAxNC00IDI3IDAgMzMgMjMgNTd0NTcgMjRxMjYgMCA0OC0xNnQyOS00MGwzMC04OSAxNzMgNTktMzAgODlxLTQgMTMtNCAyNiAwIDMzIDIzIDU3dDU3IDI0cTI2IDAgNDgtMTV0MzAtNDBsMjktOTAgOTEgMzFxMTEgMyAyNCAzIDMzIDAgNTctMjJ0MjQtNTVxMC0yNS0xNy00NXQtNDEtMjlsLTg4LTMwIDU5LTE3NyA5MSAzMnExMyA0IDI2IDR6IG0tNDQzLTE0NmwxNzMgNTgtNTkgMTc2LTE3My02MHoiIGhvcml6LWFkdi14PSI5MjguNiIgLz4KCjxnbHlwaCBnbHlwaC1uYW1lPSJwYXBlci1wbGFuZSIgdW5pY29kZT0iJiN4ZjFkODsiIGQ9Ik05ODQgODQ0cTE5LTEzIDE1LTM2bC0xNDItODU3cS0zLTE2LTE4LTI1LTgtNS0xOC01LTYgMC0xMyAzbC0yNTMgMTA0LTEzNS0xNjVxLTEwLTEzLTI3LTEzLTcgMC0xMiAyLTExIDQtMTcgMTN0LTcgMjF2MTk1bDQ4MiA1OTAtNTk2LTUxNi0yMjEgOTFxLTIwIDgtMjIgMzAtMSAyMyAxOCAzM2w5MjggNTM2cTkgNSAxOCA1IDExIDAgMjAtNnoiIGhvcml6LWFkdi14PSIxMDAwIiAvPgoKPGdseXBoIGdseXBoLW5hbWU9IndoYXRzYXBwIiB1bmljb2RlPSImI3hmMjMyOyIgZD0iTTU1MCAzMDdxNyAwIDU0LTI1dDUwLTMwcTEtMiAxLTggMC0xOC05LTQyLTktMjItNDAtMzd0LTU3LTE1cS0zMiAwLTEwNiAzNS01NSAyNS05NSA2NnQtODIgMTAzcS00MSA2MC00MCAxMDh2NXEyIDUwIDQxIDg4IDE0IDEyIDI5IDEyIDQgMCAxMC0xdDExLTFxMTEgMCAxNS0zdDgtMTZxNS0xMSAxOS00OXQxNC00MXEwLTEyLTE5LTMzdC0yMC0yNnEwLTMgMy04IDE5LTQxIDU3LTc2IDMxLTMwIDg0LTU3IDctNCAxMy00IDggMCAzMCAyN3QyOSAyOHogbS0xMTQtMjk2cTcxIDAgMTM2IDI4dDExMiA3NCA3NSAxMTIgMjggMTM2LTI4IDEzNi03NSAxMTItMTEyIDc1LTEzNiAyOC0xMzUtMjgtMTEyLTc1LTc1LTExMi0yOC0xMzZxMC0xMTMgNjctMjA1bC00NC0xMzAgMTM1IDQzcTg4LTU4IDE5Mi01OHogbTAgNzcxcTg2IDAgMTY0LTM0dDEzNC04OSA5MC0xMzUgMzMtMTYzLTMzLTE2My05MC0xMzQtMTM0LTkwLTE2NC0zNHEtMTA4IDAtMjAzIDUzbC0yMzMtNzUgNzYgMjI2cS02MCA5OS02MCAyMTcgMCA4NiAzMyAxNjN0OTAgMTM1IDEzNCA4OSAxNjMgMzR6IiBob3Jpei1hZHYteD0iODU3LjEiIC8+Cgo8Z2x5cGggZ2x5cGgtbmFtZT0ib2Rub2tsYXNzbmlraSIgdW5pY29kZT0iJiN4ZjI2MzsiIGQ9Ik0zNTcgMzQ0cS0xMDUgMC0xNzkgNzR0LTc0IDE3OXEwIDEwNSA3NCAxNzl0MTc5IDc0IDE3OS03NCA3NS0xNzlxMC0xMDUtNzUtMTc5dC0xNzktNzR6IG0wIDM3OHEtNTEgMC04OC0zN3QtMzYtODhxMC01MiAzNi04OHQ4OC0zNyA4OCAzNyAzNyA4OHEwIDUyLTM3IDg4dC04OCAzN3ogbTI5Mi00MDlxNy0xNSA4LTI3dC0yLTIzLTE1LTIxLTI0LTIxLTM0LTIzcS02NC00MS0xNzYtNTNsNDEtNDAgMTQ5LTE0OXExNy0xNyAxNy00MXQtMTctNDFsLTctN3EtMTctMTctNDEtMTd0LTQxIDE3cS0zOCAzOC0xNDkgMTQ5bC0xNDktMTQ5cS0xOC0xNy00Mi0xN3QtNDAgMTdsLTcgN3EtMTcgMTctMTcgNDF0MTcgNDFsMTQ5IDE0OSA0MCA0MHEtMTEzIDEyLTE3NyA1My0yMSAxNC0zNCAyM3QtMjQgMjEtMTUgMjEtMiAyMyA4IDI3cTYgMTEgMTYgMjB0MjMgMTIgMzItMSAzNi0yMHEzLTIgOC02dDI0LTEzIDM5LTE3IDUxLTE0IDYzLTZxNTEgMCA5NyAxNHQ2NyAyOGwyMSAxNHExOSAxNSAzNyAyMHQzMSAxIDIzLTEyIDE2LTIweiIgaG9yaXotYWR2LXg9IjcxNC4zIiAvPgo8L2ZvbnQ+CjwvZGVmcz4KPC9zdmc+#fontello) format("svg");font-weight:400;font-style:normal}[class*=" icon-"]:before,[class^=icon-]:before{font-family:fontello;font-style:normal;font-weight:400;speak:none;display:inline-block;text-decoration:inherit;width:1em;margin-right:.2em;text-align:center;-webkit-font-feature-settings:normal;font-feature-settings:normal;font-variant:normal;text-transform:none;line-height:1em;margin-left:.2em;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}.icon-mail:before{content:"\E800"}.icon-twitter:before{content:"\F099"}.icon-facebook:before{content:"\F09A"}.icon-rss:before{content:"\F09E"}.icon-linkedin:before{content:"\F0E1"}.icon-github:before{content:"\F113"}.icon-stackoverflow:before{content:"\F16C"}.icon-instagram:before{content:"\F16D"}.icon-tumblr:before{content:"\F173"}.icon-dribbble:before{content:"\F17D"}.icon-skype:before{content:"\F17E"}.icon-vkontakte:before{content:"\F189"}.icon-slack:before{content:"\F198"}.icon-paper-plane:before{content:"\F1D8"}.icon-whatsapp:before{content:"\F232"}.icon-odnoklassniki:before{content:"\F263"}.sidebar{width:100%}.sidebar__inner{position:relative;padding:1.5625rem 1.25rem 0}.sidebar__author-photo{display:inline-block;margin-bottom:0;border-radius:50%;background-clip:padding-box}.sidebar__author-title{font-size:.98438rem;font-weight:500;line-height:2.25rem;margin:1rem 0}.sidebar__author-title-link,.sidebar__author-title-link:focus,.sidebar__author-title-link:hover{color:#222}.sidebar__author-subtitle{color:#888;line-height:2rem;margin-bottom:2rem}.sidebar__copyright{color:#b6b6b6;font-size:.75rem}@media screen and (min-width:685px){.sidebar{width:calc(99.9% * 5/12 - 1.09375rem)}.sidebar:nth-child(1n){float:left;margin-right:1.875rem;clear:none}.sidebar:last-child{margin-right:0}.sidebar:nth-child(12n){margin-right:0;float:right}.sidebar:nth-child(12n+1){clear:both}.sidebar__inner{padding:1.875rem 1.25rem 0}.sidebar__inner:after{background:#e6e6e6;background:linear-gradient(180deg,#e6e6e6 0,#e6e6e6 48%,#fff);position:absolute;content:"";width:.0625rem;height:540px;top:30px;right:-10px;bottom:0}}@media screen and (min-width:960px){.sidebar{width:calc(99.9% * 1/3 - 1.25rem)}.sidebar:nth-child(1n){float:left;margin-right:1.875rem;clear:none}.sidebar:last-child{margin-right:0}.sidebar:nth-child(3n){margin-right:0;float:right}.sidebar:nth-child(3n+1){clear:both}.sidebar__inner{padding:2.5rem}}.page{margin-bottom:4rem}.page__title{font-size:2.1875rem;font-weight:500;line-height:4rem;margin-top:0;margin-bottom:2.9rem}.page__body{font-size:.875rem;line-height:2rem;margin:0 0 2rem}.date-center{text-align:center;margin-bottom:1.5rem}.post-single__inner{max-width:59.0625rem;padding:0 .9375rem;margin:0 auto}.post-single__title{font-size:1.75rem;max-width:58.125rem;margin:1rem auto 2rem;font-weight:600;text-align:center;line-height:2.8rem}.post-single__body{text-align:justify}.post-single__body figure{margin-bottom:2rem}.post-single__body figure blockquote{font-style:italic;text-align:center;margin-top:0;padding:2rem 0}.post-single__body figure blockquote p{max-width:58.125rem;font-size:1.47149rem;margin-top:0;margin-bottom:2rem;line-height:3rem}.post-single__body a{text-decoration:underline}.post-single__body .gatsby-highlight{max-width:58.125rem;margin-left:.9375rem;margin-right:.9375rem;margin-bottom:2rem}.post-single__body :not(div){max-width:58.125rem;margin-left:auto;margin-right:auto}.post-single__footer{max-width:58.125rem;margin:2rem .9375rem 4rem;line-height:2rem}.post-single__footer-text a{text-decoration:underline}.post-single__date{max-width:58.125rem;margin-left:auto;margin-right:auto}.post-single__tags{margin-bottom:1rem}.post-single__tags-list{list-style:none;margin:0 -.3125rem;padding:0}.post-single__tags-list-item{display:inline-block;margin:.625rem .3125rem}.post-single__tags-list-item-link{background:#ebebeb;text-decoration:none;border:0;border-radius:.1875rem;color:#555;line-height:2;padding:.5rem 1rem}.post-single__tags-list-item-link:focus,.post-single__tags-list-item-link:hover{color:#222;background:#dfdfdf;border:0}.post-single__home-button{display:block;margin-left:auto;margin-right:auto;max-width:5.625rem;font-size:.875rem;padding:0 1rem;height:35px;line-height:2.1875rem;text-align:center;color:#555;background:#ebebeb;font-weight:400;border-radius:.1875rem;margin-top:2rem}.post-single__home-button:focus,.post-single__home-button:hover{color:#222;background:#dfdfdf;border:0}@media screen and (min-width:685px){.post-single__body .gatsby-highlight,.post-single__footer{margin-left:auto;margin-right:auto}}@media screen and (min-width:960px){.post-single__inner{padding:0}.post-single__title{font-size:2.625rem;line-height:4.5rem;margin-top:2rem;margin-bottom:1rem}.post-single__body{font-size:.98438rem;line-height:2.25rem;margin-bottom:2.25rem}.post-single__body p{font-size:.98438rem;line-height:2.25rem;margin-bottom:1rem}.post-single__home-button{position:fixed;max-width:auto;margin:0;top:30px;left:30px}}.post{margin-bottom:2.5rem}.post:last-child,.post__title{margin-bottom:1rem}.post__title{font-size:1.47656rem;line-height:3rem;margin-top:0}.post__title-link{color:#222}.post__title-link:focus,.post__title-link:hover{color:#222;border-bottom:1px solid #222}.post__description{font-size:.875rem;line-height:2rem;margin-bottom:.7rem}.post__meta-time{font-size:.75rem;color:#222;font-weight:500;text-transform:uppercase}.post__meta-divider{margin:0 .3125rem}.post__meta-category-link{font-size:.75rem;color:#f7a046;font-weight:500;text-transform:uppercase}.post__meta-category-link:focus,.post__meta-category-link:hover{color:#5d93ff}.post__readmore{font-size:.875rem;color:#5d93ff}.post__readmore:focus,.post__readmore:hover{color:#5d93ff;border-bottom:1px solid #5d93ff}</style></head><body><div id="___gatsby"><div class="layout" data-reactroot="" data-reactid="1" data-react-checksum="84293752"><!-- react-empty: 2 --><div data-reactid="3"><!-- react-empty: 4 --><div data-reactid="5"><div data-reactid="6"><a class="post-single__home-button" href="/" data-reactid="7">All Articles</a></div><div data-reactid="8"><div data-reactid="9"></div></div><div class="post-single" data-reactid="10"><div class="post-single__inner" data-reactid="11"><h1 class="post-single__title" data-reactid="12">编写React组件的最佳实践(翻译)</h1><div class="date-center" data-reactid="13"><!-- react-text: 14 -->Published <!-- /react-text --><!-- react-text: 15 -->22 Jul 2019<!-- /react-text --></div><div class="post-single__body" data-reactid="16"><p>众知React应用是一种基于组件的架构模式, 复杂的UI可以通过一些小的组件组合起来, 站在软件工程的角度这样的开发方式会提高开发效率, 程序的健壮性和可维护性。</p>
+<p>但在实际组件的编写中我们通常会遇到一个问题: 复杂的组件往往具有多种职责, 并且组件之间的耦合性很高, 我们越写越复杂的组件会产生技术负债, 恐惧每一次需求的变化, 在后期维护上花费很高的时间和精力成本。</p>
+<p>那么为了解决这个问题, 我们需要思考以下2个问题:</p>
+<ul>
+<li>复杂组件如何拆分？</li>
+<li>组件之间如何通信会降低他们的耦合性或者说依赖？</li>
+</ul>
+<h2>Single responsibility 原则</h2>
+<blockquote>
+<p>A component has a single responsibility when it has one reason to change.</p>
+</blockquote>
+<p>Single responsibility principle (SRP) 要求一个组件只做一件事情, 单一任务, 良好的可测试性, 是编写复杂组件的基础。这样当我们需求变化时候, 我们也只需要修改单一的组件, 不会出现连锁反应造成的”开发信心缺失”。</p>
+<p>举个实际的例子: 获取远程数据组件, 先分析出该组件中可能变化的点</p>
+<ul>
+<li>请求地址</li>
+<li>响应的数据格式</li>
+<li>使用不同的HTTP库</li>
+<li>等等</li>
+</ul>
+<p>再举个例子: 表格组件, 拿到设计图看到设计图上有4行3列的数据, 直接写死4行3列是没有智慧的, 我们还是先要考虑可能变化的点:</p>
+<ul>
+<li>增加行列或者减少行列</li>
+<li>空的表格如何显示</li>
+<li>请求到的表格数据格式发生变化</li>
+</ul>
+<p>有些人会觉得是不是想太多? 很多时候人们通常会忽视SRP, 起初看来确实写在一起也没有糟更重要的原因是因为写的快, 因为不需要去思考组件结构和通信之类的事情, 但是在产品需求变化频繁的今天, 唯有良好的组件化设计才能保障产品迭代的速度与质量。 </p>
+<h3>实践: 拆分一个Weather组件</h3>
+<div class="gatsby-highlight">
+      <pre class="language-javascript"><code class="language-javascript"><span class="token keyword">import</span> axios <span class="token keyword">from</span> <span class="token string">'axios'</span><span class="token punctuation">;</span>
+<span class="token keyword">class</span> <span class="token class-name">Weather</span> <span class="token keyword">extends</span> <span class="token class-name">Component</span> <span class="token punctuation">{</span>
+   <span class="token function">constructor</span><span class="token punctuation">(</span><span class="token parameter">props</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+     <span class="token keyword">super</span><span class="token punctuation">(</span>props<span class="token punctuation">)</span><span class="token punctuation">;</span>
+     <span class="token keyword">this</span><span class="token punctuation">.</span>state <span class="token operator">=</span> <span class="token punctuation">{</span> temperature<span class="token punctuation">:</span> <span class="token string">'N/A'</span><span class="token punctuation">,</span> windSpeed<span class="token punctuation">:</span> <span class="token string">'N/A'</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
+   <span class="token punctuation">}</span>
+ 
+   <span class="token function">render</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+     <span class="token keyword">const</span> <span class="token punctuation">{</span> temperature<span class="token punctuation">,</span> windSpeed <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>state<span class="token punctuation">;</span>
+     <span class="token keyword">return</span> <span class="token punctuation">(</span>
+       <span class="token operator">&lt;</span>div className<span class="token operator">=</span><span class="token string">"weather"</span><span class="token operator">></span>
+         <span class="token operator">&lt;</span>div<span class="token operator">></span>Temperature<span class="token punctuation">:</span> <span class="token punctuation">{</span>temperature<span class="token punctuation">}</span>°<span class="token constant">C</span><span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span>
+         <span class="token operator">&lt;</span>div<span class="token operator">></span>Wind<span class="token punctuation">:</span> <span class="token punctuation">{</span>windSpeed<span class="token punctuation">}</span>km<span class="token operator">/</span>h<span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span>
+       <span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span>
+     <span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">}</span>
+   
+   <span class="token function">componentDidMount</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+     axios<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token string">'http://weather.com/api'</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">response</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+       <span class="token keyword">const</span> <span class="token punctuation">{</span> current <span class="token punctuation">}</span> <span class="token operator">=</span> response<span class="token punctuation">.</span>data<span class="token punctuation">;</span> 
+       <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">setState</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+         temperature<span class="token punctuation">:</span> current<span class="token punctuation">.</span>temperature<span class="token punctuation">,</span>
+         windSpeed<span class="token punctuation">:</span> current<span class="token punctuation">.</span>windSpeed
+       <span class="token punctuation">}</span><span class="token punctuation">)</span>
+     <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+      </div>
+<p>明显这个组件的设计违反了SRP, 先让我们分析一下<code class="language-text">Weather</code>组件中有哪些会变化的点:</p>
+<ul>
+<li>网络请求部分可能会变, 比如服务器地址, 响应的数据格式</li>
+<li>UI展示的逻辑可能会变, 有可能以后要增加其他天气信息</li>
+</ul>
+<p>为了拥抱以上的变化我们可以将<code class="language-text">Weather</code>拆分成2个组件: <code class="language-text">WeatherFetch</code>和<code class="language-text">WeatherInfo</code>, 分别用来处理网络请求和UI信息的展示。</p>
+<p>拆分为的组件应该是这样的</p>
+<div class="gatsby-highlight">
+      <pre class="language-javascript"><code class="language-javascript"><span class="token comment">// Weather</span>
+<span class="token keyword">class</span> <span class="token class-name">Weather</span> <span class="token keyword">extends</span> <span class="token class-name">Component</span> <span class="token punctuation">{</span>
+   <span class="token function">render</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+     <span class="token keyword">return</span> <span class="token operator">&lt;</span>WeatherFetch <span class="token operator">/</span><span class="token operator">></span><span class="token punctuation">;</span>
+   <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// WeatherFetch</span>
+<span class="token keyword">class</span> <span class="token class-name">WeatherFetch</span> <span class="token keyword">extends</span> <span class="token class-name">Component</span> <span class="token punctuation">{</span>
+   <span class="token function">constructor</span><span class="token punctuation">(</span><span class="token parameter">props</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+     <span class="token keyword">super</span><span class="token punctuation">(</span>props<span class="token punctuation">)</span><span class="token punctuation">;</span>
+     <span class="token keyword">this</span><span class="token punctuation">.</span>state <span class="token operator">=</span> <span class="token punctuation">{</span> temperature<span class="token punctuation">:</span> <span class="token string">'N/A'</span><span class="token punctuation">,</span> windSpeed<span class="token punctuation">:</span> <span class="token string">'N/A'</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
+   <span class="token punctuation">}</span>
+ 
+    <span class="token function">render</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+         <span class="token keyword">const</span> <span class="token punctuation">{</span> temperature<span class="token punctuation">,</span> windSpeed <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>state<span class="token punctuation">;</span>
+         <span class="token keyword">return</span> <span class="token punctuation">(</span>
+           <span class="token operator">&lt;</span>WeatherInfo temperature<span class="token operator">=</span><span class="token punctuation">{</span>temperature<span class="token punctuation">}</span> windSpeed<span class="token operator">=</span><span class="token punctuation">{</span>windSpeed<span class="token punctuation">}</span> <span class="token operator">/</span><span class="token operator">></span>
+         <span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+   
+   <span class="token function">componentDidMount</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+     axios<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token string">'http://weather.com/api'</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">response</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+       <span class="token keyword">const</span> <span class="token punctuation">{</span> current <span class="token punctuation">}</span> <span class="token operator">=</span> response<span class="token punctuation">.</span>data<span class="token punctuation">;</span> 
+       <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">setState</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+         temperature<span class="token punctuation">:</span> current<span class="token punctuation">.</span>temperature<span class="token punctuation">,</span>
+         windSpeed<span class="token punctuation">:</span> current<span class="token punctuation">.</span>windSpeed
+       <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+     <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// WeatherInfo</span>
+<span class="token keyword">function</span> <span class="token function">WeatherInfo</span><span class="token punctuation">(</span><span class="token parameter"><span class="token punctuation">{</span> temperature<span class="token punctuation">,</span> windSpeed <span class="token punctuation">}</span></span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+   <span class="token keyword">return</span> <span class="token punctuation">(</span>
+     <span class="token operator">&lt;</span>div className<span class="token operator">=</span><span class="token string">"weather"</span><span class="token operator">></span>
+       <span class="token operator">&lt;</span>div<span class="token operator">></span>Temperature<span class="token punctuation">:</span> <span class="token punctuation">{</span>temperature<span class="token punctuation">}</span>°<span class="token constant">C</span><span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span>
+       <span class="token operator">&lt;</span>div<span class="token operator">></span>Wind<span class="token punctuation">:</span> <span class="token punctuation">{</span>windSpeed<span class="token punctuation">}</span> km<span class="token operator">/</span>h<span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span>
+     <span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span>
+   <span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+      </div>
+<h3>HOC的应用</h3>
+<blockquote>
+<p>Higher order component is a function that takes one component and returns a new component. </p>
+</blockquote>
+<p>有些时候拆分组件也不一定是万能的, 比如想给一个组件上额外添加一些参数。 这时我们可使用高阶组件(HOC)</p>
+<p>HOC最经典的使用场景是 <strong>props proxy</strong> , 即包裹一个组, 为其添加props或者修改已经存在的props, 并返回一个新组件。</p>
+<div class="gatsby-highlight">
+      <pre class="language-javascript"><code class="language-javascript"><span class="token keyword">function</span> <span class="token function">withNewFunctionality</span><span class="token punctuation">(</span><span class="token parameter">WrappedComponent</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> <span class="token keyword">class</span> <span class="token class-name">NewFunctionality</span> <span class="token keyword">extends</span> <span class="token class-name">Component</span> <span class="token punctuation">{</span>
+    <span class="token function">render</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">const</span> newProp <span class="token operator">=</span> <span class="token string">'Value'</span><span class="token punctuation">;</span>
+      <span class="token keyword">const</span> propsProxy <span class="token operator">=</span> <span class="token punctuation">{</span>
+         <span class="token operator">...</span>this<span class="token punctuation">.</span>props<span class="token punctuation">,</span>
+         <span class="token comment">// Alter existing prop:</span>
+         ownProp<span class="token punctuation">:</span> <span class="token keyword">this</span><span class="token punctuation">.</span>props<span class="token punctuation">.</span>ownProp <span class="token operator">+</span> <span class="token string">' was modified'</span><span class="token punctuation">,</span>
+         <span class="token comment">// Add new prop:</span>
+         newProp
+      <span class="token punctuation">}</span><span class="token punctuation">;</span>
+      <span class="token keyword">return</span> <span class="token operator">&lt;</span>WrappedComponent <span class="token punctuation">{</span><span class="token operator">...</span>propsProxy<span class="token punctuation">}</span> <span class="token operator">/</span><span class="token operator">></span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">const</span> MyNewComponent <span class="token operator">=</span> <span class="token function">withNewFunctionality</span><span class="token punctuation">(</span>MyComponent<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+      </div>
+<h4>Props proxy</h4>
+<p>写一个最基础的表单, 一个<code class="language-text">input</code>, 一个<code class="language-text">button</code></p>
+<p><img src="https://user-gold-cdn.xitu.io/2019/11/19/16e830dbcf0813d0?w=632&#x26;h=173&#x26;f=png&#x26;s=6709"></p>
+<div class="gatsby-highlight">
+      <pre class="language-javascript"><code class="language-javascript"><span class="token keyword">class</span> <span class="token class-name">PersistentForm</span> <span class="token keyword">extends</span> <span class="token class-name">Component</span> <span class="token punctuation">{</span>  
+  <span class="token function">constructor</span><span class="token punctuation">(</span><span class="token parameter">props</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">super</span><span class="token punctuation">(</span>props<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>state <span class="token operator">=</span> <span class="token punctuation">{</span> inputValue<span class="token punctuation">:</span> localStorage<span class="token punctuation">.</span><span class="token function">getItem</span><span class="token punctuation">(</span><span class="token string">'inputValue'</span><span class="token punctuation">)</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>handleChange <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">handleChange</span><span class="token punctuation">.</span><span class="token function">bind</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>handleClick <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">handleClick</span><span class="token punctuation">.</span><span class="token function">bind</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token function">render</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">const</span> <span class="token punctuation">{</span> inputValue <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>state<span class="token punctuation">;</span>
+    <span class="token keyword">return</span> <span class="token punctuation">(</span>
+      <span class="token operator">&lt;</span>div className<span class="token operator">=</span><span class="token string">"persistent-form"</span><span class="token operator">></span>
+        <span class="token operator">&lt;</span>input type<span class="token operator">=</span><span class="token string">"text"</span> value<span class="token operator">=</span><span class="token punctuation">{</span>inputValue<span class="token punctuation">}</span> 
+          onChange<span class="token operator">=</span><span class="token punctuation">{</span><span class="token keyword">this</span><span class="token punctuation">.</span>handleChange<span class="token punctuation">}</span><span class="token operator">/</span><span class="token operator">></span> 
+        <span class="token operator">&lt;</span>button onClick<span class="token operator">=</span><span class="token punctuation">{</span><span class="token keyword">this</span><span class="token punctuation">.</span>handleClick<span class="token punctuation">}</span><span class="token operator">></span>Save to storage<span class="token operator">&lt;</span><span class="token operator">/</span>button<span class="token operator">></span>
+      <span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span>
+    <span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token function">handleChange</span><span class="token punctuation">(</span><span class="token parameter">event</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">setState</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+      inputValue<span class="token punctuation">:</span> event<span class="token punctuation">.</span>target<span class="token punctuation">.</span>value
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token function">handleClick</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    localStorage<span class="token punctuation">.</span><span class="token function">setItem</span><span class="token punctuation">(</span><span class="token string">'inputValue'</span><span class="token punctuation">,</span> <span class="token keyword">this</span><span class="token punctuation">.</span>state<span class="token punctuation">.</span>inputValue<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+      </div>
+<p>我们现在应该能本能的感觉出上面的代码哪里有问题, 这个组件做了2件事情违反了SRP: <code class="language-text">input</code>的点击事件将用户输入的内容存储到state, <code class="language-text">button</code>的点击事件将state存储到<code class="language-text">localStorage</code>, 现在让我们拆分这两件事情。</p>
+<div class="gatsby-highlight">
+      <pre class="language-javascript"><code class="language-javascript"><span class="token keyword">class</span> <span class="token class-name">PersistentForm</span> <span class="token keyword">extends</span> <span class="token class-name">Component</span> <span class="token punctuation">{</span>  
+  <span class="token function">constructor</span><span class="token punctuation">(</span><span class="token parameter">props</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">super</span><span class="token punctuation">(</span>props<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>state <span class="token operator">=</span> <span class="token punctuation">{</span> inputValue<span class="token punctuation">:</span> props<span class="token punctuation">.</span>initialValue <span class="token punctuation">}</span><span class="token punctuation">;</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>handleChange <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">handleChange</span><span class="token punctuation">.</span><span class="token function">bind</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>handleClick <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">handleClick</span><span class="token punctuation">.</span><span class="token function">bind</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token function">render</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">const</span> <span class="token punctuation">{</span> inputValue <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>state<span class="token punctuation">;</span>
+    <span class="token keyword">return</span> <span class="token punctuation">(</span>
+      <span class="token operator">&lt;</span>div className<span class="token operator">=</span><span class="token string">"persistent-form"</span><span class="token operator">></span>
+        <span class="token operator">&lt;</span>input type<span class="token operator">=</span><span class="token string">"text"</span> value<span class="token operator">=</span><span class="token punctuation">{</span>inputValue<span class="token punctuation">}</span> 
+          onChange<span class="token operator">=</span><span class="token punctuation">{</span><span class="token keyword">this</span><span class="token punctuation">.</span>handleChange<span class="token punctuation">}</span><span class="token operator">/</span><span class="token operator">></span> 
+        <span class="token operator">&lt;</span>button onClick<span class="token operator">=</span><span class="token punctuation">{</span><span class="token keyword">this</span><span class="token punctuation">.</span>handleClick<span class="token punctuation">}</span><span class="token operator">></span>Save to storage<span class="token operator">&lt;</span><span class="token operator">/</span>button<span class="token operator">></span>
+      <span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span>
+    <span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token function">handleChange</span><span class="token punctuation">(</span><span class="token parameter">event</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">setState</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+      inputValue<span class="token punctuation">:</span> event<span class="token punctuation">.</span>target<span class="token punctuation">.</span>value
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token function">handleClick</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>props<span class="token punctuation">.</span><span class="token function">saveValue</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>state<span class="token punctuation">.</span>inputValue<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+      </div>
+<p>改成这样的话我们需要一个父组件来提供存储到localStorage的功能, 这时候HOC就派上用场了, 我们通过HOC为刚才的组件添加存储到localStorage的功能。</p>
+<div class="gatsby-highlight">
+      <pre class="language-javascript"><code class="language-javascript"><span class="token keyword">function</span> <span class="token function">withPersistence</span><span class="token punctuation">(</span><span class="token parameter">storageKey<span class="token punctuation">,</span> storage</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">WrappedComponent</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token keyword">class</span> <span class="token class-name">PersistentComponent</span> <span class="token keyword">extends</span> <span class="token class-name">Component</span> <span class="token punctuation">{</span>
+      <span class="token function">constructor</span><span class="token punctuation">(</span><span class="token parameter">props</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">super</span><span class="token punctuation">(</span>props<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>state <span class="token operator">=</span> <span class="token punctuation">{</span> initialValue<span class="token punctuation">:</span> storage<span class="token punctuation">.</span><span class="token function">getItem</span><span class="token punctuation">(</span>storageKey<span class="token punctuation">)</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+
+      <span class="token function">render</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+         <span class="token keyword">return</span> <span class="token punctuation">(</span>
+           <span class="token operator">&lt;</span>WrappedComponent
+             initialValue<span class="token operator">=</span><span class="token punctuation">{</span><span class="token keyword">this</span><span class="token punctuation">.</span>state<span class="token punctuation">.</span>initialValue<span class="token punctuation">}</span>
+             saveValue<span class="token operator">=</span><span class="token punctuation">{</span><span class="token keyword">this</span><span class="token punctuation">.</span>saveValue<span class="token punctuation">}</span>
+             <span class="token punctuation">{</span><span class="token operator">...</span>this<span class="token punctuation">.</span>props<span class="token punctuation">}</span>
+           <span class="token operator">/</span><span class="token operator">></span>
+         <span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+
+      <span class="token function">saveValue</span><span class="token punctuation">(</span><span class="token parameter">value</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        storage<span class="token punctuation">.</span><span class="token function">setItem</span><span class="token punctuation">(</span>storageKey<span class="token punctuation">,</span> value<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+      </div>
+<p>最后把他们变为一个组件, 搞定！</p>
+<div class="gatsby-highlight">
+      <pre class="language-text"><code class="language-text">const LocalStoragePersistentForm 
+  = withPersistence(&#39;key&#39;, localStorage)(PersistentForm);
+
+const instance = &lt;LocalStoragePersistentForm /&gt;;</code></pre>
+      </div>
+<p>通过HOC添加的localStora存储功能复用起来无比的方便, 比如现在有另一个表单需要使用localStorage存储功能, 我们只需要修改传递参数即可</p>
+<div class="gatsby-highlight">
+      <pre class="language-javascript"><code class="language-javascript"><span class="token keyword">const</span> LocalStorageMyOtherForm
+  <span class="token operator">=</span> <span class="token function">withPersistence</span><span class="token punctuation">(</span><span class="token string">'key'</span><span class="token punctuation">,</span> localStorage<span class="token punctuation">)</span><span class="token punctuation">(</span>MyOtherForm<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">const</span> instance <span class="token operator">=</span> <span class="token operator">&lt;</span>LocalStorageMyOtherForm <span class="token operator">/</span><span class="token operator">></span><span class="token punctuation">;</span></code></pre>
+      </div>
+<h4>Render highjacking</h4>
+<p>除了 <strong>props proxy</strong> 之外, HOC还有一个经典应用场景是 <strong>render highjacking</strong></p>
+<div class="gatsby-highlight">
+      <pre class="language-javascript"><code class="language-javascript"><span class="token keyword">function</span> <span class="token function">withModifiedChildren</span><span class="token punctuation">(</span><span class="token parameter">WrappedComponent</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> <span class="token keyword">class</span> <span class="token class-name">ModifiedChildren</span> <span class="token keyword">extends</span> <span class="token class-name">WrappedComponent</span> <span class="token punctuation">{</span>
+    <span class="token function">render</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">const</span> rootElement <span class="token operator">=</span> <span class="token keyword">super</span><span class="token punctuation">.</span><span class="token function">render</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token keyword">const</span> newChildren <span class="token operator">=</span> <span class="token punctuation">[</span>
+        <span class="token operator">...</span>rootElement<span class="token punctuation">.</span>props<span class="token punctuation">.</span>children<span class="token punctuation">,</span> 
+        <span class="token comment">// Insert a new child:</span>
+        <span class="token operator">&lt;</span>div<span class="token operator">></span>New child<span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span>
+      <span class="token punctuation">]</span><span class="token punctuation">;</span>
+      <span class="token keyword">return</span> <span class="token function">cloneElement</span><span class="token punctuation">(</span>
+        rootElement<span class="token punctuation">,</span> 
+        rootElement<span class="token punctuation">.</span>props<span class="token punctuation">,</span> 
+        newChildren
+      <span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">const</span> MyNewComponent <span class="token operator">=</span> <span class="token function">withModifiedChildren</span><span class="token punctuation">(</span>MyComponent<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+      </div>
+<p>和 <strong>props proxy</strong> 不同的是, <strong>render highjacking</strong> 可以在不 <strong>入侵</strong> 原组件的情况下, 修改其UI渲染。 </p>
+<h2>Encapsulated 封装</h2>
+<blockquote>
+<p>An encapsulated component provides props to control its behavior while not exposing its internal structure. </p>
+</blockquote>
+<p>Coupling (耦合) 是软件工程中不得不考虑的问题之一, 如何解耦或者降低耦合也是软件开发工程师遇到的难题。</p>
+<p><img src="https://user-gold-cdn.xitu.io/2019/11/19/16e82f2c4b5b365a?w=900&#x26;h=1080&#x26;f=png&#x26;s=400432"></p>
+<p>低耦合如上图, 当你需要修改系统的一个部分时可能只会影响一小部分其他系统, 而下面这种高耦合是让开发人员对软件质量失去信心的原罪, 改一处可能瞬间爆炸。</p>
+<p><img src="https://user-gold-cdn.xitu.io/2019/11/19/16e82f4a106e7895?w=900&#x26;h=1080&#x26;f=png&#x26;s=389555"></p>
+<h3>隐藏信息</h3>
+<p>一个组件可能要操作<code class="language-text">refs</code>, 可能有<code class="language-text">state</code>, 可能使用了生命周期方法, 这些具体的实现细节其他组件是不应该知道的, 即: 组件之间需要隐藏实现细节, 这也是组件拆分的标准之一。</p>
+<h3>通信</h3>
+<p>组件拆分后, 原来直接获取的数据, 现在就要依靠通信来获取, 虽然更加繁琐, 但是在可读性和维护性上带来的好处远远大于它的复杂性的。React组件之间通信的主要手段是:props</p>
+<div class="gatsby-highlight">
+      <pre class="language-javascript"><code class="language-javascript"><span class="token comment">// 使用props通信</span>
+<span class="token operator">&lt;</span>Message text<span class="token operator">=</span><span class="token string">"Hello world!"</span> modal<span class="token operator">=</span><span class="token punctuation">{</span><span class="token boolean">false</span><span class="token punctuation">}</span> <span class="token operator">/</span><span class="token operator">></span><span class="token punctuation">;</span>
+
+<span class="token comment">// 当然也可以传递复杂数据</span>
+<span class="token operator">&lt;</span>MoviesList items<span class="token operator">=</span><span class="token punctuation">{</span><span class="token punctuation">[</span><span class="token string">'Batman Begins'</span><span class="token punctuation">,</span> <span class="token string">'Blade Runner'</span><span class="token punctuation">]</span><span class="token punctuation">}</span> <span class="token operator">/</span><span class="token operator">></span>
+<span class="token operator">&lt;</span>input type<span class="token operator">=</span><span class="token string">"text"</span> onChange<span class="token operator">=</span><span class="token punctuation">{</span>handleChange<span class="token punctuation">}</span> <span class="token operator">/</span><span class="token operator">></span>
+
+<span class="token comment">// 当然也可以直接传递组件(ReactNode)</span>
+<span class="token keyword">function</span> <span class="token function">If</span><span class="token punctuation">(</span><span class="token parameter"><span class="token punctuation">{</span> component<span class="token punctuation">:</span> Component<span class="token punctuation">,</span> condition <span class="token punctuation">}</span></span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> condition <span class="token operator">?</span> <span class="token operator">&lt;</span>Component <span class="token operator">/</span><span class="token operator">></span> <span class="token punctuation">:</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token operator">&lt;</span>If condition<span class="token operator">=</span><span class="token punctuation">{</span><span class="token boolean">false</span><span class="token punctuation">}</span> component<span class="token operator">=</span><span class="token punctuation">{</span>LazyComponent<span class="token punctuation">}</span> <span class="token operator">/</span><span class="token operator">></span>  </code></pre>
+      </div>
+<h2>Composable 组合</h2>
+<blockquote>
+<p>A composable component is created from the composition of smaller specialized components. </p>
+</blockquote>
+<p>Medium上有一篇文章叫做 组合是React的心脏 (Composition is the heart of React), 因为它发挥了以下3个优点:</p>
+<ul>
+<li>单一责任</li>
+<li>复用性</li>
+<li>灵活性</li>
+</ul>
+<p>接下来举🌰说明</p>
+<h3>单一责任</h3>
+<div class="gatsby-highlight">
+      <pre class="language-javascript"><code class="language-javascript"><span class="token keyword">const</span> app <span class="token operator">=</span> <span class="token punctuation">(</span>
+  <span class="token operator">&lt;</span>Application<span class="token operator">></span>
+    <span class="token operator">&lt;</span>Header <span class="token operator">/</span><span class="token operator">></span>
+    <span class="token operator">&lt;</span>Sidebar<span class="token operator">></span>
+      <span class="token operator">&lt;</span>Menu <span class="token operator">/</span><span class="token operator">></span>
+    <span class="token operator">&lt;</span><span class="token operator">/</span>Sidebar<span class="token operator">></span>
+    <span class="token operator">&lt;</span>Content<span class="token operator">></span>
+      <span class="token operator">&lt;</span>Article <span class="token operator">/</span><span class="token operator">></span>
+    <span class="token operator">&lt;</span><span class="token operator">/</span>Content<span class="token operator">></span>
+    <span class="token operator">&lt;</span>Footer <span class="token operator">/</span><span class="token operator">></span>
+  <span class="token operator">&lt;</span><span class="token operator">/</span>Application<span class="token operator">></span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+      </div>
+<p><code class="language-text">app</code>这个组件中的每个组件都只负责它该负责的部分, 比如<code class="language-text">Application</code>只是一个应用的容器, <code class="language-text">&lt;Footer /&gt;</code>负责渲染页面底部的信息, 页面结构一目了然。</p>
+<h3>复用性</h3>
+<p>提取出不同组件中的相同代码是提升维护性的最佳实践, 比如</p>
+<div class="gatsby-highlight">
+      <pre class="language-javascript"><code class="language-javascript"><span class="token keyword">const</span> instance1 <span class="token operator">=</span> <span class="token punctuation">(</span>
+  <span class="token operator">&lt;</span>Composed1<span class="token operator">></span>
+    <span class="token operator">&lt;</span>Piece1 <span class="token operator">/</span><span class="token operator">></span>
+    <span class="token operator">&lt;</span>Common <span class="token operator">/</span><span class="token operator">></span>
+  <span class="token operator">&lt;</span><span class="token operator">/</span>Composed1<span class="token operator">></span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> instance2 <span class="token operator">=</span> <span class="token punctuation">(</span>
+  <span class="token operator">&lt;</span>Composed2<span class="token operator">></span>
+    <span class="token operator">&lt;</span>Common <span class="token operator">/</span><span class="token operator">></span>
+    <span class="token operator">&lt;</span>Piece2 <span class="token operator">/</span><span class="token operator">></span>
+  <span class="token operator">&lt;</span><span class="token operator">/</span>Composed2<span class="token operator">></span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+      </div>
+<h3>灵活性</h3>
+<p>组合的特性可以让编写React代码时候非常灵活, 当组件组合时需要通过props进行通信, 比如 父组件可以通过<code class="language-text">children</code> prop 来接收子组件。</p>
+<p>当我们想为移动和PC展示不同的UI时我们通常会写成以下这样:</p>
+<div class="gatsby-highlight">
+      <pre class="language-javascript"><code class="language-javascript"><span class="token function">render</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token punctuation">(</span><span class="token operator">&lt;</span>div<span class="token operator">></span>
+        <span class="token punctuation">{</span>Utils<span class="token punctuation">.</span><span class="token function">isMobile</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">?</span> <span class="token operator">&lt;</span>div<span class="token operator">></span>Mobile detected<span class="token operator">!</span><span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span> <span class="token punctuation">:</span> <span class="token operator">&lt;</span>div<span class="token operator">></span>Not a mobile device<span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span><span class="token punctuation">}</span>
+    <span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span><span class="token punctuation">)</span> 
+<span class="token punctuation">}</span></code></pre>
+      </div>
+<p>At first glance, it harmeless, 但是它明显将判断是否时移动端的逻辑与组件耦合了。这不是在拼积木, 这是在”入侵”积木！</p>
+<p>让我们拆分判断逻辑与UI试图, 并且看看React如何使用 <strong>children prop</strong> 灵活的进行数据通信。</p>
+<div class="gatsby-highlight">
+      <pre class="language-javascript"><code class="language-javascript"><span class="token keyword">function</span> <span class="token function">ByDevice</span><span class="token punctuation">(</span><span class="token parameter"><span class="token punctuation">{</span> children<span class="token punctuation">:</span> <span class="token punctuation">{</span> mobile<span class="token punctuation">,</span> other <span class="token punctuation">}</span> <span class="token punctuation">}</span></span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> Utils<span class="token punctuation">.</span><span class="token function">isMobile</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">?</span> mobile <span class="token punctuation">:</span> other<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token operator">&lt;</span>ByDevice<span class="token operator">></span><span class="token punctuation">{</span><span class="token punctuation">{</span>
+  mobile<span class="token punctuation">:</span> <span class="token operator">&lt;</span>div<span class="token operator">></span>Mobile detected<span class="token operator">!</span><span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span><span class="token punctuation">,</span>
+  other<span class="token punctuation">:</span>  <span class="token operator">&lt;</span>div<span class="token operator">></span>Not a mobile device<span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span>
+<span class="token punctuation">}</span><span class="token punctuation">}</span><span class="token operator">&lt;</span><span class="token operator">/</span>ByDevice<span class="token operator">></span></code></pre>
+      </div>
+<h2>Reusable 复用</h2>
+<blockquote>
+<p>A reusable component is written once but used multiple times.</p>
+</blockquote>
+<p>软件世界经常犯的错误就是 reinventing the wheel (造轮子), 比如在项目中编写了已经存在的工具或者库, React组件也是一样的, 我们要考虑代码的复用性, 尽可能的降低重复的代码和造轮子的事情发生, 是我们代码”写一次, 可以使用很多次”。 </p>
+<blockquote>
+<p>Reuse of a component actually means the reuse of its responsibility implementation. </p>
+</blockquote>
+<p>在这里可以找到很多高质量的React组件, 避免我们造轮子: <a href="https://github.com/brillout/awesome-react-components">Absolutely Awesome React Components &#x26; Libraries</a></p>
+<p>通过阅读上面这些可复用的高质量React组件的源码我们会收获到更多复用的思想以及一些API的使用技巧比如：<code class="language-text">React.cloneElement</code>等等。</p>
+<h2>Pure Component</h2>
+<p>Pure Component是从函数式编程延伸出来的概念, pure function always returns the same output for given the same input. 比如</p>
+<p>const sum= (a, b) => a + b // sum(1, 1) // => 2</p>
+<p>给相同的参数永远会得到相同的结果, 当一个函数内部使用全局变量的话那么那个函数可能会变得不那么”纯”(impure)。</p>
+<div class="gatsby-highlight">
+      <pre class="language-javascript"><code class="language-javascript"><span class="token keyword">let</span> said <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+
+<span class="token keyword">function</span> <span class="token function">sayOnce</span><span class="token punctuation">(</span><span class="token parameter">message</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>said<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+  said <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+  <span class="token keyword">return</span> message<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token function">sayOnce</span><span class="token punctuation">(</span><span class="token string">'Hello World!'</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// => 'Hello World!'</span>
+<span class="token function">sayOnce</span><span class="token punctuation">(</span><span class="token string">'Hello World!'</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// => null</span></code></pre>
+      </div>
+<p>impure函数就是给定相同的参数确有可能得到不同的结果, 那么组件也是一个道理, pure component组件会让我们对自己的组件质量充满信心, 但是不可能所有的组件我们都可以写成 pure component. 比如我们的组件里面有一个<code class="language-text">&lt;Input /&gt;</code>, 那么我们的组件不接受任何参数, 但是每次都可能产生不一样的结果。 </p>
+<p>真实世界中太多impure的事情, 比如全局状态, 可改变的全局状态害人不浅, 数据被意外改变导致意外的行为, 如果实在要使用全局状态, 那么考虑使用Redux吧。除了全局状态导致impure的东西还有很多比如网络请求, local storage等等, 那如何让我们的组件尽可能的变成pure component呢？ </p>
+<p>答案： purification</p>
+<p><img src="https://user-gold-cdn.xitu.io/2019/11/19/16e82571acc2b40a?w=900&#x26;h=1037&#x26;f=png&#x26;s=413614"></p>
+<p>下面让我们实践一下如何将impure中pure的部分过滤出来, 成为一个almost pure组件, 用前面获取天气的那个例子, 我们把网络请求这种impure的东西使用<code class="language-text">redux-saga</code>过滤出来</p>
+<p>这是之前的代码:</p>
+<div class="gatsby-highlight">
+      <pre class="language-javascript"><code class="language-javascript"><span class="token keyword">class</span> <span class="token class-name">WeatherFetch</span> <span class="token keyword">extends</span> <span class="token class-name">Component</span> <span class="token punctuation">{</span>  
+   <span class="token function">constructor</span><span class="token punctuation">(</span><span class="token parameter">props</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+     <span class="token keyword">super</span><span class="token punctuation">(</span>props<span class="token punctuation">)</span><span class="token punctuation">;</span>
+     <span class="token keyword">this</span><span class="token punctuation">.</span>state <span class="token operator">=</span> <span class="token punctuation">{</span> temperature<span class="token punctuation">:</span> <span class="token string">'N/A'</span><span class="token punctuation">,</span> windSpeed<span class="token punctuation">:</span> <span class="token string">'N/A'</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
+   <span class="token punctuation">}</span>
+
+   <span class="token function">render</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+     <span class="token keyword">const</span> <span class="token punctuation">{</span> temperature<span class="token punctuation">,</span> windSpeed <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>state<span class="token punctuation">;</span>
+     <span class="token keyword">return</span> <span class="token punctuation">(</span>
+       <span class="token operator">&lt;</span>WeatherInfo temperature<span class="token operator">=</span><span class="token punctuation">{</span>temperature<span class="token punctuation">}</span> windSpeed<span class="token operator">=</span><span class="token punctuation">{</span>windSpeed<span class="token punctuation">}</span> <span class="token operator">/</span><span class="token operator">></span>
+     <span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">}</span>
+
+   <span class="token function">componentDidMount</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+     axios<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token string">'http://weather.com/api'</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">response</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+       <span class="token keyword">const</span> <span class="token punctuation">{</span> current <span class="token punctuation">}</span> <span class="token operator">=</span> response<span class="token punctuation">.</span>data<span class="token punctuation">;</span> 
+       <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">setState</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+         temperature<span class="token punctuation">:</span> current<span class="token punctuation">.</span>temperature<span class="token punctuation">,</span>
+         windSpeed<span class="token punctuation">:</span> current<span class="token punctuation">.</span>windSpeed
+       <span class="token punctuation">}</span><span class="token punctuation">)</span>
+     <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+      </div>
+<p>改造后</p>
+<div class="gatsby-highlight">
+      <pre class="language-javascript"><code class="language-javascript"><span class="token comment">// 定义action</span>
+<span class="token keyword">export</span> <span class="token keyword">function</span> <span class="token function">fetch</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> <span class="token punctuation">{</span>
+    type<span class="token punctuation">:</span> <span class="token string">'FETCH'</span>
+  <span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// 定义dispatch handler</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> call<span class="token punctuation">,</span> put<span class="token punctuation">,</span> takeEvery <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'redux-saga/effects'</span><span class="token punctuation">;</span>
+
+<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token keyword">function</span><span class="token operator">*</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">yield</span> <span class="token function">takeEvery</span><span class="token punctuation">(</span><span class="token string">'FETCH'</span><span class="token punctuation">,</span> <span class="token keyword">function</span><span class="token operator">*</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">const</span> response <span class="token operator">=</span> <span class="token keyword">yield</span> <span class="token function">call</span><span class="token punctuation">(</span>axios<span class="token punctuation">.</span>get<span class="token punctuation">,</span> <span class="token string">'http://weather.com/api'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">const</span> <span class="token punctuation">{</span> temperature<span class="token punctuation">,</span> windSpeed <span class="token punctuation">}</span> <span class="token operator">=</span> response<span class="token punctuation">.</span>data<span class="token punctuation">.</span>current<span class="token punctuation">;</span>
+    <span class="token keyword">yield</span> <span class="token function">put</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+      type<span class="token punctuation">:</span> <span class="token string">'FETCH_SUCCESS'</span><span class="token punctuation">,</span>
+      temperature<span class="token punctuation">,</span>
+      windSpeed
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// 定义reducer </span>
+<span class="token keyword">const</span> initialState <span class="token operator">=</span> <span class="token punctuation">{</span> temperature<span class="token punctuation">:</span> <span class="token string">'N/A'</span><span class="token punctuation">,</span> windSpeed<span class="token punctuation">:</span> <span class="token string">'N/A'</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">state <span class="token operator">=</span> initialState<span class="token punctuation">,</span> action</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">switch</span> <span class="token punctuation">(</span>action<span class="token punctuation">.</span>type<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">case</span> <span class="token string">'FETCH_SUCCESS'</span><span class="token punctuation">:</span> 
+      <span class="token keyword">return</span> <span class="token punctuation">{</span>
+        <span class="token operator">...</span>state<span class="token punctuation">,</span>
+        temperature<span class="token punctuation">:</span> action<span class="token punctuation">.</span>temperature<span class="token punctuation">,</span>
+        windSpeed<span class="token punctuation">:</span> action<span class="token punctuation">.</span>windSpeed
+      <span class="token punctuation">}</span><span class="token punctuation">;</span>
+    <span class="token keyword">default</span><span class="token punctuation">:</span>
+      <span class="token keyword">return</span> state<span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// 使用redux连接起来</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> connect <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'react-redux'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> fetch <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'./action'</span><span class="token punctuation">;</span>
+
+<span class="token keyword">export</span> <span class="token keyword">class</span> <span class="token class-name">WeatherFetch</span> <span class="token keyword">extends</span> <span class="token class-name">Component</span> <span class="token punctuation">{</span>
+   <span class="token function">render</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+     <span class="token keyword">const</span> <span class="token punctuation">{</span> temperature<span class="token punctuation">,</span> windSpeed <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>props<span class="token punctuation">;</span>
+     <span class="token keyword">return</span> <span class="token punctuation">(</span>
+       <span class="token operator">&lt;</span>WeatherInfo temperature<span class="token operator">=</span><span class="token punctuation">{</span>temperature<span class="token punctuation">}</span> windSpeed<span class="token operator">=</span><span class="token punctuation">{</span>windSpeed<span class="token punctuation">}</span> <span class="token operator">/</span><span class="token operator">></span>
+     <span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">}</span>
+
+   <span class="token function">componentDidMount</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+     <span class="token keyword">this</span><span class="token punctuation">.</span>props<span class="token punctuation">.</span><span class="token function">fetch</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">function</span> <span class="token function">mapStateToProps</span><span class="token punctuation">(</span><span class="token parameter">state</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> <span class="token punctuation">{</span>
+    temperature<span class="token punctuation">:</span> state<span class="token punctuation">.</span>temperate<span class="token punctuation">,</span>
+    windSpeed<span class="token punctuation">:</span> state<span class="token punctuation">.</span>windSpeed
+  <span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token function">connect</span><span class="token punctuation">(</span>mapStateToProps<span class="token punctuation">,</span> <span class="token punctuation">{</span> fetch <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+      </div>
+<p>将impure的组件改成almost pure的组件可以让我们更了解程序的行为, 也将变得更易于测试</p>
+<div class="gatsby-highlight">
+      <pre class="language-javascript"><code class="language-javascript"><span class="token keyword">import</span> assert <span class="token keyword">from</span> <span class="token string">'assert'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> shallow<span class="token punctuation">,</span> mount <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'enzyme'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> spy <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'sinon'</span><span class="token punctuation">;</span>
+<span class="token comment">// Import the almost-pure version WeatherFetch</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> WeatherFetch <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'./WeatherFetch'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> WeatherInfo <span class="token keyword">from</span> <span class="token string">'./WeatherInfo'</span><span class="token punctuation">;</span>
+
+<span class="token function">describe</span><span class="token punctuation">(</span><span class="token string">'&lt;WeatherFetch />'</span><span class="token punctuation">,</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token function">it</span><span class="token punctuation">(</span><span class="token string">'should render the weather info'</span><span class="token punctuation">,</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">function</span> <span class="token function">noop</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+    <span class="token keyword">const</span> wrapper <span class="token operator">=</span> <span class="token function">shallow</span><span class="token punctuation">(</span>
+      <span class="token operator">&lt;</span>WeatherFetch temperature<span class="token operator">=</span><span class="token string">"30"</span> windSpeed<span class="token operator">=</span><span class="token string">"10"</span> fetch<span class="token operator">=</span><span class="token punctuation">{</span>noop<span class="token punctuation">}</span> <span class="token operator">/</span><span class="token operator">></span>
+    <span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">assert</span><span class="token punctuation">(</span>wrapper<span class="token punctuation">.</span><span class="token function">contains</span><span class="token punctuation">(</span>
+      <span class="token operator">&lt;</span>WeatherInfo temperature<span class="token operator">=</span><span class="token string">"30"</span> windSpeed<span class="token operator">=</span><span class="token string">"10"</span> <span class="token operator">/</span><span class="token operator">></span>
+    <span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token function">it</span><span class="token punctuation">(</span><span class="token string">'should fetch weather when mounted'</span><span class="token punctuation">,</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">const</span> fetchSpy <span class="token operator">=</span> <span class="token function">spy</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">const</span> wrapper <span class="token operator">=</span> <span class="token function">mount</span><span class="token punctuation">(</span>
+     <span class="token operator">&lt;</span>WeatherFetch temperature<span class="token operator">=</span><span class="token string">"30"</span> windSpeed<span class="token operator">=</span><span class="token string">"10"</span> fetch<span class="token operator">=</span><span class="token punctuation">{</span>fetchSpy<span class="token punctuation">}</span><span class="token operator">/</span><span class="token operator">></span>
+    <span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">assert</span><span class="token punctuation">(</span>fetchSpy<span class="token punctuation">.</span>calledOnce<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+      </div>
+<p>其实上面的almost pure组件仍然有优化的空间, 我们可以借助一些工具库让它成为pure component</p>
+<div class="gatsby-highlight">
+      <pre class="language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> connect <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'react-redux'</span><span class="token punctuation">;</span>  
+<span class="token keyword">import</span> <span class="token punctuation">{</span> compose<span class="token punctuation">,</span> lifecycle <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'recompose'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> fetch <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'./action'</span><span class="token punctuation">;</span>
+
+<span class="token keyword">export</span> <span class="token keyword">function</span> <span class="token function">WeatherFetch</span><span class="token punctuation">(</span><span class="token parameter"><span class="token punctuation">{</span> temperature<span class="token punctuation">,</span> windSpeed <span class="token punctuation">}</span></span><span class="token punctuation">)</span> <span class="token punctuation">{</span>  
+   <span class="token keyword">return</span> <span class="token punctuation">(</span>
+     <span class="token operator">&lt;</span>WeatherInfo temperature<span class="token operator">=</span><span class="token punctuation">{</span>temperature<span class="token punctuation">}</span> windSpeed<span class="token operator">=</span><span class="token punctuation">{</span>windSpeed<span class="token punctuation">}</span> <span class="token operator">/</span><span class="token operator">></span>
+   <span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">function</span> <span class="token function">mapStateToProps</span><span class="token punctuation">(</span><span class="token parameter">state</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>  
+  <span class="token keyword">return</span> <span class="token punctuation">{</span>
+    temperature<span class="token punctuation">:</span> state<span class="token punctuation">.</span>temperate<span class="token punctuation">,</span>
+    windSpeed<span class="token punctuation">:</span> state<span class="token punctuation">.</span>windSpeed
+  <span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token function">compose</span><span class="token punctuation">(</span>
+  <span class="token function">connect</span><span class="token punctuation">(</span>mapStateToProps<span class="token punctuation">,</span> <span class="token punctuation">{</span> fetch <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">lifecycle</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+    <span class="token function">componentDidMount</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">this</span><span class="token punctuation">.</span>props<span class="token punctuation">.</span><span class="token function">fetch</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span><span class="token punctuation">(</span>WeatherFetch<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+      </div>
+<h2>可测试性</h2>
+<blockquote>
+<p>A tested component is verified whether it renders the expected output for a given input.
+A testable component is easy to test.</p>
+</blockquote>
+<p>如何确保组件按照我们的期望工作, 通常我们会改下数据或者条件之类的然后在浏览器中看结果, 称之为手动验证。 这样手动验证有一些缺点:</p>
+<ol>
+<li>临时修改代码为了验证容易出错</li>
+<li>每次修改代码 每次验证很低效</li>
+</ol>
+<p>因此, 我们需要需要编写一些unit tests来帮助我们测试组件, 但是编写unit tests的前提是, 我们的组件是可测试的, 一个不可测试的组件绝对是设计不良的。</p>
+<blockquote>
+<p>A component that is untestable or hard to test is most likely badly designed. </p>
+</blockquote>
+<p>组件变得难以测试有很多因素, 比如太多的props, 高度耦合, 全局变量等等, 下面通过一个例子让我们理解如何编写可测试组件。</p>
+<p>编写一个<code class="language-text">Controls</code>组件, 目的是实现一个计数器, 点击<code class="language-text">Increase</code>则加1, 点击<code class="language-text">Decrease</code>则减1, 先来一个错误的设计</p>
+<div class="gatsby-highlight">
+      <pre class="language-javascript"><code class="language-javascript"><span class="token operator">&lt;</span>Control parent<span class="token operator">=</span><span class="token punctuation">{</span>ConponentName<span class="token punctuation">}</span></code></pre>
+      </div>
+<p>假设我们是这样使用的, 意图是我们传入一个父组件, 点击<code class="language-text">Control</code>的加减操作会修改父组件的state值</p>
+<div class="gatsby-highlight">
+      <pre class="language-javascript"><code class="language-javascript"><span class="token keyword">import</span> assert <span class="token keyword">from</span> <span class="token string">'assert'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> shallow <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'enzyme'</span><span class="token punctuation">;</span>
+
+<span class="token keyword">class</span> <span class="token class-name">Controls</span> <span class="token keyword">extends</span> <span class="token class-name">Component</span> <span class="token punctuation">{</span>
+  <span class="token function">render</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token punctuation">(</span>
+      <span class="token operator">&lt;</span>div className<span class="token operator">=</span><span class="token string">"controls"</span><span class="token operator">></span>
+        <span class="token operator">&lt;</span>button onClick<span class="token operator">=</span><span class="token punctuation">{</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">updateNumber</span><span class="token punctuation">(</span><span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">}</span><span class="token operator">></span>
+          Increase
+        <span class="token operator">&lt;</span><span class="token operator">/</span>button<span class="token operator">></span> 
+        <span class="token operator">&lt;</span>button onClick<span class="token operator">=</span><span class="token punctuation">{</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">updateNumber</span><span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">}</span><span class="token operator">></span>
+          Decrease
+        <span class="token operator">&lt;</span><span class="token operator">/</span>button<span class="token operator">></span>
+      <span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span>
+    <span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+  <span class="token function">updateNumber</span><span class="token punctuation">(</span><span class="token parameter">toAdd</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>props<span class="token punctuation">.</span>parent<span class="token punctuation">.</span><span class="token function">setState</span><span class="token punctuation">(</span><span class="token parameter">prevState</span> <span class="token operator">=></span> <span class="token punctuation">(</span><span class="token punctuation">{</span>
+      number<span class="token punctuation">:</span> prevState<span class="token punctuation">.</span>number <span class="token operator">+</span> toAdd       
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">class</span> <span class="token class-name">Temp</span> <span class="token keyword">extends</span> <span class="token class-name">Component</span> <span class="token punctuation">{</span>
+  <span class="token function">constructor</span><span class="token punctuation">(</span><span class="token parameter">props</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">super</span><span class="token punctuation">(</span>props<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>state <span class="token operator">=</span> <span class="token punctuation">{</span> number<span class="token punctuation">:</span> <span class="token number">0</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+  <span class="token function">render</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token function">describe</span><span class="token punctuation">(</span><span class="token string">'&lt;Controls />'</span><span class="token punctuation">,</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token function">it</span><span class="token punctuation">(</span><span class="token string">'should update parent state'</span><span class="token punctuation">,</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">const</span> parent <span class="token operator">=</span> <span class="token function">shallow</span><span class="token punctuation">(</span><span class="token operator">&lt;</span>Temp<span class="token operator">/</span><span class="token operator">></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">const</span> wrapper <span class="token operator">=</span> <span class="token function">shallow</span><span class="token punctuation">(</span><span class="token operator">&lt;</span>Controls parent<span class="token operator">=</span><span class="token punctuation">{</span>parent<span class="token punctuation">}</span> <span class="token operator">/</span><span class="token operator">></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token function">assert</span><span class="token punctuation">(</span>parent<span class="token punctuation">.</span><span class="token function">state</span><span class="token punctuation">(</span><span class="token string">'number'</span><span class="token punctuation">)</span> <span class="token operator">===</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    wrapper<span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span><span class="token string">'button'</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">at</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">simulate</span><span class="token punctuation">(</span><span class="token string">'click'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">assert</span><span class="token punctuation">(</span>parent<span class="token punctuation">.</span><span class="token function">state</span><span class="token punctuation">(</span><span class="token string">'number'</span><span class="token punctuation">)</span> <span class="token operator">===</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    wrapper<span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span><span class="token string">'button'</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">at</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">simulate</span><span class="token punctuation">(</span><span class="token string">'click'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">assert</span><span class="token punctuation">(</span>parent<span class="token punctuation">.</span><span class="token function">state</span><span class="token punctuation">(</span><span class="token string">'number'</span><span class="token punctuation">)</span> <span class="token operator">===</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
+  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+      </div>
+<p>由于我们设计的<code class="language-text">Controls</code>组件与父组件依赖很强, 导致我们编写单元测试很复杂, 这时我们就应该思考重构这个<code class="language-text">Controls</code>提高它的可测试性了。</p>
+<div class="gatsby-highlight">
+      <pre class="language-javascript"><code class="language-javascript"><span class="token keyword">import</span> assert <span class="token keyword">from</span> <span class="token string">'assert'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> shallow <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'enzyme'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> spy <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'sinon'</span><span class="token punctuation">;</span>
+
+<span class="token keyword">function</span> <span class="token function">Controls</span><span class="token punctuation">(</span><span class="token parameter"><span class="token punctuation">{</span> onIncrease<span class="token punctuation">,</span> onDecrease <span class="token punctuation">}</span></span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> <span class="token punctuation">(</span>
+    <span class="token operator">&lt;</span>div className<span class="token operator">=</span><span class="token string">"controls"</span><span class="token operator">></span>
+      <span class="token operator">&lt;</span>button onClick<span class="token operator">=</span><span class="token punctuation">{</span>onIncrease<span class="token punctuation">}</span><span class="token operator">></span>Increase<span class="token operator">&lt;</span><span class="token operator">/</span>button<span class="token operator">></span> 
+      <span class="token operator">&lt;</span>button onClick<span class="token operator">=</span><span class="token punctuation">{</span>onDecrease<span class="token punctuation">}</span><span class="token operator">></span>Decrease<span class="token operator">&lt;</span><span class="token operator">/</span>button<span class="token operator">></span>
+    <span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span>
+  <span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token function">describe</span><span class="token punctuation">(</span><span class="token string">'&lt;Controls />'</span><span class="token punctuation">,</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token function">it</span><span class="token punctuation">(</span><span class="token string">'should execute callback on buttons click'</span><span class="token punctuation">,</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">const</span> increase <span class="token operator">=</span> sinon<span class="token punctuation">.</span><span class="token function">spy</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">const</span> descrease <span class="token operator">=</span> sinon<span class="token punctuation">.</span><span class="token function">spy</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">const</span> wrapper <span class="token operator">=</span> <span class="token function">shallow</span><span class="token punctuation">(</span>
+      <span class="token operator">&lt;</span>Controls onIncrease<span class="token operator">=</span><span class="token punctuation">{</span>increase<span class="token punctuation">}</span> onDecrease<span class="token operator">=</span><span class="token punctuation">{</span>descrease<span class="token punctuation">}</span> <span class="token operator">/</span><span class="token operator">></span>
+    <span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    wrapper<span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span><span class="token string">'button'</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">at</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">simulate</span><span class="token punctuation">(</span><span class="token string">'click'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">assert</span><span class="token punctuation">(</span>increase<span class="token punctuation">.</span>calledOnce<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    wrapper<span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span><span class="token string">'button'</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">at</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">simulate</span><span class="token punctuation">(</span><span class="token string">'click'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">assert</span><span class="token punctuation">(</span>descrease<span class="token punctuation">.</span>calledOnce<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+      </div>
+<p>重构后我们的组件使用方法变为 <code class="language-text">&lt;Controls onIncrease={increase} onDecrease={descrease} /&gt;</code>, 这样的使用方式彻底解耦了<code class="language-text">Controls</code>和父组件之间的关系, 即: <code class="language-text">Controls</code>只负责按钮UI的渲染。</p>
+<h2>可读性</h2>
+<blockquote>
+<p>A meaningful component is easy to understand what it does. </p>
+</blockquote>
+<p>代码的可读性对于产品迭代的重要性是不可忽视的, obscured code不仅会让维护者头疼, 甚至我们自己也无法理解代码的意图。曾经有一个有趣的统计, 编程工作是由: 75%的读代码(理解) + 20%的修改现有代码 + 5%新代码组成的。</p>
+<p>self-explanatory code无疑是提高代码可读性最直接最好的方法</p>
+<p>举一个例子:</p>
+<div class="gatsby-highlight">
+      <pre class="language-javascript"><code class="language-javascript"><span class="token comment">// &lt;Games> renders a list of games</span>
+<span class="token comment">// "data" prop contains a list of game data</span>
+<span class="token keyword">function</span> <span class="token function">Games</span><span class="token punctuation">(</span><span class="token parameter"><span class="token punctuation">{</span> data <span class="token punctuation">}</span></span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token comment">// display up to 10 first games</span>
+  <span class="token keyword">const</span> data1 <span class="token operator">=</span> data<span class="token punctuation">.</span><span class="token function">slice</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token comment">// Map data1 to &lt;Game> component</span>
+  <span class="token comment">// "list" has an array of &lt;Game> components</span>
+  <span class="token keyword">const</span> list <span class="token operator">=</span> data1<span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">v</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">// "v" has game data</span>
+    <span class="token keyword">return</span> <span class="token operator">&lt;</span>Game key<span class="token operator">=</span><span class="token punctuation">{</span>v<span class="token punctuation">.</span>id<span class="token punctuation">}</span> name<span class="token operator">=</span><span class="token punctuation">{</span>v<span class="token punctuation">.</span>name<span class="token punctuation">}</span> <span class="token operator">/</span><span class="token operator">></span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">return</span> <span class="token operator">&lt;</span>ul<span class="token operator">></span><span class="token punctuation">{</span>list<span class="token punctuation">}</span><span class="token operator">&lt;</span><span class="token operator">/</span>ul<span class="token operator">></span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token operator">&lt;</span>Games 
+   data<span class="token operator">=</span><span class="token punctuation">[</span><span class="token punctuation">{</span> id<span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span> name<span class="token punctuation">:</span> <span class="token string">'Mario'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> id<span class="token punctuation">:</span> <span class="token number">2</span><span class="token punctuation">,</span> name<span class="token punctuation">:</span> <span class="token string">'Doom'</span> <span class="token punctuation">}</span><span class="token punctuation">]</span> 
+<span class="token operator">/</span><span class="token operator">></span></code></pre>
+      </div>
+<p>下面让我们重构这段代码, 使它可以 <strong>self-explanatory</strong> 和 <strong>self-documenting</strong> .</p>
+<div class="gatsby-highlight">
+      <pre class="language-javascript"><code class="language-javascript"><span class="token keyword">const</span> <span class="token constant">GAMES_LIMIT</span> <span class="token operator">=</span> <span class="token number">10</span><span class="token punctuation">;</span>
+
+<span class="token keyword">function</span> <span class="token function">GamesList</span><span class="token punctuation">(</span><span class="token parameter"><span class="token punctuation">{</span> items <span class="token punctuation">}</span></span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">const</span> itemsSlice <span class="token operator">=</span> items<span class="token punctuation">.</span><span class="token function">slice</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token constant">GAMES_LIMIT</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">const</span> games <span class="token operator">=</span> itemsSlice<span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">gameItem</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token operator">&lt;</span>Game key<span class="token operator">=</span><span class="token punctuation">{</span>gameItem<span class="token punctuation">.</span>id<span class="token punctuation">}</span> name<span class="token operator">=</span><span class="token punctuation">{</span>gameItem<span class="token punctuation">.</span>name<span class="token punctuation">}</span> <span class="token operator">/</span><span class="token operator">></span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">return</span> <span class="token operator">&lt;</span>ul<span class="token operator">></span><span class="token punctuation">{</span>games<span class="token punctuation">}</span><span class="token operator">&lt;</span><span class="token operator">/</span>ul<span class="token operator">></span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token operator">&lt;</span>GamesList 
+  items<span class="token operator">=</span><span class="token punctuation">[</span><span class="token punctuation">{</span> id<span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span> name<span class="token punctuation">:</span> <span class="token string">'Mario'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> id<span class="token punctuation">:</span> <span class="token number">2</span><span class="token punctuation">,</span> name<span class="token punctuation">:</span> <span class="token string">'Doom'</span> <span class="token punctuation">}</span><span class="token punctuation">]</span>
+<span class="token operator">/</span><span class="token operator">></span></code></pre>
+      </div>
+<p>一个可读性良好的React组件应该做到: 通过读<code class="language-text">name</code>和<code class="language-text">props</code>就可以看出这段代码的意图。 </p>
+<h2>写在最后的</h2>
+<p>即使编写出了自我感觉良好的组件, 我们也该在一次一次迭代中去 Do continuous improvement, 正如作家William Zinsse说过一句话</p>
+<blockquote>
+<p>rewriting is the essence of writing. I pointed out that professional writers rewrite their sentences over and over and then rewrite what they have rewritten. </p>
+</blockquote>
+<p>重构, 编写高质量, 可扩展, 可维护的应用是每个开发人员的追求。</p>
+<p>本文参考: <a href="https://dmitripavlutin.com/7-architectural-attributes-of-a-reliable-react-component/#8-do-continuous-improvement">7 Architectural Attributes of a Reliable React Component</a></p></div><div class="post-single__date" data-reactid="17"></div></div><div class="post-single__footer" data-reactid="18"><p class="post-single__footer-text" data-reactid="19"></p><div data-reactid="20"><!-- react-empty: 21 --></div></div></div></div></div></div></div><script id="webpack-manifest">/*<![CDATA[*/window.webpackManifest={"231608221292675":"app-c361a845031f88af67a8.js","99219681209289":"component---node-modules-gatsby-plugin-offline-app-shell-js-5c4c5a0f7af9dc69d6d7.js","11305920230724":"component---src-templates-page-template-jsx-f6ccb66aa29719931de1.js","108009296967943":"component---src-templates-post-template-jsx-aa7d502d290c49188166.js","2638498282051":"component---src-templates-tag-template-jsx-7993acfae1508a28ada3.js","90179704293519":"component---src-templates-category-template-jsx-f1bd06aa66bc83434d80.js","183328146348521":"component---src-pages-404-jsx-3d0441dd1a11b2f3a35b.js","142542727794042":"component---src-pages-categories-jsx-1ff84966f84b04ce4b5d.js","213534597649335":"component---src-pages-index-jsx-6976bc2c63f8929c9c2d.js","36530248567819":"component---src-pages-tags-jsx-0616ccee2e9f05bdf940.js","60335399758886":"path----557518bd178906f8d58a.js","210333531512890":"path---offline-plugin-app-shell-fallback-a0e39f21c11f6a62c5ab.js","273950069227526":"path---about-1bfd2f96cdb0acc2ebd2.js","71040202780299":"path---posts-english-writing-skills-13f51a57c52148b35dc5.js","61810573369755":"path---tags-english-skills-b1c5496ed867667467b5.js","247303186596613":"path---categories-english-skills-8435471e9178835a0669.js","184662623972074":"path---contact-075c4f695147be38335e.js","84035053340424":"path---posts-float-character-4ff16c97a9b7517102fa.js","209063065961547":"path---tags-css-5b1a8d4ff5c8b4415ff7.js","73987681764263":"path---tags-float-61f438f4fb5730f34e5a.js","51077202873962":"path---categories-css-78b5d3e7af354e1ff2d7.js","259754231509491":"path---posts-webpack-dev-server-source-efbd693eede52e346621.js","179502995171155":"path---tags-webpack-91ed2dc32098d2756abc.js","212641908305216":"path---tags-java-script-0ec5a4365c8595e824fe.js","91497887388271":"path---categories-webpack-2534d86e716986b7cd60.js","253406865395715":"path---posts-chrome-web-push-b69bdc9549554b98bc68.js","126920623696319":"path---tags-webpush-a6fb2db6de1986214f8d.js","20990376623382":"path---categories-webpush-72a21726801a47c53b8a.js","57137080336376":"path---posts-translation-react-renderless-components-to-handle-data-5ae89349ea83946a3337.js","55702396619907":"path---tags-ebae118c24b0ca4603c1.js","180824789067976":"path---categories-react-e7e116a37580c2a71bd0.js","189801418091492":"path---posts-koa-source-ec2e1d4a0a36eaa11bdb.js","99570036377916":"path---categories-node-js-4ab70b7e3798252e1d53.js","199137236418975":"path---posts-translation-diving-into-antd-button-75a10c4d83a3718e4de1.js","113924778701500":"path---tags-antd-28874f1d16d89a97cf51.js","68237591569990":"path---posts-translation-best-practices-for-writing-react-components-e691192774b233b970d3.js","212125985308831":"path---posts-create-react-app-0d9fd56417ed6bda47cf.js","84586273293571":"path---tags-react-de024830d2f2367bd29b.js","201679637941973":"path---posts-react-router-source-9f7ed991cb94b50af6be.js","274775824215904":"path---posts-dva-source-9ce5eb26060abc71c8ef.js","240106491270875":"path---categories-redux-fb30102dafe144c77220.js","109458580507264":"path---posts-express-source-b70a48cbc96e313fa468.js","196931401896829":"path---posts-webpack-hmr-source-138bb9b18d83ffebea6f.js","28022896516486":"path---posts-webpack-source-eb20f910128591c27d82.js","268116945381289":"path---posts-saga-source-f787c4eea9dd5297ccb1.js","254022195166212":"path---404-19a16a2b6307d083ee94.js","30875753179511":"path---categories-8703bee361f099a070a0.js","142629428675168":"path---index-13d3623bb44a69b26311.js","178698757827068":"path---404-html-19a16a2b6307d083ee94.js","79611799117203":"component---src-layouts-index-jsx-f3fdb70d6c6a5d2c575f.js"}/*]]>*/</script><script>/*<![CDATA[*/["/commons-fd7089e8b11e8ae2b1b9.js","/app-c361a845031f88af67a8.js","/path---posts-translation-best-practices-for-writing-react-components-e691192774b233b970d3.js","/component---src-templates-post-template-jsx-aa7d502d290c49188166.js","/component---src-layouts-index-jsx-f3fdb70d6c6a5d2c575f.js"].forEach(function(s){document.write('<script src="'+s+'" defer></'+'script>')})/*]]>*/</script></body></html>
