@@ -16,22 +16,14 @@ description: ""
 
 看Koa和Express的源码可以看出他们最明显的区别是: Koa使用ES6语法实现, 而express还是ES5的语法, Koa的核心文件只有四个
 
-```javascript
 - application.js
 - request.js
 - response.js
 - context.js
-```
 
 `applicatoin.js`是Koa的核心, 比如监听http端口, 处理中间件。`request.js`和`response.js`则是对原生http的request和response做扩展, `context.js`提供了`ctx`对象, 算是Koa与Express的第二个区别点, 当收到Http Incoming请求的时候, Koa将request与response包装在了`ctx`对象中, 并且提供了很多便利的操作方式, 而Express则是使用原生的requeset与response对象, 并且对其进行了扩展。
 
 ## ctx对象的实现
-
-```javascript
-app.use('/', ctx=>{
-  
-})
-```
 
 在Koa中, 我们的request handler会被传入一个ctx对象来简化我们的操作, 比如我们当取得request的`url`属性, 我们可以使用以下4种方式
 
