@@ -13,7 +13,7 @@ module.exports = {
       {
         label: 'About me',
         path: '/about/'
-      },
+      }
       // {
       //   label: 'Contact me',
       //   path: '/contact/'
@@ -99,24 +99,19 @@ module.exports = {
         plugins: [
           {
             resolve: 'gatsby-remark-images',
-            options: {
-              maxWidth: 960
-            }
+            options: { maxWidth: 960 }
           },
           {
             resolve: 'gatsby-remark-responsive-iframe',
             options: { wrapperStyle: 'margin-bottom: 1.0725rem' }
           },
-          // {
-          //   resolve: `gatsby-remark-toc`,
-          //   options: {
-          //     header: `TOC`,
-          //     include:[
-          //       `${__dirname}/src/pages/articles/**/*.md`
-          //     ]
-          //
-          //   }
-          // },
+          {
+            resolve: 'gatsby-remark-toc',
+            options: {
+              header: 'Table of Contents',
+              include: [`${__dirname}/src/pages/articles/**/*.md`]
+            }
+          },
           'gatsby-remark-prismjs',
           'gatsby-remark-copy-linked-files',
           'gatsby-remark-smartypants'
