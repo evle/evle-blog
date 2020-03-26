@@ -1,5 +1,5 @@
 ---
-title: "JavaScriptf精进之常用算法实现"
+title: "JavaScript精进之常用算法实现"
 date: "2020-03-26"
 layout: post
 draft: false
@@ -109,6 +109,8 @@ let arr  = [1, {props:1}]
 const copy = arr.slice();
 ```
 
+对于浅拷贝使用上述几种方式来解引用, 在Reducer中合并state时常用。
+
 ### 深拷贝 拷贝多层
 
 ```javascript
@@ -121,10 +123,37 @@ var copy = JSON.parse(JSON.stringify(obj))
 实现深拷贝思路:
 
 - 对于基本类型直接复制
-- 对于[] {} 则进行递归拷贝
+- 对于[] {} 则进行递归拷贝, 递归拷贝的都是基本类型, 所以自然解引用了
 
 ```javascript
 // 实现思路
+function deepClone(obj) {
+  let copy = obj instanceof Array ? [] : {}
+  for (let i in obj) {
+    if (obj.hasOwnProperty(i)) {
+      // 递归拷贝
+      copy[i] = typeof obj[i] === 'object' ? deepClone(obj[i]) : obj[i]
+    }
+  }
+  return copy
+}
+```
 
+在基本实现的基础上增加解决循环引用的问题, 首先循环引用为什么出问题？
+
+```javascript
 
 ```
+
+## 排序 & 乱序
+
+## call & apply & bind
+
+
+## throtte & debounce
+
+## Curving
+
+## new & instanceof
+
+# Promise
