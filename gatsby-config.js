@@ -105,13 +105,6 @@ module.exports = {
             resolve: 'gatsby-remark-responsive-iframe',
             options: { wrapperStyle: 'margin-bottom: 1.0725rem' }
           },
-          // {
-          //   resolve: 'gatsby-remark-toc',
-          //   options: {
-          //     header: 'Table of Contents',
-          //     include: [`${__dirname}/src/pages/articles/**/*.md`]
-          //   }
-          // },
           'gatsby-remark-prismjs',
           'gatsby-remark-copy-linked-files',
           'gatsby-remark-smartypants'
@@ -120,49 +113,6 @@ module.exports = {
     },
     'gatsby-transformer-sharp',
     'gatsby-plugin-sharp',
-    // {
-    //   resolve: 'gatsby-plugin-google-analytics',
-    //   options: { trackingId: 'UA-73379983-2' }
-    // },
-    // {
-    //   resolve: `gatsby-plugin-google-fonts`,
-    //   options: {
-    //     fonts: [`roboto\:400,400i,500,700`]
-    //   }
-    // },
-    // {
-    //   resolve: 'gatsby-plugin-sitemap',
-    //   options: {
-    //     query: `
-    //         {
-    //           site {
-    //             siteMetadata {
-    //               url
-    //             }
-    //           }
-    //           allSitePage(
-    //             filter: {
-    //               path: { regex: "/^(?!/404/|/404.html|/dev-404-page/)/" }
-    //             }
-    //           ) {
-    //             edges {
-    //               node {
-    //                 path
-    //               }
-    //             }
-    //           }
-    //       }`,
-    //     output: '/sitemap.xml',
-    //     serialize: ({ site, allSitePage }) =>
-    //       allSitePage.edges.map((edge) => {
-    //         return {
-    //           url: site.siteMetadata.url + edge.node.path,
-    //           changefreq: 'daily',
-    //           priority: 0.7
-    //         };
-    //       })
-    //   }
-    // },
     'gatsby-plugin-offline',
     'gatsby-plugin-catch-links',
     'gatsby-plugin-react-helmet',
