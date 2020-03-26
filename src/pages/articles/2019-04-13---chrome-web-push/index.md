@@ -11,9 +11,9 @@ tags:
 description: ""
 ---
 
-## 介绍
+## 介绍
 
-推送类型的广告作为一种新型的广告形式已经兴起很久了, 通过适(欺)当(骗)的文案相比传统Banner广告有着不可思议的转化率。用户很乐意去点击感兴趣的推送而进入我们想让他进入的网站。HTTP Web Push协议中描述Web推送服务的架构如下
+推送类型的广告作为一种新型的广告形式已经兴起很久了, 通过适(欺)当(骗)的文案相比传统Banner广告有着不可思议的转化率。用户很乐意去点击感兴趣的推送而进入我们想让他进入的网站。HTTP Web Push协议中描述Web推送服务的架构如下
 
 [![E9aiMq.md.png](https://s2.ax1x.com/2019/04/19/E9aiMq.md.png)](https://imgchr.com/i/E9aiMq)
 
@@ -27,7 +27,7 @@ description: ""
 
 ## 推送流程
 
-在客户端实现推送需要借助浏览器的Service Worker, 向Push Service发送请求以及接受来自Push Service的推送事件我们都需要调用Service Worker的API, 我们需要使用`navigator.serviceWorker.register('sw.js')`注册一个service worker, `sw.js`也就是一个JS文件, 里面控制了该worker如何工作。当我们调用这个API注册了一个worker后浏览器会做以下三件事情：
+在客户端实现推送需要借助浏览器的Service Worker, 向Push Service发送请求以及接受来自Push Service的推送事件我们都需要调用Service Worker的API, 我们需要使用`navigator.serviceWorker.register('sw.js')`注册 一个service worker, `sw.js`也就是一个JS文件, 里面控制了该worker如何工作。 当我们调用这个API注册了一个worker后浏览器会做以下三件事情：
 
 1. 下载sw.js
 2. 运行sw.js中的代码
@@ -49,7 +49,7 @@ description: ""
 registration.pushManager.subscribe(Options)
 ```
 
-`Options`中的`applicationServerKey`是由 VAPID spec标准定义的一个规范所生成的public key, 我们可以用`web-push`生成public和private key，把public key放在上面的`applicationServerKey`中。
+`Options`中的`applicationServerKey`是由 VAPID spec标准定义的一个规范 所生成的public key, 我们可以用`web-push`生成public和private key，把public key放在上面的`applicationServerKey`中。
 
 ```javascript
 const webpush = require('web-push');
@@ -75,7 +75,7 @@ function urlBase64ToUint8Array(base64String) {
 }
 ```
 
-当我们调用`registration.pushManager.subscribe(options)`后，浏览器会把这个public key发送给 Push Service, Push Service会用这个public key生成一个 **endpoint** 并返回给浏览器。浏览器会得到以下格式的对象称为`PushSubscription`。
+当我们调用`registration.pushManager.subscribe(options)`后，浏览器会把这个public key发送给  Push Service, Push Service会用这个public key生成一个 **endpoint** 并返回给浏览器。  浏览器会得到以下格式的对象称为`PushSubscription`。
 
 ```javascript
 {
@@ -88,7 +88,7 @@ function urlBase64ToUint8Array(base64String) {
 }
 ```
 
-这个**PushSubscription**相当于该浏览器ID, 第三步我们需要将这个ID发送至我们的后端应用保存起来, 以后我们需要将推送内容发送给这个ID来实现推送功能。在保存该信息时我们应该附带保存一些当前浏览器的信息比如UA、Platform等其他信息以便于在后端统计以及分类。
+这个**PushSubscription**相当于该浏览器ID,  第三步我们需要将这个ID发送至我们的后端应用 保存起来, 以后我们需要将推送内容发送给这个ID来实现推送功能。在保存该信息时我们应该附带保存一些当前浏览器的信息比如UA、Platform等其他信息以便于在后端统计以及分类。
 
 当后端应用收到这个 **PushSubscription** 后就可以任意时候给客户端推送消息了。具体流程如下：
 
@@ -120,7 +120,7 @@ WebPushLib.prototype.setVapidDetails = function(subject, publicKey, privateKey) 
 }
 ```
 
-`sendNotification`是将这个请求发送出去，发送的第一步正如上图中第一步将签名信息包括private key加在请求的`header`中，其中重要的方法是`generateRequestDetails`将签名信息放在header里面
+`sendNotification`是将这个请求发送出去，发送的第一步正如上图中第一步将签名信息包括private key加在请求的`header`中  ，其中重要的方法是`generateRequestDetails`将 签名信息放在header里面
 
 ```javascript
  const requestDetails = {
@@ -136,9 +136,9 @@ requestDetails.headers['Crypto-Key'] = KEY;
 requestDetails.headers.Authorization = 'key=' + KEY;
 ```
 
-设置完header头之后，该方法最后调用Nodejs原生API `https.request` 给`PushSubscription`中的`endpoint`发送POST请求，也就是完成了上图流程中的第二步。
+设置完header头之后，该方法最后调用Nodejs原生API `https.request` 给`PushSubscription`中的`endpoint`发送POST请求 ，也就是完成了上图流程中的第二步。
 
-第三步就是Push Service要处理的事情了， Push Service会收到private key并且来找与它匹配的public key, 找到后会回应后端应用推送成功并且将推送内容发送至浏览器。
+第三步就是Push Service要处理的事情了， Push Service会收到private key 并且来找与它匹配的public key, 找到后会回应后端应用推送成功并且将推送内容发送至浏览器。
 
 因为浏览器中有我们之前注册的service worker, service worker会收到`push`事件, 但是我们无法控制servie worker的代码何时运行，因为是浏览器决定它什么时候唤醒, 什么时候终止, 因此我们需要将一个Promise对象传递给`event.waitUntil()`来保持service worker一直运行，直到Promise被`resolve`。此外我们通常在浏览器收到推送时，将浏览器收到推送的事件上报给服务器，那么我们可以将上报给服务器的代码也封装成一个Promise, 用`Promise.all`处理后在传递给`event.waitUntil()`
 
@@ -167,7 +167,7 @@ self.addEventListener('push', function(event) {
 });
 ```
 
-这里要注意的是必须在Promise中**return** `self.registration.showNotification`。 我们收到该事件后需要调用`self.registration.showNotification`来展示服务器推送的内容。服务器推送的内容包含下面这样一个对象来用展示内容, 通常我们在开发中需要配置一个素材服务器来管理给客户端推送的内容。
+这里要注意的是必须在Promise中**return** `self.registration.showNotification`。 我们收到该事件后需要调用`self.registration.showNotification`来展示服务器推送的内容。服务器推送的内容包含下面这样一个对象来用展示内容, 通常我们在开发中需要配置一个素材服务器来管理给客户端推送的内容。   
 
 ```javascript
 {
@@ -181,7 +181,7 @@ self.addEventListener('push', function(event) {
 }
 ```
 
-上面对象中的属性分别对应浏览器通知栏的这些位置
+上面对象中的属性分别对应  浏览器通知栏的这些位置
 ![E9hxGn.png](https://s2.ax1x.com/2019/04/19/E9hxGn.png)
 
 至此, 完整的一个推送流程就结束了。
@@ -190,20 +190,20 @@ self.addEventListener('push', function(event) {
 
 当实现了推送服务后我们需要让用户订阅我们的服务, 我们需要诱惑用户心理来订阅我们的服务, 当用户调用`Notification.requestPermission()`时，如果用户点击了拒绝, 那么该浏览器除非用户手动再次设置，否则永远无法接收我们的推送，所以我们不能冒险直接调用该接口, 我们有以下三种策略来提高用户的订阅率：
 
-- 纯诱导订阅: 最基本的比如做一个假的视频播放页面并且起个劲爆标题，增加用户点击视频播放按钮的欲望, 当用户点击后调用`requestPermission()`接口弹出授权提示让用户选择点击Allow后即可观看。
+-  纯诱导订阅: 最基本的比如做一个假的视频播放页面并且起个劲爆标题，  增加用户点击视频播放按钮的欲望, 当用户点击后  调用`requestPermission()`接口弹出授权提示让用户选择点击Allow后即可观看。
 
 - 试探订阅: 先做一些假的推送框, 让用户选择是否推送，以此来判断用户接受推送的意愿，如果用户点击了假推送框的Allow, 那么我们则调用
 `requestPermission()`, 这时用户是极大概率接着点真Allow的。如果用户不愿意，则继续用其他假的推送框试探用户。
 
-- 被动订阅：直接在页面中添加一个是否允许订阅的开关，如果用户觉得站点内容有价值，自然会点击允许开关，此时调用`requestPermission()`
+- 被动订阅： 直接在页面中添加一个是否允许订阅的开关，如果用户觉得站点内容有价值，自然会点击允许开关，此时调用`requestPermission()`
 
-原则就是不要让用户点拒绝, 这样意味着这个用户将永远的失去。还要注意的是推送的内容一定要“适当“, 下面是之前做的高仿热门App的推送内容, 用户的点击率还是很高的。
+原则就是不要让用户 点拒绝,    这样意味着这个用户将永远的失去。还要注意的是推送的内容一定要“适当“, 下面是之前做的高仿热门App的推送内容, 用户的点击率还是很高的。
 
 [![E9HsFU.png](https://s2.ax1x.com/2019/04/19/E9HsFU.png)](https://imgchr.com/i/E9HsFU)
 
 ## 总结
 
-Chrome推送服务的商业价值是很高的, 特别是在欧美地区Chrome普及的情况下。 本文的目的是分析开篇介绍中 webpush 架构在实际开发中的应用, 让读者了解实现一个推送服务要经历哪些流程, 而不是详细的介绍SW API的详细用法, 有兴趣的读者可以查阅以下链接了解更多相关的知识：
+ Chrome推送服务的商业价值是很高的, 特别是在欧美地区Chrome普及的情况下。 本文的目的是分析开篇介绍中 webpush 架构在实际开发中的应用, 让读者了解实现一个推送服务要经历哪些流程, 而不是详细的介绍SW API的详细用法, 有兴趣的读者可以  查阅以下链接了解更多相关的知识：
 
 - https://serviceworke.rs/
-- https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API
+- https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API

@@ -92,3 +92,39 @@ function flatten(arr) {
 
 console.log(flatten([1, [2, 3, [5, 521, [224, 590]]], 3, 4]));
 ```
+
+## 深浅拷贝
+
+拷贝考虑的事情: 引用类型的拷贝如何处理, 解引用 
+
+### 浅拷贝 只拷贝一层
+
+```javascript
+// ... & Object.assign
+const copy = {... {prop: 1}}
+Object.assign({}, {prop: 1})
+
+// slice
+let arr  = [1, {props:1}]
+const copy = arr.slice();
+```
+
+### 深拷贝 拷贝多层
+
+```javascript
+// JSON.stringify & JSON.parse
+var copy = JSON.parse(JSON.stringify(obj))
+// 问题: 1. JSON拷贝回丢失信息(function undefined RegExp, Error)
+//      2. 循环引用的问题
+```
+
+实现深拷贝思路:
+
+- 对于基本类型直接复制
+- 对于[] {} 则进行递归拷贝
+
+```javascript
+// 实现思路
+
+
+```

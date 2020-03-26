@@ -11,7 +11,7 @@ tags:
 description: ''
 ---
 
-构建 React 应用的第一步是搭建 React 开发环境,  开发环境是项目的基石也是比较复杂繁琐的一个部分, 因此搭建一个脚手架工具来完成自动化的流程是必不可少的。Facebook 官方提供了一个有效且功能齐全的 React 应用脚手架工具`create-react-app`, 本文通过分析`create-react-app`的源码来了解如何编写一个脚手架工具来提高开发效能。
+构建 React 应用的第一步是搭建 React 开发环境, 开发环境是项目的基石也是比较复杂繁琐的一个部分, 因此搭建一个脚手架工具来完成自动化的流程是必不可少的。Facebook 官方提供了一个有效且功能齐全的 React 应用脚手架工具`create-react-app`, 本文通过分析`create-react-app`的源码来了解如何编写一个脚手架工具来提高开发效能。
 
 React 脚手架工具分为 2 个部分:
 
@@ -33,7 +33,7 @@ if (major < 4) {
 require('./createReactApp')
 ```
 
-2. 生成`package.json` 并检查 yarn 或者 npm 是否安装了
+2.    生成`package.json` 并检查 yarn 或者 npm 是否安装了
 
 ```javascript
 // 检查App name 使用validate-npm-package-name
@@ -43,7 +43,7 @@ checkAppName(appName)
 shouldUseYarn() // return execSync('yarnpkg --version', { stdio: 'ignore' }) ? true : false
 
 // 检查npm
-checkThatNpmCanReadCwd()
+checkThatNpmCanReadCwd()
 
 const packageJson = {
   name: appName,
@@ -124,14 +124,14 @@ devServer
 
   [('SIGINT', 'SIGTERM')].forEach(function(sig) {
     process.on(sig, function() {
-      // 当检测到ctrl+c中断程序时 关闭devServer
+      // 当检测到      ctrl+c中断程序时 关闭devServer
       devServer.close()
       process.exit()
     })
   })
 ```
 
-从上面`start`的主流程中我们可以看出`createCompiler`和`new WebpackDevServer(compiler, serverConfig)`是配置 Webpack 的关键代码 , 下面我们详细分析一下这个两个函数
+从上面`start`的主流程中我们可以看出`createCompiler`和`new WebpackDevServer(compiler, serverConfig)`是配置 Webpack 的关键代码, 下面我们详细分析一下这个两个函数
 
 ### createCompiler
 
@@ -148,7 +148,7 @@ function createCompiler(webpack, config, appName, urls, useYarn) {
 
   // 给done事件注册一个回调, 给开发者提示编译完成
   compiler.plugin('done', stats => {
-    // 让webpack提示消息更友好, 分开错误消息和警告消息, 并且直接显示错误消息
+       // 让webpack提示消息更友好, 分开错误消息和警告消息, 并且直接显示错误消息
     const messages = formatWebpackMessages(stats.toJson({}, true));
 
     // 提示错误信息策略
@@ -211,7 +211,7 @@ module.exports = {
         ],
         include: paths.appSrc,
       },
-      // 编译JS
+      // 编译JS   
       {
          test: /\.(js|jsx|mjs)$/,
             include: paths.appSrc,
@@ -277,7 +277,7 @@ module.exports = {
 }
 ```
 
-最后让我们了解一下在`yarn build`命令是如何配置生产模式下的 Webpack 配置文件, 除了相同的部分外, 生产模式的配置文件额外做了一些  代码的压缩之类的操作, 通常建立 3 个配置文件更易于维护, 一个用于开发, 一个用于生产, 另一个放一些两个模式的通用部分。
+最后让我们了解一下在`yarn build`命令是如何配置生产模式下的 Webpack 配置文件, 除了相同的部分外, 生产模式的配置文件额外做了一些代码的压缩之类的操作, 通常建立 3 个配置文件更易于维护, 一个用于开发, 一个用于生产, 另一个放一些两个模式的通用部分。
 
 ```javascript
 // 压缩HTML模版
@@ -345,4 +345,4 @@ new HtmlWebpackPlugin({
 
 ## 总结
 
-分析了`create-create-app`工具源码之后, 我们了解了编写一个脚手架工具的基本流程: 检查当前环境是否可以运行项目, 生成 package.json 并安装相关依赖, 复制模版到项目中。此外我们还了解了如何使用 webpack 来构建 React 应用, 我们可以针对自己的项目需求来对`create-create-app`默认提供的 webpack 进行更改比如增加一个 sass loader , 当然我们也可以通过`eject`命令来自己配置 Webpack。
+分析了`create-create-app`工具源码之后, 我们了解了编写一个脚手架工具的基本流程: 检查当前环境是否可以运行项目, 生成 package.json 并安装相关依赖, 复制模版到项目中。此外我们还了解了如何使用 webpack 来构建 React 应用, 我们可以针对自己的项目需求来对`create-create-app`默认提供的 webpack 进行更改比如增加一个 sass loader, 当然我们也可以通过`eject`命令来自己配置 Webpack。

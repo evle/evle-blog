@@ -23,7 +23,7 @@ float最原始的目的是为了排版设计而使用的，在排版中我们常
 
 ## float特性
 
-Block元素的默认宽度占文档的100%宽度, 通常我们float一个元素`left`或者`right`它会给其他元素腾出一个空间，让其他元素能够占用这个空间。float有2个特性: `wrap` 和 `collapse`, 如果不理解它们, 在使用float的过程中往往会出现意料之外的结果.
+Block元素的默认宽度占文档的100%宽度, 通常我们float一个元素`left`或者`right`它会给其他元素腾出一个空间，让其他元素能够占用这个空间。float有2个特性: `wrap` 和 `collapse`, 如果不理解它们, 在使用float的过程中往往会出现意料之外的结果.
 
 ### 包裹性
 
@@ -110,7 +110,7 @@ clear属性有3个值
 <footer style="border:solid 0.5em green;clear:both">Footer</footer>
 ```
 
-此外，由于包裹性，`aside`和`article`元素没有宽度, 我们还需要为它们设置宽度
+此外，由于包裹性，`aside`和`article`元素没有宽度, 我们还需要为它们设置宽度
 
 ```html
 <aside style="border:solid 0.5em yellow; float:left;width:25%">Sidebar</aside>

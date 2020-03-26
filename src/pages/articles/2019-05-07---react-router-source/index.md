@@ -12,13 +12,13 @@ description: ''
 
 ## 介绍
 
-React Router 的实现依赖于一个操作 HTML5 histroy API 的库 `history`, 每个路由组件都会创建一个`history`对象来追踪当前的地址 (history.location)并且之前的地址会保存在 history stack 中, 当前 URL 发生改变时, 视图会重新渲染。当点击`<Link>`组件, React Router 会调用`history.push()`改变 URL, 当点击`<Redirect>`组件时, React Router 会调用`history.replace()`来替换当前 history state。
+React Router 的实现依赖于一个操作 HTML5 histroy API 的库 `history`, 每个路由组件都会创建一个`history`对象来追踪当前的地址 (history.location)并且之前的地址会保存在 history stack 中, 当前 URL 发生改变时, 视图会重新渲染。当点击`<Link>`组件, React Router 会调用`history.push()`改变 URL, 当点击`<Redirect>`组件时, React Router 会调用`history.replace()`来替换当前 history state。
 
 ## 前置知识
 
 在以前没有 Histroy API 之前, 更该 URL 有 2 种方式, 一种是能通过`window.location`更改, 但缺点很明显是会重新加载页面, 另一种是通过`hash`比如`<a href="#home">Home</a>`这样的方式。HTML5 History API 提供给我们操作历史浏览的权限, 通过 `window.history.length` 总共记录了几个页面:
 
-如果从 A 页面跳转到 B 页面再跳转到 C 页面, 那么`window.history.length`就是 `3`, 可以通过 `history.back()` 和 `history.forward()` 在这 3 个页面回来切换。我们还可以通过更简便的方法来切换页面就是使用`history.go()`, 如果参数为正数就是向前, 如果是负数就是返回 。 简单来说就是:
+如果从 A 页面跳转到 B 页面再跳转到 C 页面, 那么`window.history.length`就是 `3`, 可以通过 `history.back()` 和 `history.forward()` 在这 3 个页面回来切换。我们还可以通过更简便的方法来切换页面就是使用`history.go()`, 如果参数为正数就是向前, 如果是负数就是返回。简单来说就是:
 
 ```bash
 history.back()
@@ -228,7 +228,7 @@ render() {
       !this.props.target && // let browser handle "target=_blank" etc.
       !isModifiedEvent(event) // ignore clicks with modifier keys
     ) {
-      // 阻止a标签的默认行为
+      // 阻止a标签的默认行为
       event.preventDefault();
       const { history } = this.context.router;
       const { replace, to } = this.props;
@@ -244,7 +244,7 @@ render() {
 
 在点击了`Link`标签后内部只是调用了`history.push`或者`history.replace`来改变URL, 当页面URL改变后, 则通过我们讨论的流程进行匹配并且render组件。
 
-最后让我们看下`withRouter()`， 该函数的作用是: 在不是通过路由切换过来的组件中(也就是this.props.history是undefined)，将react-router 的 history、location、match 三个对象传入props对象上。它的实现也非常简单, 使用context来传递history, location, match对象。 React Router V4使用的Context是最新用法, 和**React的基础回顾**一文中的context用法有很大的差别, 先让我们看下新版本的Context是如何使用来共享状态的。
+最后让我们看下`withRouter()`， 该函数的作用是: 在不是通过路由切换过来的组件中(也就是this.props.history是undefined)，将react-router 的 history、location、match 三个对象传入props对象上。它的实现也非常简单, 使用context来传递history, location, match对象。 React Router V4使用的Context是最新用法, 和**React的基础回顾**一文中的context用法有很大的差别, 先让我们看下新版本的Context是如何使用来共享状态的。
 
 ```javascript
 // 1. 创建状态

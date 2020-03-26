@@ -59,7 +59,7 @@ componentWillReceiveProps(nextProps) {
 }
 ```
 
-`componentWillReceiveProps`是用来当`props`变化时更新`state`的, 但可能即使`props`没有改变该生命周期函数也会被调用, 因此我们要确保对比以下`props`是否真的有变化。在Antd中给Button传递`loading`属性时, Button则会渲染一个转圈的等待动画, 当`this.props.loading`发生改变时对loading状态进行判断, 如果网络请求的回应小于200ms则不会渲染等待动画。
+`componentWillReceiveProps`是用来当`props`变化时更新`state`的, 但可能即使`props`没有改变该生命周期函数也会被调用, 因此我们要确保对比以下`props`是否真的有变化。在Antd中给Button传递`loading`属性时, Button则会渲染一个转圈的等待动画, 当`this.props.loading`发生改变时对loading状态进行判断, 如果网络请求的回应小于200ms则不会渲染等待动画。
 
 ### componentWillUnmount
 
@@ -76,11 +76,11 @@ componentWillUnmount() {
 }
 ```
 
-Button中使用了`timeout`和`delayTimeout`2个定时器, `timeout`用于0.5秒后复位点击状态`clicked`, `delayTimeout`用于清理延时加载loading动画的定时器。
+Button中使用了`timeout`和`delayTimeout`2个定时器, `timeout`用于0.5秒后复位点击状态`clicked`, `delayTimeout`用于清理延时加载loading动画的定时器。
 
 ### Component description
 
-Antd使用TypeScript开发, 通过interface我们可以对组件的使用进行约束, 可以帮助我们快速定位组件参数传递错误导致的Bug。
+Antd使用TypeScript开发, 通过interface我们可以对组件的使用进行约束, 可以帮助我们快速定位组件参数传递错误导致的Bug
 
 ```javascript
 export interface ButtonProps {

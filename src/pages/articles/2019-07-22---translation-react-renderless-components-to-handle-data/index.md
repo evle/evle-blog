@@ -58,7 +58,7 @@ class DataList extends Component {
 
 ## 重构: composition, SRP and SOC
 
-模块化开发(组件化开发)实现分离关注点是React的使用哲学, 组件显而易见是可以组合的并且它们应该遵循单一职责的设计理念。 在上面的例子中我们需要考虑两点: 获取数据 和 渲染不同的UI状态。因此我们在设计中应该有以下思考:
+模块化开发(组件化开发)实现分离关注点是React的使用哲学, 组件显而易见是可以组合的并且它们应该遵循单一职责的设计理念。 在上面的例子中我们需要考虑两点: 获取数据 和 渲染不同的UI状态。因此我们在设计中应该有以下思考:
 
 - 无渲染组件用来获取数据
 - 使用纯函数组件渲染不同的UI状态： Loading, Error和 List
@@ -123,7 +123,7 @@ const DataList = () => (
 );
 ```
 
-`DataList`将所有小的组件结合起来, `Fetch`组件获取到数据后传递给子组件, 子组件解构了`Fetch`传递的数据后, 根据状态来选择渲染不同的UI。这样看起来我们的目的达到了。 其实很多开发者已经使用这样的方式构建了灵活和复用性强的组件比如著名的库`react-apllo`。
+`DataList`将所有小的组件结合起来, `Fetch`组件获取到数据后传递给子组件, 子组件解构了`Fetch`传递的数据后, 根据状态来选择渲染不同的UI。这样看起来我们的目的达到了。 其实很多开发者已经使用这样的方式构建了灵活和复用性强的组件比如著名的库`react-apllo`。
 
 ```javascript
 import React from "react";
@@ -152,7 +152,7 @@ const DataList = () => (
 );
 ```
 
-同样的, 当我们使用React Hook时可能也会犯同样的错误: 进行了没有必要的UI渲染。 比如下面这样
+同样的, 当我们使用React Hook时可能也会犯同样的错误: 进行了没有必要的UI渲染。 比如下面这样
 
 ```javascript
 import React, { useState, useEffect } from "react";
@@ -248,6 +248,6 @@ const DataList = () => {
 
 ## 总结
 
-本文并没有讲一些新的东西, 而是加强来对React核心概念的理解，让我们在设计组件的时候可以有意识的提高组件的重用性与灵活性。
+本文并没有讲一些新的东西, 而是加强来对React核心概念的理解，让我们在设计组件的时候可以有意识的提高组件的重用性与灵活性。
 
 原文地址：[Using renderless components in React to handle data](https://medium.com/trabe/using-renderless-components-in-react-to-handle-data-4c55f1e94dd4)
