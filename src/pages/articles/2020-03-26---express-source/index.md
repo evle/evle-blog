@@ -12,55 +12,7 @@ description: ""
 
 express是Node.js写服务端的常用框架之一, 集成了路由系统, 使我们很方便的开发web应用, 之前写了一篇Koa的实现原理对比express, 本篇就来接着写一个express的轻量级实现, 来复习下express的设计。
 
-## 从ES5开始
-
-express使用ES5写的, 相关的ES5知识会一并梳理到本篇内容当作复习。
-
-### ES5的类
-
-es5没有class的概念, 但有构造函数, 所以可以使用`new`一个构造函数来实现一个类
-
-```javascript
-function Person(name){
-  this.name = name;
-}
-Person.prototype.sayHi = function(){
-  console.log('hi I am ', this.name)
-
-}
-
-var person = new Person('evle');
-person.sayHi()
-```
-
-问题1: 在Person内部通过`this`定义属性和在`prototype`上定义属性/方法有什么区别？
-答: 节省内存, 当调用`sayHi`会优先调用Person内部定义的`sayHi`, 没有才去找`prototype`
-
-问题2: Person如何实现一个私有变量? 答: 使用闭包
-
-```javascript
-function Person(){
-  let private = 10;
-  this.getPrivate = function(){
-    return private;
-  }
-}
-```
-
-问题3: new做了什么事情?
-
-问题4: Object.create做了什么事情?
-
-问题5: 如何实现继承?
-
-问题6: 原型链怎么找的?
-
-问题7: 作用域链又是怎么找到的?
-
-
-## Express路由系统实现
-
-### 从使用看其内部实现
+## 最简单的路由系统
 
 最简单的路由系统就是一一对应的, 这里的一一对应指`路径`和`路径处理函数`对应, 用户先注册好路径和对应的处理函数, 当客户端的请求到来时, 使用请求路径去匹配用户已经注册好的路径, 如果匹配, 则调用对应的路由处理函数, 举例说明
 
@@ -95,38 +47,9 @@ App.prototype.get = function(url, fn){
 }
 ```
 
-这是路由实现的基本思路, 但光看express下面这种调用方式我们也知道express的路由实现还是稍微复杂一些。
+## express路由系统
 
-```javascript
-app.get(
-  "/",
-  (req, res, next) => {
-    console.log(1);
-    next();
-  },
-  (req, res, next) => {
-    console.log(11);
-    next();
-  },
-  (req, res, next) => {
-    console.log(111);
-    next();
-  }
-);
-
-app.get("/", (req, res) => {
-  console.log(2)
-  res.end("end");
-});
-```
-
-当请求到来时, 上述代码的执行结果是`1 111 111 2`, 从`next`我们可以猜出内部的实现, 是一个路由执行完之后调用`next`执行下一个路径的递归调用。为了实现上述这种调用方式, express提出了`layer`和`route`和`router`的概念, 下面让我们理一理这个模型。
-
-先画个图来说明一下
-
-![G9aVsA.png](https://s1.ax1x.com/2020/03/26/G9aVsA.png)
-
-上面的图对应下面这样的使用方式:
+上面描述了实现路由系统的基本思路, 但光看express下面这种调用方式我们也知道express的路由实现还是稍微复杂一些。
 
 ```javascript
 app.get("/", (req, res, next) => {
@@ -142,140 +65,210 @@ app.get("/", (req, res) => {
 });
 ```
 
-每当用户调用`app.get`注册时, 相当于在`Router`的stack中增加来一个`Layer`, `Layer`中存储了路径和一个运行路由的方法, 运行路由的方法是`Route`提供的。第一个`app.get`注册的2个路由处理函数会传入Route中, 并由Route生成2个layer维护起来，每个layer中存储path，path对应的处理函数, 以及对应的请求类型(method)。
+当请求到来时, 上述代码的执行结果是`1 111 111 2`, 从`next`我们可以猜出内部的实现, 是一个路由执行完之后调用`next`执行下一个路径的递归调用。为了实现上述这种调用方式, express提出了`layer`和`route`和`router`的概念, 下面让我们理一理这个模型。
 
-直接这么说太抽象了, 左侧的Router和右侧的Route, 以及左侧的layer和右侧的layer分别是四个不同的东西! 下面我们来说说模拟一个请求到来时, 是怎么被这个路由处理的。当请求来临时, 首先会遍历Router, Router拿出每个layer的path来和请求的path对比, 如果相同的话, 则由Router的layer来通知route执行route内部维护的一系列layer, 下面使用代码描述。
+先画个图来说明一下, 这个图代表上面路由注册代码的模型。
 
-首先在用户注册路由的时候, 会将route挂在layer上, 并且将layer压入Router.stack
+![G9aVsA.png](https://s1.ax1x.com/2020/03/26/G9aVsA.png)
+
+在分析模型时首先分析参与模型的角色: Router, Router的Layer, Route, Route的layer, 总共有4个参与者， 下面来介绍他们的分工:
+
+- Router: 用来维护一个Layer队列, 每当请求来临时, Router迭代自己的Layer队列中的path属性, 去和请求的path做对比, 如果匹配, 则使用Layer队列的dsipatch来执行路径对应的处理函数。
+
+- Router的Layer: 存储着path与dispatch和route, path是用来和来自客户端的请求path做对比, 如果匹配成功则调用route的dispatch来执让route执行路由处理函数, 在上图中对应的是这两次`app.get('/', handler`的调用, 所以模型中有2层。
+
+- Route: Route也维护一个Layer队列, 但与Router的layer队列不同的是, Route的layer队列中存储的是每个路由处理函数。
+
+- Route的Layer: 用来存储每个路由处理函数, 对应着代码第一个`app.get(path, handler1, handler2)`中的handler1和handler2。
+
+了解了角色分工后，我们通过代码来将模型细节化, 先来完成角色Router, Express的中间件是基于路由系统的, 那么路由和中间件有什么区别呢？路由和中间件的区别就是, 中间件没有next方法, 也就是每个中间件就是模型中左侧Router中的一个layer, 不包含route, 那么我们就可以使用`layer.route`在express中判断是一个中间件还是一个路由。
 
 ```javascript
- const route = new Route(path);
- const layer = new Layer(path,route.dispatch.bind(route));
- layer.route = route;
- this.stack.push(layer);
- return route;
-```
+Router.prototype.route = function(path) {
+  
+  /**
+  *  路由
+  *  Router维护着Layer, 而Layer中又包含route, 因为我们需要创建route, layer，然后将
+  *  route挂在layer下, 最后push到Router的stack中。
+  **/
 
-当请求来临时:
-
-```javascript
-Router.prototype.handle = function(req,res,out){
-  let idx=0,self=this;
-  let {pathname} = url.parse(req.url,true);
-
-  // 当请求来时, 递归遍历Router中的layer
-  function next(err){
-      if(idx >= self.stack.length){
-          return out(err);
-      }
-      let layer = self.stack[idx++];
-      // 如果用户请求的路径和layer的路径匹配的话
-      if(layer.match(pathname) && layer.route&&layer.route._handles_method(req.method.toLowerCase())){
-        
-        // 让layer通知Route执行所有的路由处理函数
-        layer.handle_request(req,res,next);
-      }else{
-          next();
-      }
-  }
-  next();
+  const route = new Route(path)
+  const layer = new Layer(path, route.dispatch.bind(route))
+  layer.route = route
+  this.stack.push(layer)
+  return route
 }
-```
 
-`layer.handle_request`调用了Route的dispatch方法来执行所有的路由处理函数, 这里有一点是要注意的, 下面的参数`out`是Router中的layer传递进来的next, 也就是说当执行完所有的路由处理函数后, 调用`out`, 来接着走`Router`中的layer, 是一个串行, 这段代码也就是下面这样的顺序。
+/**
+* 注册中间件, 中间件的Layer存的handler就是中间件处理函数
+*           路由的Layer存的handler是Route的dispatch
+*/
+Router.prototype.use = function(handler){
+  let path = '/',router= this._router;
+  
+  if(typeof handler != 'function'){
+    path = handler;
+    handler = arguments[1];
+  }
 
-```javascript
-Router中layer1 -> Route中layer1 -> Route中layer2 -> Router中layer2
-```
+  let layer = new Layer(path,handler);
 
-```javascript
-Route.prototype.dispatch = function(req,res,out){
-    let idx = 0,self=this;
+  // 中间件没有route
+  layer.route = undefined;
+  this.stack.push(layer);
+  return this;
+} 
 
-    //  Route将自身维护的layer递归全部执行,
-    function next(err){
-        if(err){
-            return out(err);
-        }
-        if(idx >= self.stack.length){
-            return out(err);
-        }
-        let layer = self.stack[idx++];
-        if(layer.method == req.method.toLowerCase()){
-            layer.handle_request(req,res,next);
-        }else{
-            next();
+/**
+*  当请求来临时, 递归遍历自身维护的layer队列, 去比对path
+**/
+Router.prototype.handle = function(req, res, out) {
+  let idx = 0,
+    self = this
+  let { pathname } = url.parse(req.url, true)
+  function next(err) {
+    if (idx >= self.stack.length) {
+      return out(err)
+    }
+    let layer = self.stack[idx]
+
+
+    if(err){
+       layer.handle_error(err,req,res,next);
+    }else{
+         // 用layer.route来判断是路由还是中间件
+        if (
+          layer.match(pathname) &&
+          layer.route &&
+          layer.route._handles_method(req.method.toLowerCase())
+        ) {
+          // 如果路由 使用layer去调用route的dispatch
+            layer.handle_request(req, res, next)
+          }
+        } else if (!layer.route){  // 如果是中间件 则直接运行
+          layer.handle_request(req,res,next)
+        } else {
+            next(err)
         }
     }
-    next();
-}
-```
-
-Route维护layer
-
-```javascript
-(handler) => {
-  for(let i=0;i<handlers.length;i++){
-      let layer = new Layer('/',handlers[i]);
-      layer.method = method;
-      this.stack.push(layer);
   }
+  next()
 }
 ```
 
-
-
-
-
-
-
-
-
-
-
-理解了这个关系后实现起来也很简单, 下面我们也使用es5的语法来实现上述的模型。
-
-
-
-
-
-
-## Express二级路由实现
-
-我的理解软件工程的核心意义是降低系统复杂度, 而拆分则是主要方法论之一, 在写express应用时候我们通常会使用二级路由将应用根据逻辑拆分成不同的业务单元便于维护.
-
-```javasript
-
-```
-
-实现这样的二级路由的关键点是:
-
-改造我们的路由系统, 使其支持二级路由
+接下来实现Router的Layer， Router的layer相同于一个中间层, 作用就是匹配路径, 如果匹配到了通知route执行路径处理函数
 
 ```javascript
-
+function Layer(path,handler){
+		this.path = path;
+		this.handler = handler;
+}
+Layer.prototype.match = function(path){
+		return this.path == path;
+}
+Layer.prototype.handle_request = function(req,res,next){
+		this.handler(req,res,next);
+}
+Layer.prototype.handle_error = function(err,req,res,next){
+		if(this.handler.length != 4){
+				return next(err);
+		}
+		this.handle(err,req,res,next);
+}
 ```
 
-## Express中间件实现
-
-在实现了路由系统后, express的中间件的实现则变得很简单, express中间件和路由有什么区别?
+最后来实现Route层, Route用来递归运行自己维护的layer, 这里的layer也就是路由处理函数。
 
 ```javascript
+function Route(path){
+	this.path = path;
+	this.methods = {};
+	this.stack = [];
+}
+
+methods.forEach(function(method){
+	Route.prototype[method] = function(){
+      const handlers = Array.from(arguments);
+      // 每一个layer就是一个处理函数, 注册时候先存到Route的stack中
+			for(let i=0;i<handlers.length;i++){
+					let layer = new Layer('/',handlers[i]);
+					layer.method = method;
+					this.stack.push(layer);
+			}
+			this.methods[method] = true;
+			return this;
+	}
+});
+Route.prototype._handles_method = function(method){
+	return this.methods[method];
+}
+
+Route.prototype.dispatch = function(req,res,out){
+let idx = 0,self=this;
+  // 当被Router中的layer调用时, Route则递归运行自己的layer
+  // 当运行结束后, 调用out，开始继续走Router中的layer, 顺序是
+  // Router Layer -> Route Layer -> Router Layer
+function next(err){
+    if(err){
+        return out(err);
+    }
+    if(idx >= self.stack.length){
+        return out(err);
+    }
+    let layer = self.stack[idx++];
+    if(layer.method == req.method.toLowerCase()){
+        layer.handle_request(req,res,next);
+    }else{
+        next();
+    }
+}
+next();
+}
 ```
 
-我们可以看到中间件是没有的, 我们只要在原来的路由系统中, 根据中间件没有xx的特性, 来判断出中间件即可
+## 写个Express中间件验证一下
 
+body-parser是非常常用的一个express中间件，body-parser可以处理不同类型的post请求体, 编码, 压缩类型等等, 比如最常见的我们想从post请求获取json数据。
 
-在中间件/路由中如何捕获错误? express相比koa可以用`try...catch`捕获然后通过事件系统dispatch出去则稍微复杂来一点, 
+```javascript
+app.use(bodyParser.json());
+```
 
+下面让我们简单实现一下从post请求获取json数据
 
+```javascript
+const querystring = require('querystring')
 
-## Express对原生reqeust和response的扩展
+module.exports = (req, res, next) => {
+  let arr = []  
 
+  req.on('data', (buffer) => {
+    arr.push(buffer)
+  })
+
+  req.on('end', () => {
+    let body = Buffer.concat(arr).toString()
+
+    // 如果是JSON格式的话则处理成JS对象挂在req.body上面
+    if (req.headers['content-type'] === 'application/json') {
+      body = JSON.parse(body)
+    } else {
+      // 处理表单提交数据
+      body = querystring.parse(body)
+    }
+
+    req.body = body
+
+    // 交由下一级中间件处理 中间件的next很关键 不调用就不走了
+    next()
+  })
+}
+```
 
 ## 总结
 
-本篇文章总结了ES5关于类的相关知识点, 掌握JS基础可以使我们走的更远. 此外本篇文章也总结了express路由和中间件的核心实现, 并且写了2个常用的中间件。
+本篇文章总结了express路由和中间件的核心实现, 可以看到最大的不同在于express的中间件是使用callback实现的, 一个next接着一个next, 而Koa的中间件实现是基于Promise, 并且要灵活一些, 可以执行时候暂停下来, 将控制权交出去, 等其他中间件处理完后在得到控制权。
+
 
 
 

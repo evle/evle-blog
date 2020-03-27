@@ -157,3 +157,49 @@ function deepClone(obj) {
 ## new & instanceof
 
 # Promise
+
+
+## 从ES5开始
+
+express使用ES5写的, 相关的ES5知识会一并梳理到本篇内容当作复习。
+
+### ES5的类
+
+es5没有class的概念, 但有构造函数, 所以可以使用`new`一个构造函数来实现一个类
+
+```javascript
+function Person(name){
+  this.name = name;
+}
+Person.prototype.sayHi = function(){
+  console.log('hi I am ', this.name)
+
+}
+
+var person = new Person('evle');
+person.sayHi()
+```
+
+问题1: 在Person内部通过`this`定义属性和在`prototype`上定义属性/方法有什么区别？
+答: 节省内存, 当调用`sayHi`会优先调用Person内部定义的`sayHi`, 没有才去找`prototype`
+
+问题2: Person如何实现一个私有变量? 答: 使用闭包
+
+```javascript
+function Person(){
+  let private = 10;
+  this.getPrivate = function(){
+    return private;
+  }
+}
+```
+
+问题3: new做了什么事情?
+
+问题4: Object.create做了什么事情?
+
+问题5: 如何实现继承?
+
+问题6: 原型链怎么找的?
+
+问题7: 作用域链又是怎么找到的?
