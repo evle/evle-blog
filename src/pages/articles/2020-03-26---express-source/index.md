@@ -69,7 +69,7 @@ app.get("/", (req, res) => {
 
 先画个图来说明一下, 这个图代表上面路由注册代码的模型。
 
-![G9aVsA.png](https://s1.ax1x.com/2020/03/26/G9aVsA.png)
+![GPPFTf.png](https://s1.ax1x.com/2020/03/27/GPPFTf.png)
 
 在分析模型时首先分析参与模型的角色: Router, Router的Layer, Route, Route的layer, 总共有4个参与者， 下面来介绍他们的分工:
 
