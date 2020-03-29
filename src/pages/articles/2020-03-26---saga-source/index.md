@@ -12,10 +12,16 @@ description: ""
 
 ## Saga解决了什么问题?
 
-UI -> Dispatch action -> action无法处理异步 X
-UI -> Dispatch action -> thunk处理异步 -> Reducer -> update state tree -> UI
+react-redux无法处理异步任务, 通常我们使用 redux-thunk 来处理异步任务
 
-`thunk`是如何解决处理异步任务的? action是一个plain object:`{type: ACTION_TYPE, payload: data}`, dispatch会把这个plain object给reducer, thunk的解决办法是, 让action变为一个函数, 这个函数执行完的时候再创建plain object, 然后让dispatch像之前一样把这个action交给reducer更新状态。那么在这个函数中就可以做一些异步处理, 比如请求远程数据。
+```javascript
+UI -> Dispatch action -> action无法处理异步 X
+
+// thunk
+UI -> Dispatch action -> thunk处理异步 -> Reducer -> update state tree -> UI
+```
+
+`thunk`是如何解决处理异步任务的? redux的action是一个plain object:`{type: ACTION_TYPE, payload: data}`, dispatch会把这个plain object给reducer, thunk的解决办法是, 让action变为一个函数, 这个函数执行完的时候再创建plain object, 然后让dispatch像之前一样把这个action交给reducer更新状态。那么在这个函数中就可以做一些异步处理, 比如请求远程数据。
 
 ```javascript
 const actions = {
@@ -98,13 +104,41 @@ function* rootSaga() {
 
 ### createSagaMiddleware
 
-前面说过saga是redux的一个中间件, 那么先来定义一个redux的中间件
+redux的中间件充满着Curring的气息, 它发生在action dispatch之后, 和reducer之前这个过程, `createSagaMiddleware`这个中间件中我们该做什么呢? 从用法来看我们首先要给它添加一个`run`方法
 
 ```javascript
-function createSagaMiddleware(){
+// 使用
+const store = applyMiddleware(sagaMiddleware)(createStore)(reducer);
+sagaMiddleware.run(rootSaga); 
 
+// 添加 run方法
+function createSagaMiddleware(){
+  
   // applyMiddleware会把store传进来
   function sagaMiddleware({getState, dispatch}){
+
+
+    function run(generator){
+      let it = generator();
+      function next(){
+        let {value: effect, done} = it.next();
+        if(!done){
+          switch(effect.type){
+            case 'TAKE':
+            events.once(effect.actionType, next);
+            break;
+            case 'PUT':
+            dispatch(effect.action)
+            next();
+          default:
+          break;
+          }
+        }
+      }
+      next();
+    }
+    sagaMiddleware.run = run;
+
     return function(next){
       return function(action){
         return next(action);
@@ -124,8 +158,20 @@ function createSagaMiddleware(){
 
 ```javascript
 
+export function take(actionType){
+  return {
+    type: 'TAKE',
+    actionType
+  }
+}
 
-applyMiddleware(sagaMiddleware)(createStore)(reducer);
+export function put(action){
+  return {
+    type: 'PUT',
+
+  }
+}
+
 ```
 
 

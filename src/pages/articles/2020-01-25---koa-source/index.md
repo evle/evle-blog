@@ -10,7 +10,7 @@ tags:
 description: ""
 ---
 
-很久没有看express源码了, 温故知新, 现在时间充足可以将express的核心源码实现一遍, 说起express不得不提Koa, 本篇文章将回顾Koa的核心实现, 以及与Express做一个对比。
+很久没有看express源码了, 温故知新, 现在时间充足可以将express的核心源码实现一遍, 说起express不得不提Koa, 本篇文章将回顾Koa的核心实现, 以及与Express做一个对比。
 
 ## 文件结构
 
@@ -21,7 +21,7 @@ description: ""
 - response.js
 - context.js
 
-`applicatoin.js`是Koa的核心, 比如监听http端口, 处理中间件。`request.js`和`response.js`则是对原生http的request和response做扩展, `context.js`提供了`ctx`对象, 算是Koa与Express的第二个区别点, 当收到Http Incoming请求的时候, Koa将request与response包装在了`ctx`对象中, 并且提供了很多便利的操作方式, 而Express则是使用原生的requeset与response对象, 并且对其进行了扩展。
+`applicatoin.js`是Koa的核心, 比如监听http端口, 处理中间件。`request.js`和`response.js`则是对原生http的request和response做扩展, `context.js`提供了`ctx`对象, 算是Koa与Express的第二个区别点, 当收到Http Incoming请求的时候, Koa将request与response包装在了`ctx`对象中, 并且提供了很多便利的操作方式, 而Express则是使用原生的requeset与response对象, 并且对其进行了扩展。
 
 ## ctx对象的实现
 
@@ -71,7 +71,7 @@ let context = {
 }
 ```
 
-每当中间件对`ctx.body`赋值, 其实就是对context内部的_body赋值, 等待所有中间件执行完毕的时候来根据`ctx.body`的值来响应客户端。
+每当中间件对`ctx.body`赋值, 其实就是对context内部的_body赋值, 等待所有中间件执行完毕的时候来根据`ctx.body`的值来响应客户端。
 
 ```javascript
   if(typeof ctx.body === 'string' || Buffer.isBuffer(ctx.body)){
@@ -92,7 +92,7 @@ let context = {
 
 中间件是Express和Koa的核心特性, 但实现却完全不同, Koa的中间件由是基于Promise实现的, 配合`await`写代码很舒服, 而Express则是使用`callback`实现的, 比如如果要统计一个中间件的处理时间, 那么用Koa很简单, 只要在中间件前后计算中间差即可, 但是Express实现同样的需求必须重写`res.end`方法, Express的中间件是基于路由的, 也就是对路由有强依赖, 但是Koa的中间件实现很简单, 就是一个递归调用所有的中间件  
 
-首先通过`use`来注册中间件3个中间件, 需要注意2个点, 一是`await`只会等待Promise，因为所有的异步操作需要封装成Promise, 比如`sleep`, 另一个需要注意的点是我们不知道下一个中间件是同步还是异步任务, 所以统一使用`await next()`来确保中间件的执行顺序正确。
+首先通过`use`来注册中间件3个中间件, 需要注意2个点, 一是`await`只会等待Promise，因为所有的异步操作需要封装成Promise, 比如`sleep`, 另一个需要注意的点是我们不知道下一个中间件是同步还是异步任务, 所以统一使用`await next()`来确保中间件的执行顺序正确。
 
 ```javascript
 const sleep = (delay)=>new Promise((resolve, reject)=>{
@@ -159,8 +159,5 @@ Express在捕获错误的时候相比Koa复杂, 如果有中间件发生错误�
 
 - Koa使用ES6语法, Express使用ES5
 - Koa中间件执行时遇到next会执行下一个中间件,等下一个执行完在返回继续执行, Express中间件会一个接一个执行
-- Koa捕获中间件错误通过try...catch捕获, 并且通过事件通知错误, 而Express则是通过给next传递error参数, 使用错误处理中间件来捕获中间件错误
+- Koa捕获中间件错误通过try...catch捕获, 并且通过事件通知错误, 而Express则是通过给next传递error参数, 使用错误处理中间件来捕获中间件错误
 - Koa中间件使用Promise实现, Express则是使用回调函数。
-
-
-

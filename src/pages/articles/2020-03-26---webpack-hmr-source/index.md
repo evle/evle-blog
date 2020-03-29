@@ -233,8 +233,11 @@ module.hot.accept('./app', render(App)
 在.babelrc中添加plugin: `react-hot-loader/babel`
 
 - reducer修改无更新
-给redcuer也支持HMR:`module.hot.accept('./reducer', () => store.replaceReducer(reducer))`
+给redcuer也支持HMR
 
+```javascript
+module.hot.accept('./reducer', () => store.replaceReducer(reducer))
+```
 ## 总结
 
 本文配合webpack实现了一个HMR的更新方案, 但是在react这种携带状态的应用开发中还是存在一定的缺陷, 需要使用类似react-hot-loader这样的解决方案, 但react-hot-loader也并不是一个成熟的方案直到3.0发布之前, react-hot-loader的原理就是通过代理组件, 不让HMR进行更新, 而是通过自己来更新保持组件的状态. 关键实现依赖`react-proxy`和`react-deep-force-update`都是Dan写的, create tools for humans, 向Dan学习.
