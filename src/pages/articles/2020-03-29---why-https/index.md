@@ -1,6 +1,6 @@
 ---
 title: "https原理之https是如何保障web安全的"
-date: "2020-03-29"
+date: "2020-01-02"
 layout: post
 draft: false
 path: "/posts/why-https"
@@ -101,7 +101,8 @@ function decrypt(data, key, iv) {
 ### 非对称加密: RSA
 
 p * q = K 
-p * q? = K
+
+p * q? = K 
 
 ```javascript
 let { generateKeyPairSync, privateEncrypt, publicDecrypt } = require('crypto');
