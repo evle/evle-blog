@@ -88,3 +88,8 @@ let template = `
 
 
 ```
+
+
+### 支持loader
+
+webpack中, loader的作用是转化代码, 比如将es6代码转换成es5代码. webpack提供了
