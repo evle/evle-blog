@@ -1,5 +1,5 @@
 ---
-title: "从0到1实现一个webpack打包工具"
+title: "webpack是如何打包代码的?"
 date: "2020-03-26"
 layout: post
 draft: false
@@ -12,7 +12,7 @@ description: ""
 
 ## 从模块化规范说起
 
-在实现webpack之前我们先回顾一下js模块化的规范
+在实现webpack之前我们先回顾一下js模块化的规范, 因为webpack的编译模版代码的原理和commonjs模块的原理相同.
 
 ### commonjs
 
@@ -73,23 +73,130 @@ function require(mods, cb){
 
 ## 编写自己的webpack
 
-下面通过分析webpack打包的bunble来模拟一次webpack构建:
+webpack的编译其实就是预先写好了模版代码, 然后用模版引擎将用户的代码组成`{moduleId: sourceCode}`这样一个对象渲染到模版中, 然后运行这个模版代码.
 
-1. 读取入口文件
-2. 替换webpack bundle中的变量
+这个对象中的`moudleId`是模块相对于`src`一个路径, 但是我们写代码时候通常都是写的相对路径, 因此这里我们为了得到相对于`src`的根路径需要使用AST进行转换, 并且我们要将`sourceCode`中的`require`全部改为`__webpack_require__`供webpack模版代码调用.
+
+在这里AST工具链使用babel全家桶: 
+
+- babylon
+- babel-types
+- babel-generator
+- babel-traverse
 
 ```javascript
-let entry = './src/index.js' 
-let output = './dist/main.js'
-let fs = require('fs')
-let script = fs.readFileSync(entry, 'utf-8')
+buildModule(moduleId){ // 在webpack中moduleId就是模块的绝对路径
+  let originalSource = fs.readFileSync(moduleId, 'utf-8');
+  const ast = babylon.parse(originalSource);
+  traverse(ast, {
+    CallExpression:(nodePath)=>{
+      if(nodePath.node.callee.name == 'require'){
+        let node = nodePath.node;
+        // 1. require -> __webpack_require__
+        node.callee.name = '__webpack_require__';
 
-let template = `
+        // 2. ./hello.js -> ./src/hello.js   posix:跨平台
+        let moduleName = node.arguments[0].value;
+        let dependencyModuleId = './' + path.posix.join(path.posix.dirname(moduleId), moduleName);
 
+        // 需要把所有依赖模块存起来 递归的对所有依赖摸进行转换
+        dependencies.push(dependencyModuleId);
+        node.arguments = [types.stringLiteral(dependencyModuleId)];
+      }
+    }
+  })
 
+  let {code} = generator(ast);
+  // 生成 {moduleId: sourceCode} 的结构
+  this.modules[moduleId] = code;
+
+  // 递归转换
+  dependencies.forEach(dependency => this.buildModule(dependency))
+}
 ```
 
+通过上面的AST转换后我们接下来就可以使用ejs进行渲染了, 要渲染2个地方:
+
+1. 模版代码中的入口文件
+2. 模版代码中的依赖模块
+
+```javascript
+
+(function (modules) {
+    var installedModules = {};
+    function __webpack_require__(moduleId) {
+      if (installedModules[moduleId]) {
+        return installedModules[moduleId].exports;
+      }
+      var module = installedModules[moduleId] = {
+        i: moduleId,
+        l: false,
+        exports: {}
+      };
+
+      modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+      module.l = true;
+      return module.exports;
+    }
+    // 1. 渲染入口
+    return __webpack_require__(__webpack_require__.s = "<%-entryId%>");
+  })
+    ({  // 2. 渲染模块
+        <%
+          for(let id in modules){
+              let {moduleId,_source} = modules[id];%>
+              "<%-moduleId%>":
+              (function (module, exports,__webpack_require__) {
+                <%-_source%>
+              }),
+           <%}
+        %>
+    });
+```
+
+以上我们就完成了webpack的编译过程, 模版代码的实现可以直接看webpack在`development`模式下打包出来的bundle, 其实现原理其实就是commonjs的实现原理.
 
 ### 支持loader
 
-webpack中, loader的作用是转化代码, 比如将es6代码转换成es5代码. webpack提供了
+loader的功能是对代码进行变形, 因此我们在读取到模块的源文件后首先要做的事情是使用对应的loader对代码进行变形.
+
+```javascript
+...
+build(compilation){
+  // 调用loader变形代码
+  let originalSource = this.getSource(this.request,compilation);
+  const ast = babylon.parse(originalSource);
+...
+
+
+ getSource(request,compilation){
+        // 读取代码源文件
+        let source = compilation.inputFileSystem.readFileSync(this.request,'utf8');
+        let { module: { rules } } = compilation.options;
+        for (let i = 0; i < rules.length; i++) {
+            let rule = rules[i];
+            // 是否匹配
+            if (rule.test.test(request)) {
+                let loaders = rule.use;
+                let loaderIndex = loaders.length - 1;
+                let iterateLoaders = ()=>{
+                    let loaderName = loaders[loaderIndex];
+                     // 加载对应的loader对source记性处理
+                    let loader = require(path.resolve(this.context, 'loaders', loaderName));
+                    source = loader(source);
+                    if (loaderIndex > 0) {
+                        loaderIndex--;
+                        iterateLoaders();
+                    }
+                }
+                iterateLoaders();
+                break;
+            }
+        }
+        return source;
+    }
+```
+
+## 总结
+
+本篇文章介绍了js模块对规范以及`requrie`和es6模块的对比, webpack是基于commonjs的原理实现的一种打包工具, webpack的编译流程实际上就是一个渲染模版引擎的过程, 渲染之前要做的2个关键是转换模块路径为相对于`src`的路径, 以及将模块中的`require`全部转换为`__webpack_require__`.
